@@ -1,0 +1,6 @@
+module.exports = {
+    "TOKEN": "",
+    "mongoURI": "",
+    "PREFIX": "",
+    "ownerID": [""]
+}
