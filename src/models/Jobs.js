@@ -12,7 +12,8 @@ module.exports.JobList = {
         nurse: 12500,
         accountant: 17500,
         techsupport: 20000,
-        softwaredeveloper: 27500
+        softwaredeveloper: 27500,
+        lawyer: 35000
     },
     workReq: {
         None: 0,
@@ -27,7 +28,8 @@ module.exports.JobList = {
         nurse: 900,
         accountant: 1400,
         techsupport: 2500,
-        softwaredeveloper: 3200
+        softwaredeveloper: 3200,
+        lawyer: 4000
     },
     formatName: {
         None: "None",
@@ -42,6 +44,7 @@ module.exports.JobList = {
         nurse: "Nurse",
         accountant: "Accountant",
         techsupport: "Tech Support",
-        softwaredeveloper: "Software Developer"
+        softwaredeveloper: "Software Developer",
+        lawyer: "Lawyer"
     }
 }

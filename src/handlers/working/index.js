@@ -22,8 +22,28 @@ module.exports.WorkHandlers = {
             case "apply":
                 this.apply(client, msg, args);
                 break;
+            case "jobs":
+                this.jobs(client, msg, args);
+                break;
         }
 
+    },
+    jobs: async function(client, msg, args) {
+        let jobs = Object.keys(JobList.workReq);
+        var embed = {
+            title: `Here are all the jobs!`
+        };
+        var availableJobs = `__Job Name **-** Payment (Work Requirement)__\n\n`;
+            for (job in jobs) {
+                if(jobs[job] == "None" || jobs[job] == "begger") {
+                    continue;
+                }
+                availableJobs += `${JobList.formatName[jobs[job]]} **-** ${MoneyUtils.format(JobList.pay[jobs[job]])} per work (${GemFormatUtils.format(JobList.workReq[jobs[job]])} times)\n`;
+            }
+            embed.description = availableJobs;
+
+            msg.channel.createMessage({ embed: embed });
+            return;
     },
     apply: async function (client, msg, args) {
         var user = msg.author;

@@ -12,7 +12,8 @@ module.exports = class {
 
         msg.channel.createMessage({embed: {
             title: `EcoBot Help Menu`,
-            description: `Check out our [github](https://github.com/sycles/EcoBot) for more information!`,
+            description: `Check out our [github](https://github.com/sycles/EcoBot) for more information!
+Invite the bot to another server [here](https://discord.com/api/oauth2/authorize?client_id=776935174222249995&permissions=8&scope=bot)`,
             fields: [
                 {
                     name: `Working Help`,
