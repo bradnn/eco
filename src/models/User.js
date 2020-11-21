@@ -75,6 +75,10 @@ const userModel = mongoose.Schema({
             type: Date,
             default: 0
         },
+        crime: {
+            type: Date,
+            default: 0
+        },
         pay: {
             type: Date,
             default: 0

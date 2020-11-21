@@ -4,10 +4,11 @@ const { CrimeUtils } = require("../../utils/crimeUtils");
 const { UserUtils } = require("../../utils/user");
 const { CoinUtils } = require("../../utils/wallet/coins");
 const { MoneyUtils } = require("../../utils/wallet/money");
+const { CooldownHandlers } = require("../cooldown");
 
 module.exports.CrimeHandlers = {
     crime: async function (client, msg, args) {
-        const cooldown = await CooldownHandlers.get(type, msg.author);
+        const cooldown = await CooldownHandlers.get("crime", msg.author);
         if (cooldown.response) {
             msg.channel.createMessage(cooldown.embed);
             return;
