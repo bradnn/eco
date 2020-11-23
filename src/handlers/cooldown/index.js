@@ -1,4 +1,5 @@
 const { CooldownUtils } = require("../../utils/cooldown");
+const { JobUtils } = require("../../utils/job");
 const { TimeUtils } = require("../../utils/time");
 const { UserUtils } = require("../../utils/user");
 
@@ -51,7 +52,12 @@ module.exports.CooldownHandlers = {
         }
         let userProfile = await UserUtils.get(user.id);
         let userCooldowns = userProfile.cooldowns;
-        var cooldown = cooldowns[type];
+        if(type == "work" && userProfile.work.sick == true) {
+            JobUtils.sick(user.id);
+            var cooldown = cooldowns[type] * 10;
+        } else {
+            var cooldown = cooldowns[type];
+        }
 
         const previousTime = userCooldowns[type];
         const nowTime = new Date();

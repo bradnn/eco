@@ -32,6 +32,10 @@ const userModel = mongoose.Schema({
         raiseLevel: {
             type: Number,
             default: 0
+        },
+        sick: {
+            type: Boolean,
+            default: false
         }
     },
     crime: {

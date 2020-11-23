@@ -88,5 +88,25 @@ module.exports.JobUtils = {
         x.save();
 
         return x.stats.work.workCount;
+    },
+    sick: async function (userID) {
+        let x = await userModel.findOne({userID: userID}, async function (err, res) {
+            if (err) throw err;
+            if (res) {
+                return res;
+            }
+        });
+        if(!x) {
+            x = userModel.create({
+                userID: userID
+            });
+        };
+        if(x.work.sick = true) {
+            x.work.sick = false;
+        } else {
+            x.work.sick = true;
+        }
+        await x.save();
+        return x.work.sick;
     }
 }

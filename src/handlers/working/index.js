@@ -176,7 +176,7 @@ module.exports.WorkHandlers = {
             var job = profile.work.job;
             var chance = Math.random() * 100;
 
-            if (chance < 97) {
+            if (chance < 96) {
 
                 if (profile.stats.work.workCountRaise >= 25) {
                     await JobUtils.addRaise(user.id);
@@ -220,6 +220,16 @@ module.exports.WorkHandlers = {
                     embed: embed
                 });
                 return;
+            } else if (chance < 98) {
+                JobUtils.sick(user.id);
+                msg.channel.createMessage({
+                    embed: {
+                        title: `You got sick!`,
+                        description: `You caught a cold and are unable to work for 10 minutes!`,
+                        color: 16729344
+                    }
+                });
+                return;
             } else {
                 JobUtils.set(user.id, "begger");
                 msg.channel.createMessage({
@@ -228,7 +238,7 @@ module.exports.WorkHandlers = {
                         description: `You did a terrible job and are getting fired.`,
                         color: 16729344
                     }
-                })
+                });
                 return;
             }
         }
