@@ -7,7 +7,8 @@ const cooldowns = {
     work: 60000,
     crime: 60000,
     apply: 900000,
-    pay: 3600000
+    pay: 3600000,
+    flip: 15000
 };
 
 module.exports.CooldownHandlers = {

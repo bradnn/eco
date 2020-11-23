@@ -2,6 +2,7 @@ const { UserUtils } = require("../../utils/user");
 const { CoinUtils } = require("../../utils/wallet/coins");
 const { GemFormatUtils } = require("../../utils/wallet/gemFormat");
 const { MoneyUtils } = require("../../utils/wallet/money");
+const { CooldownHandlers } = require("../cooldown");
 
 module.exports.GambleHandler = {
     handler: async function (client, msg, args, gambleType) {
@@ -9,10 +10,10 @@ module.exports.GambleHandler = {
         var profile = await UserUtils.get(user.id);
 
         var theirBalance = profile.econ.wallet.balance;
-        
+
         var gambleAmount = parseInt(args[0]);
 
-        if(!gambleAmount || isNaN(gambleAmount)) {
+        if (!gambleAmount || isNaN(gambleAmount)) {
             msg.channel.createMessage({
                 embed: {
                     title: `Whoops!`,
@@ -41,8 +42,16 @@ module.exports.GambleHandler = {
             return;
         }
 
-        switch(gambleType) {
+        switch (gambleType) {
             case "flip":
+                var cooldown = await CooldownHandlers.get("flip", msg.author);
+                if (cooldown.response) {
+                    cooldown.embed.embed.footer = {
+                        text: `Want to remove this cooldown? There will be a way soon :)`
+                    };
+                    msg.channel.createMessage(cooldown.embed);
+                    return;
+                }
                 this.flip(client, msg, args, gambleAmount);
                 return;
         }

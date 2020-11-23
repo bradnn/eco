@@ -86,6 +86,10 @@ const userModel = mongoose.Schema({
         pay: {
             type: Date,
             default: 0
+        },
+        flip: {
+            type: Date,
+            default: 0
         }
     },
     collections: {
