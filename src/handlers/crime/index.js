@@ -65,7 +65,7 @@ module.exports.CrimeHandlers = {
 
             console.log(Math.floor((userProfile.econ.wallet.balance / 100) * 2.5));
             
-            if (chance < 15) {
+            if (chance < 50) {
                 msg.channel.createMessage({
                     embed: {
                         title: `Whoops!`,
@@ -75,7 +75,7 @@ module.exports.CrimeHandlers = {
                 });
                 CoinUtils.del(msg.author.id, Math.floor((userProfile.econ.wallet.balance / 100) * 2.5))
                 return;
-            } else if (chance < 85) {
+            } else if (chance < 53) {
                 msg.channel.createMessage({
                     embed: {
                         title: `Nice work.`,

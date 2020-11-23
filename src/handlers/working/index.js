@@ -116,7 +116,7 @@ module.exports.WorkHandlers = {
 
                         var chance = Math.floor(Math.random() * 100);
 
-                        if (chance > 75) {
+                        if (chance > 80) {
                             msg.channel.createMessage({
                                 embed: {
                                     title: `Whoops!`,

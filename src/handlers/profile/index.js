@@ -64,5 +64,20 @@ module.exports.ProfileHandlers = {
                 }
             });
         })
-    }
+    },
+    worktop: async function (client, msg, args) {
+
+        User.find({}).sort([['stats.work.workCount', -1]]).exec(async function(err, docs) {
+            msg.channel.createMessage({
+                embed: {
+                    author: {
+                        name: `💼 Top Workers:`,
+                        icon_url: msg.author.avatarURL
+                    },
+                    description: `🥇 **#1** <@${docs[0].userID}> 💼 ${GemFormatUtils.format(docs[0].stats.work.workCount)}\n🥈 **#2** <@${docs[1].userID}> 💼 ${GemFormatUtils.format(docs[1].stats.work.workCount)}\n🥉 **#3** <@${docs[2].userID}> 💼 ${GemFormatUtils.format(docs[2].stats.work.workCount)}\n🤮 **#4** <@${docs[3].userID}> 💼 ${GemFormatUtils.format(docs[3].stats.work.workCount)}\n💩 **#5** <@${docs[4].userID}> 💼 ${GemFormatUtils.format(docs[4].stats.work.workCount)}`,
+                    color: 6619007
+                }
+            });
+        })
+    },
 }
