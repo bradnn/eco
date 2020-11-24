@@ -8,6 +8,5 @@ module.exports = class {
     async run(client, msg, args) {
         var handle = ProfileHandlers.gemtop(client, msg, args);
         return handle;
-
     }
 }

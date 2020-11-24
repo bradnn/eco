@@ -9,6 +9,5 @@ module.exports = class {
     async run(client, msg, args) {
         var handle = AuctionHandlers.handle(client, msg, args, this.cmd);
         return handle;
-
     }
 }

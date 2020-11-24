@@ -5,9 +5,7 @@ module.exports = class {
     }
 
     async run(client, msg, args) {
-
         const prefix = client.config.PREFIX;
-
         msg.channel.createMessage({embed: {
             title: `EcoBot Help Menu`,
             description: `Check out our [github](https://github.com/sycles/EcoBot) for more information!

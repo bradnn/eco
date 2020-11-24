@@ -9,6 +9,5 @@ module.exports = class {
     async run(client, msg, args) {
         var handle = GambleHandler.handler(client, msg, args, "flip");
         return handle;
-
     }
 }

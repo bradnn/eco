@@ -9,6 +9,5 @@ module.exports = class {
     async run(client, msg, args) {
         var handler = CrimeHandlers.crime(client, msg, args);
         return;
-
     }
 }

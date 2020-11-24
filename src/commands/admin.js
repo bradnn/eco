@@ -6,6 +6,5 @@ module.exports = class {
     async run(client, msg, args) {
         console.log('yeah');
         return;
-
     }
 }

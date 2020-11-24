@@ -53,7 +53,7 @@ module.exports.CooldownHandlers = {
         }
         let userProfile = await UserUtils.get(user.id);
         let userCooldowns = userProfile.cooldowns;
-        if(type == "work" && userProfile.work.sick == true) {
+        if(type == "work" && userProfile.work.sick) {
             JobUtils.sick(user.id);
             var cooldown = cooldowns[type] * 10;
         } else {

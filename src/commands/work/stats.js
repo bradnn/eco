@@ -9,6 +9,5 @@ module.exports = class {
     async run(client, msg, args) {
         var handle = StatHandlers.handler(client, msg, args);
         return handle;
-
     }
 }

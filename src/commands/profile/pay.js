@@ -8,6 +8,5 @@ module.exports = class {
     async run(client, msg, args) {
         var handle = PayHandler.handler(client, msg, args);
         return handle;
-
     }
 }

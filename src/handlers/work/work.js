@@ -176,7 +176,7 @@ module.exports.WorkHandlers = {
             var job = profile.work.job;
             var chance = Math.random() * 100;
 
-            if (chance < 96) {
+            if (chance < 2) {
 
                 if (profile.stats.work.workCountRaise >= 25) {
                     await JobUtils.addRaise(user.id);
@@ -220,7 +220,7 @@ module.exports.WorkHandlers = {
                     embed: embed
                 });
                 return;
-            } else if (chance < 98) {
+            } else if (chance < 100) {
                 JobUtils.sick(user.id);
                 msg.channel.createMessage({
                     embed: {

@@ -101,7 +101,7 @@ module.exports.JobUtils = {
                 userID: userID
             });
         };
-        if(x.work.sick = true) {
+        if(x.work.sick == true) {
             x.work.sick = false;
         } else {
             x.work.sick = true;
