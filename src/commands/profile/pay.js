@@ -1,5 +1,4 @@
-const { PayHandler } = require("../handlers/pay");
-const { ProfileHandlers } = require("../handlers/profile");
+const { PayHandler } = require("../../handlers/profile/pay");
 
 module.exports = class {
     constructor() {

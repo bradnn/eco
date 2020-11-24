@@ -1,5 +1,4 @@
-const { ProfileHandlers } = require("../handlers/profile");
-const { StatHandlers } = require("../handlers/stats");
+const { StatHandlers } = require("../../handlers/work/stats");
 
 module.exports = class {
     constructor() {

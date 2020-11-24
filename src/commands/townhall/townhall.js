@@ -1,4 +1,4 @@
-const { TownHallHandlers } = require("../handlers/townhall");
+const { TownHallHandlers } = require("../../handlers/townhall");
 
 module.exports = class {
     constructor() {

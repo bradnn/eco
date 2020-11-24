@@ -1,5 +1,3 @@
-const { WorkHandlers } = require("../handlers/working");
-
 module.exports = class {
     constructor() {
         this.cmd = 'help',

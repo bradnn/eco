@@ -1,4 +1,4 @@
-const { AuctionHandlers } = require("../handlers/auction");
+const { AuctionHandlers } = require("../../handlers/auctions");
 
 module.exports = class {
     constructor() {

@@ -1,4 +1,4 @@
-const { WorkHandlers } = require("../handlers/working");
+const { WorkHandlers } = require("../../handlers/work/work");
 
 module.exports = class {
     constructor() {

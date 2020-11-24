@@ -1,6 +1,5 @@
 const { UserUtils } = require("../../utils/user");
 const { CoinUtils } = require("../../utils/wallet/coins");
-const { GemFormatUtils } = require("../../utils/wallet/gemFormat");
 const { MoneyUtils } = require("../../utils/wallet/money");
 const { CooldownHandlers } = require("../cooldown");
 
@@ -14,7 +13,7 @@ module.exports.PayHandler = {
         
         var payAmount = parseInt(args[1]);
 
-        if(!toUser) {
+        if(!toUser || toUser == user) {
             msg.channel.createMessage({
                 embed: {
                     title: `Whoops!`,
