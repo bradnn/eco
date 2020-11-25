@@ -2,7 +2,7 @@ const { AuctionUtils } = require("../utils/auction/auction");
 
 module.exports = class {
     async run(client) {
-        console.log(`${client.user.username} is ready now!`);
+        console.log(`${client.user.username}: Ready in ${client.guilds.size} guilds.`);
 
         let name = {
             name: `with your money`,

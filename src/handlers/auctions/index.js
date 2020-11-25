@@ -63,6 +63,20 @@ module.exports.AuctionHandlers = {
 
         var timeLeftFirst = TimeUtils.msToTime(auctions.first.auction.endTime - Date.now());
         var timeLeftSecond = TimeUtils.msToTime(auctions.second.auction.endTime - Date.now());
+
+        let firstBidder;
+        let secondBidder;
+
+        if(auctions.first.lastBidder.userID == "No bidder") {
+            firstBidder = "No Bidder";
+        } else {
+            firstBidder = `<@${auctions.first.lastBidder.userID}>`;
+        }
+        if(auctions.second.lastBidder.userID == "No bidder") {
+            secondBidder = "No Bidder";
+        } else {
+            secondBidder = `<@${auctions.second.lastBidder.userID}>`;
+        }
         
         var shopEmbed = {
             title: `AUCTION HOUSE`,
@@ -73,6 +87,7 @@ module.exports.AuctionHandlers = {
 					name: `FIRST AUCTION`,
                     value: `${AuctionItems.emojis[auctions.first.auction.item]} ${auctions.first.auction.amount}x ${AuctionItems.nameFormat[auctions.first.auction.item]}**:**
 Current Bid **-** ${auctions.first.auction.curBid} ${auctions.first.auction.bidType}
+Last Bidder **-** ${firstBidder}
 Bid Increment **-** ${auctions.first.auction.increment} ${auctions.first.auction.bidType}
 Ending in **-** ${timeLeftFirst}`,
                 },
@@ -80,6 +95,7 @@ Ending in **-** ${timeLeftFirst}`,
 					name: `SECOND AUCTION`,
                     value: `${AuctionItems.emojis[auctions.second.auction.item]} ${auctions.second.auction.amount}x ${AuctionItems.nameFormat[auctions.second.auction.item]}**:**
 Current Bid **-** ${auctions.second.auction.curBid} ${auctions.second.auction.bidType}
+Last Bidder **-** ${secondBidder}
 Bid Increment **-** ${auctions.second.auction.increment} ${auctions.second.auction.bidType}
 Ending in **-** ${timeLeftSecond}`,
                 },
