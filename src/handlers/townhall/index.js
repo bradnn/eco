@@ -6,11 +6,11 @@ const { GemFormatUtils } = require("../../utils/wallet/gemFormat");
 const { MoneyUtils } = require("../../utils/wallet/money");
 
 module.exports.TownHallHandlers = {
-    handler: async function (client, msg, args) {
+    handler: async function (client, msg, args, guildPrefix) {
         var subCommand = args[0];
 
         if(!subCommand) {
-            this.info(client, msg, args);
+            this.info(client, msg, args, guildPrefix);
             return;
         }
         switch(subCommand) {
@@ -22,7 +22,7 @@ module.exports.TownHallHandlers = {
                 break;
         }
     },
-    info: async function (client, msg, args) {
+    info: async function (client, msg, args, guildPrefix) {
         var townInfo = await TownHallUtils.get();
 
         var embed = {
@@ -37,7 +37,7 @@ module.exports.TownHallHandlers = {
                 }
             ],
             footer: {
-                text: `Do ${client.config.PREFIX}townhall deposit <amount> to contribute!`
+                text: `Do ${guildPrefix}townhall deposit <amount> to contribute!`
             }
         }
 

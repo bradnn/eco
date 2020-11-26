@@ -6,8 +6,8 @@ module.exports = class {
         this.aliases = ['th']
     }
 
-    async run(client, msg, args) {
-        var handle = TownHallHandlers.handler(client, msg, args, this.cmd);
+    async run(client, msg, args, guildPrefix) {
+        var handle = TownHallHandlers.handler(client, msg, args, guildPrefix);
         return handle;
     }
 }

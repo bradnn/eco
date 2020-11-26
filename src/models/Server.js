@@ -2,6 +2,12 @@ const mongoose = require('mongoose');
 
 const serverModel = mongoose.Schema({
     serverID: String,
+    config: {
+        prefix: {
+            type: String,
+            default: ";"
+        }
+    },
     auctions: {
         first: {
             auction: {

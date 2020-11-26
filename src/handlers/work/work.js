@@ -8,7 +8,7 @@ const { GemFormatUtils } = require("../../utils/wallet/gemFormat.js");
 const { GemUtils } = require("../../utils/wallet/gems.js");
 
 module.exports.WorkHandlers = {
-    handler: async function (client, msg, args, type) {
+    handler: async function (client, msg, args, type, guildPrefix) {
 
         switch (type) {
             case "work":
@@ -20,10 +20,10 @@ module.exports.WorkHandlers = {
                 this.work(client, msg, args);
                 break;
             case "apply":
-                this.apply(client, msg, args);
+                this.apply(client, msg, args, guildPrefix);
                 break;
             case "jobs":
-                this.jobs(client, msg, args);
+                this.jobs(client, msg, args, guildPrefix);
                 break;
         }
 
@@ -45,7 +45,7 @@ module.exports.WorkHandlers = {
             msg.channel.createMessage({ embed: embed });
             return;
     },
-    apply: async function (client, msg, args) {
+    apply: async function (client, msg, args, guildPrefix) {
         var user = msg.author;
         var profile = await UserUtils.get(user.id);
         let jobs = Object.keys(JobList.workReq);
@@ -141,7 +141,7 @@ module.exports.WorkHandlers = {
                     msg.channel.createMessage({
                         embed: {
                             title: `Whoops!`,
-                            description: `You can't apply for this job! Do \`${client.config.PREFIX}apply\` to see a list of available jobs!`,
+                            description: `You can't apply for this job! Do \`${guildPrefix}apply\` to see a list of available jobs!`,
                             color: 16711680
                         }
                     });
@@ -151,7 +151,7 @@ module.exports.WorkHandlers = {
                 msg.channel.createMessage({
                     embed: {
                         title: `Whoops!`,
-                        description: `That isn't a valid job! Do \`${client.config.PREFIX}apply\` to see a list of available jobs!`,
+                        description: `That isn't a valid job! Do \`${guildPrefix}apply\` to see a list of available jobs!`,
                         color: 16711680
                     }
                 });
@@ -159,7 +159,7 @@ module.exports.WorkHandlers = {
             }
         }
     },
-    work: async function (client, msg, args) {
+    work: async function (client, msg, args, guildPrefix) {
         var user = msg.author;
         var profile = await UserUtils.get(user.id);
 
@@ -167,7 +167,7 @@ module.exports.WorkHandlers = {
             msg.channel.createMessage({
                 embed: {
                     title: `You don't have a job!`,
-                    description: `Do \`${client.config.PREFIX}apply\` to apply for a job!`,
+                    description: `Do \`${guildPrefix}apply\` to apply for a job!`,
                     color: 16729344
                 }
             })
