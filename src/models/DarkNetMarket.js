@@ -12,7 +12,7 @@ module.exports.DarkNetItems = {
         database: "Database"
     },
     type: {
-        keyboard: "Exploits",
-        database: "Exploits"
+        keyboard: "exploits",
+        database: "exploits"
     }
 }

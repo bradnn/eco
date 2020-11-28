@@ -1,6 +1,7 @@
 const { DarkNetItems } = require("../../models/DarkNetMarket");
 const { JobList } = require("../../models/Jobs");
 const { CrimeUtils } = require("../../utils/crimeUtils");
+const { DarkItems } = require("../../utils/items/darkitems");
 const { UserUtils } = require("../../utils/user");
 const { CoinUtils } = require("../../utils/wallet/coins");
 const { MoneyUtils } = require("../../utils/wallet/money");
@@ -123,6 +124,7 @@ You also leveled up your ${responses[0].content} skill to ${userProfile.crime.sk
 
         switch(subCommand) {
             case "buy":
+                this.buy(client, msg, args);
                 break;
             default:
                 this.darknetMenu(client, msg, args, userProfile);
@@ -133,13 +135,9 @@ You also leveled up your ${responses[0].content} skill to ${userProfile.crime.sk
     },
     darknetMenu: async function (client, msg, args, profile) {
         var exploitList = ``;
-        var strike;
 
         for (item in DarkNetItems.items) {
             const itemType = DarkNetItems.type[item].toLowerCase();
-            if(profile.crime.darknet[itemType][item]) {
-                break;
-            }
             switch(itemType) {
                 case "exploits":
                     exploitList += `${DarkNetItems.emojis[item]} ${DarkNetItems.nameFormat[item]} **-** ${MoneyUtils.format(DarkNetItems.items[item])}\n`
@@ -161,5 +159,56 @@ You also leveled up your ${responses[0].content} skill to ${userProfile.crime.sk
     },
     buy: async function (client, msg, args) {
 
+        let chosenItem = args[1];
+        var chosenAmount = args[2];
+
+        if(!chosenItem || !Object.keys(DarkNetItems.items).includes(chosenItem)) {
+            msg.channel.createMessage({
+                embed: {
+                    title: `Whoops!`,
+                    description: `Please supply a valid item to purchase!`,
+                    color: 16729344
+                }
+            });
+            return;
+        }
+        if(!chosenAmount) {
+            chosenAmount = 1;
+        }
+        if(isNaN(chosenAmount)) {
+            msg.channel.createMessage({
+                embed: {
+                    title: `Whoops!`,
+                    description: `Please supply a valid amount of items!`,
+                    color: 16729344
+                }
+            });
+            return;
+        }
+
+        var coinBalance = await CoinUtils.get(msg.author.id);
+        var itemPrice = DarkNetItems.items[chosenItem] * chosenAmount;
+
+        if(coinBalance < itemPrice) {
+            msg.channel.createMessage({
+                embed: {
+                    title: `Whoops!`,
+                    description: `You don't have enough money to purchase this!`,
+                    color: 16729344
+                }
+            });
+            return;
+        }
+
+        msg.channel.createMessage({
+            embed: {
+                title: `Congrats!`,
+                description: `You just purchased ${chosenAmount}x ${DarkNetItems.nameFormat[chosenItem]}!`,
+                color: 65280
+            }
+        });
+        await CoinUtils.del(msg.author.id, itemPrice);
+        DarkItems.add(msg.author.id, "keyboard", 1);
+        return;
     }
 }

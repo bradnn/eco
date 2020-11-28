@@ -60,12 +60,12 @@ const userModel = mongoose.Schema({
         darknet: {
             exploits: {
                 keyboard: {
-                    type: Boolean,
-                    default: false
+                    type: Number,
+                    default: 0
                 },
                 database: {
-                    type: Boolean,
-                    default: false
+                    type: Number,
+                    default: 0
                 }
             }
         }
