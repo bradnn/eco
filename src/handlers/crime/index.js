@@ -109,7 +109,7 @@ You also leveled up your ${responses[0].content} skill to ${userProfile.crime.sk
         const jobList = Object.keys(JobList.pay);
         var jobIndex = jobList.indexOf(userProfile.work.job);
 
-        if(jobIndex < 10 || userProfile.stats.townhall.depositAmount < 5000000) {
+        if(jobIndex < 10 || userProfile.stats.townhall.depositAmount < 10000000) {
             msg.channel.createMessage({
                 embed: {
                     title: `Whoops!`,

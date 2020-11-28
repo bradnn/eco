@@ -15,10 +15,13 @@ module.exports.TownHallHandlers = {
         }
         switch(subCommand) {
             case "deposit":
-                this.deposit(client, msg, args);
+                this.deposit(client, msg, args, guildPrefix);
+                break;
+            case "unlocks":
+                this.unlocks(client, msg, args, guildPrefix);
                 break;
             default:
-                this.info(client, msg, args);
+                this.info(client, msg, args, guildPrefix);
                 break;
         }
     },
@@ -34,6 +37,29 @@ module.exports.TownHallHandlers = {
                 {
                     name: `Total Deposits`,
                     value: `💷 Coins **-** ${MoneyUtils.format(townInfo.deposits.total)}`
+                }
+            ],
+            footer: {
+                text: `Do ${guildPrefix}townhall deposit <amount> to contribute!`
+            }
+        }
+
+        msg.channel.createMessage({embed: embed});
+    },
+    unlocks: async function (client, msg, args, guildPrefix) {
+        var townInfo = await TownHallUtils.get();
+
+        var embed = {
+            author: {
+                name: `🔔 Town Hall`,
+                icon_url: client.bot.avatarURL
+            },
+            fields: [
+                {
+                    name: `Deposit Unlocks`,
+                    value: `$1M **-** Unlock Auction House
+$2.5M **-** Unlocks Crimes
+$10M **-** Unlocks DarkNet`
                 }
             ],
             footer: {
