@@ -120,6 +120,10 @@ const userModel = mongoose.Schema({
                 type: Number,
                 default: 0
             },
+            lamborghiniAventador: {
+                type: Number,
+                default: 0
+            },
             teslaModel3: {
                 type: Number,
                 default: 0

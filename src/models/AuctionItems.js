@@ -6,6 +6,7 @@ module.exports.AuctionItems = {
         rollsRoyceSweptail: "cars",
         mcLarenP1: "cars",
         bugattiVeyron: "cars",
+        lamborghiniAventador: "cars",
         teslaModel3: "cars"
     },
     startBids: {
@@ -15,6 +16,7 @@ module.exports.AuctionItems = {
         rollsRoyceSweptail: 10000000,
         mcLarenP1: 3400000,
         bugattiVeyron: 2000000,
+        lamborghiniAventador: 400000,
         teslaModel3: 70000
     },
     emojis: {
@@ -24,6 +26,7 @@ module.exports.AuctionItems = {
         rollsRoyceSweptail: "🚗",
         mcLarenP1: "🚗",
         bugattiVeyron: "🚗",
+        lamborghiniAventador: "🚗",
         teslaModel3: "🚗"
     },
     nameFormat: {
@@ -33,6 +36,7 @@ module.exports.AuctionItems = {
         rollsRoyceSweptail: "Rolls-Royce Sweptail",
         mcLarenP1: "McLaren P1",
         bugattiVeyron: "Bugatti Veyron",
+        lamborghiniAventador: "2020 Lamborghini Aventador",
         teslaModel3: "2021 Tesla Model 3"
     },
     currencyTypes: {
@@ -42,6 +46,7 @@ module.exports.AuctionItems = {
         rollsRoyceSweptail: "Gems",
         mcLarenP1: "Both",
         bugattiVeyron: "Both",
+        lamborghiniAventador: "Coins",
         teslaModel3: "Both"
     }
 }

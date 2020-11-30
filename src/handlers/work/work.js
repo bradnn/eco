@@ -9,7 +9,6 @@ const { GemUtils } = require("../../utils/wallet/gems.js");
 
 module.exports.WorkHandlers = {
     handler: async function (client, msg, args, type, guildPrefix) {
-
         switch (type) {
             case "work":
                 const cooldown = await CooldownHandlers.get(type, msg.author);
@@ -17,7 +16,7 @@ module.exports.WorkHandlers = {
                     msg.channel.createMessage(cooldown.embed);
                     return;
                 }
-                this.work(client, msg, args);
+                this.work(client, msg, args, guildPrefix);
                 break;
             case "apply":
                 this.apply(client, msg, args, guildPrefix);
@@ -26,7 +25,6 @@ module.exports.WorkHandlers = {
                 this.jobs(client, msg, args, guildPrefix);
                 break;
         }
-
     },
     jobs: async function(client, msg, args) {
         let jobs = Object.keys(JobList.workReq);
@@ -176,7 +174,7 @@ module.exports.WorkHandlers = {
             var job = profile.work.job;
             var chance = Math.random() * 100;
 
-            if (chance < 96) {
+            if (chance < 98) {
 
                 if (profile.stats.work.workCountRaise >= 25) {
                     await JobUtils.addRaise(user.id);
@@ -220,7 +218,7 @@ module.exports.WorkHandlers = {
                     embed: embed
                 });
                 return;
-            } else if (chance < 98) {
+            } else if (chance < 99) {
                 JobUtils.sick(user.id);
                 msg.channel.createMessage({
                     embed: {

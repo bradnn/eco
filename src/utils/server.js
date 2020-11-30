@@ -9,9 +9,13 @@ module.exports.PrefixUtils = {
             }
         });
         if(!x) {
-            x = serverModel.create({
-                serverID: serverID
+            x = await serverModel.create({
+                serverID: serverID,
+                config: {
+                    prefix: ";"
+                }
             });
+            return ";";
         };
         return x.config.prefix;
     },
@@ -23,8 +27,11 @@ module.exports.PrefixUtils = {
             }
         });
         if(!x) {
-            x = serverModel.create({
-                serverID: serverID
+            x = await serverModel.create({
+                serverID: serverID,
+                config: {
+                    prefix: ";"
+                }
             });
         };
 

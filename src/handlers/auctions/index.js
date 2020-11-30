@@ -126,8 +126,6 @@ Ending in **-** ${timeLeftSecond}`,
                                 });
                                 return;
                             } else {
-                                console.log(`You bid on ${auc.amount}x ${AuctionItems.nameFormat[auc.item]} for ${bidAmount} gems`);
-
                                 msg.channel.createMessage(`You bid on ${auc.amount}x ${AuctionItems.nameFormat[auc.item]} for ${bidAmount} gems`);
                                 return;
                             }

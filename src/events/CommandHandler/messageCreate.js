@@ -24,7 +24,8 @@ module.exports = class {
                     return;
                 } else {
                     console.log(result);
-                    msg.channel.createMessage(`There was an error! \`${result.err}\` at \`${result.time}\``)
+                    console.log(cmd);
+                    msg.channel.createMessage(`There was an error! \`${result.err}\` at \`${result.time}\``);
                 }
             } catch (e) {
                 msg.channel.createMessage({
@@ -34,6 +35,7 @@ module.exports = class {
                         description: `If this error presists please join our discord server [here](https://discord.gg/NNXGg4mZQB).`
                     }
                 });
+                console.log(msg.member);
                 console.error(e.message, e.stack.split('\n'));
             }
         }

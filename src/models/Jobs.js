@@ -29,7 +29,7 @@ module.exports.JobList = {
         accountant: 1400,
         techsupport: 2500,
         softwaredeveloper: 3200,
-        lawyer: 4000
+        lawyer: 5000
     },
     formatName: {
         None: "None",
