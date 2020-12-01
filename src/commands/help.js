@@ -8,6 +8,7 @@ module.exports = class {
         msg.channel.createMessage({embed: {
             title: `EcoBot Help Menu`,
             description: `Check out our [github](https://github.com/sycles/EcoBot) for more information!
+Join our support server [here](https://discord.gg/NNXGg4mZQB).
 Invite the bot to another server [here](https://discord.com/api/oauth2/authorize?client_id=776935174222249995&permissions=8&scope=bot)`,
             fields: [
                 {
@@ -15,7 +16,7 @@ Invite the bot to another server [here](https://discord.com/api/oauth2/authorize
                     value: `❗ __Information__
 To get started as a new player you will need to apply for a job using the \`;apply\` command. Doing \`;apply\` without any arguments will give you a list of available jobs. To apply for a job  you have access to do \`;apply <name>.\`
 After receiving your first job, you can do ;work to get money and after 15 times using the command you can access the next job!`,
-                    inline: true
+                    inline: false
                 },
                 {
                     name: `Working Help`,
