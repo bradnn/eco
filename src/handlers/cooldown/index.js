@@ -6,6 +6,8 @@ const { UserUtils } = require("../../utils/user");
 const cooldowns = {
     work: 60000,
     crime: 60000,
+    rob: 60000,
+    robUser: 900000,
     apply: 900000,
     pay: 3600000,
     flip: 15000

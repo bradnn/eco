@@ -83,6 +83,14 @@ const userModel = mongoose.Schema({
             type: Date,
             default: 0
         },
+        rob: {
+            type: Date,
+            default: 0
+        },
+        robUser: {
+            type: Date,
+            default: 0
+        },
         pay: {
             type: Date,
             default: 0

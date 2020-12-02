@@ -4,7 +4,11 @@ module.exports = class {
     }
 
     async run(client, msg, args) {
-        console.log('yeah');
+        client.donateApi.getNewDonations().then(donations => {
+
+        }).catch(err => {
+            console.log(err);
+        });
         return;
     }
 }

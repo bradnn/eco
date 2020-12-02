@@ -63,8 +63,6 @@ module.exports.CrimeHandlers = {
 
             var crimeLevel = userProfile.stats.crime.skillCounts[type];
             var chance = (Math.random() * 100) + Math.floor((crimeLevel + 1) * 0.5);
-
-            console.log(Math.floor((userProfile.econ.wallet.balance / 100) * 2.5));
             
             if (chance < 50) {
                 msg.channel.createMessage({
@@ -210,5 +208,108 @@ You also leveled up your ${responses[0].content} skill to ${userProfile.crime.sk
         await CoinUtils.del(msg.author.id, itemPrice);
         DarkItems.add(msg.author.id, "keyboard", 1);
         return;
+    },
+    rob: async function (client, msg, args) {
+        var user = msg.author;
+        var userBalance = await CoinUtils.get(user.id);
+        var robUser = msg.mentions[0] || client.users.get(args[0]);
+
+        let MAX_PAYOUT = 55000;
+        let MIN_PAYOUT = 5000;
+
+        if(userBalance < 2500) {
+            msg.channel.createMessage({
+                embed: {
+                    title: `Whoops!`,
+                    description: `You can't rob anyone if your balance is under $2,500.`,
+                    color: 16729344
+                }
+            });
+            return;
+        }
+
+        if(!robUser) {
+            const cooldown = await CooldownHandlers.get("rob", msg.author);
+            if (cooldown.response) {
+                msg.channel.createMessage(cooldown.embed);
+                return;
+            }
+    
+            var payout = Math.floor((userBalance / 100 * 1) + MIN_PAYOUT);
+            var chance = Math.floor(Math.random() * 100) + 1;
+
+            if (payout > MAX_PAYOUT) payout = MAX_PAYOUT;
+            if (chance > 55) {
+                CoinUtils.add(user.id, payout);
+                msg.channel.createMessage({
+                    embed: {
+                        title: `Nice work!`,
+                        description: `You just robbed someone on the street for ${MoneyUtils.format(payout)}.`,
+                        color: 65280
+                    }
+                });
+                return;
+            } else {
+                CoinUtils.del(user.id, (payout / 2));
+                msg.channel.createMessage({
+                    embed: {
+                        title: `Whoops!`,
+                        description: `You were caught robbing someone and got fined ${MoneyUtils.format(payout / 2)}`,
+                        color: 16729344
+                    }
+                });
+                return;
+            }
+        } else {
+
+
+            var theirBalance = await CoinUtils.get(robUser.id);
+            if(theirBalance < MIN_PAYOUT) {
+                msg.channel.createMessage({
+                    embed: {
+                        title: `Whoops!`,
+                        description: `You can't rob a new player! Please wait til they pass ${MoneyUtils.format(MIN_PAYOUT)} in balance.`,
+                        color: 16729344
+                    }
+                });
+                return;
+            }
+            
+            const cooldown = await CooldownHandlers.get("robUser", msg.author);
+            if (cooldown.response) {
+                msg.channel.createMessage(cooldown.embed);
+                return;
+            }
+
+            var payout = Math.floor((theirBalance / 100 * 1) + MIN_PAYOUT);
+            var chance = Math.floor(Math.random() * 100) + 1;
+
+            if (payout > MAX_PAYOUT) payout = MAX_PAYOUT;
+            if (chance > 65) {
+                CoinUtils.add(user.id, payout);
+                CoinUtils.del(robUser.id, payout);
+                msg.channel.createMessage({
+                    embed: {
+                        title: `Nice work!`,
+                        description: `You just robbed ${robUser.username} on the street for ${MoneyUtils.format(payout)}.`,
+                        color: 65280
+                    }
+                });
+                return;
+            } else {
+                CoinUtils.del(user.id, (payout / 2));
+                CoinUtils.add(robUser.id, (payout / 2));
+                msg.channel.createMessage({
+                    embed: {
+                        title: `Whoops!`,
+                        description: `You were caught robbing ${robUser.username} and got fined ${MoneyUtils.format(payout / 2)}`,
+                        color: 16729344
+                    }
+                });
+                return;
+            }
+
+
+        }
     }
 }

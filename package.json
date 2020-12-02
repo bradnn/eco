@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sycles/ecobot.git"
+    "url": "git+https://github.com/sycles/ecobot-code.git"
   },
   "keywords": [
     "discord",
@@ -19,13 +19,16 @@
   "author": "sycles",
   "license": "SEE LICENSE IN LICENSE",
   "bugs": {
-    "url": "https://github.com/sycles/ecobot/issues"
+    "url": "https://github.com/sycles/ecobot-code/issues"
   },
-  "homepage": "https://github.com/sycles/ecobot#readme",
+  "homepage": "https://github.com/sycles/ecobot-code#readme",
   "dependencies": {
     "canvas": "^2.6.1",
+    "dblapi.js": "^2.4.1",
+    "donatebot-node-api": "^1.0.3",
     "eris": "^0.14.0",
     "eris-additions": "^1.4.1",
+    "eris-sharder": "^1.10.0",
     "glob": "^7.1.6",
     "mongoose": "^5.10.14"
   }
