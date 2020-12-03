@@ -250,7 +250,7 @@ You also leveled up your ${responses[0].content} skill to ${userProfile.crime.sk
                 });
                 return;
             } else {
-                CoinUtils.del(user.id, (payout / 2));
+                CoinUtils.del(user.id, Math.floor(payout / 2));
                 msg.channel.createMessage({
                     embed: {
                         title: `Whoops!`,
@@ -274,7 +274,7 @@ You also leveled up your ${responses[0].content} skill to ${userProfile.crime.sk
                 });
                 return;
             }
-            
+
             const cooldown = await CooldownHandlers.get("robUser", msg.author);
             if (cooldown.response) {
                 msg.channel.createMessage(cooldown.embed);
@@ -297,8 +297,8 @@ You also leveled up your ${responses[0].content} skill to ${userProfile.crime.sk
                 });
                 return;
             } else {
-                CoinUtils.del(user.id, (payout / 2));
-                CoinUtils.add(robUser.id, (payout / 2));
+                CoinUtils.del(user.id,  Math.floor(payout / 2));
+                CoinUtils.add(robUser.id,  Math.floor(payout / 2));
                 msg.channel.createMessage({
                     embed: {
                         title: `Whoops!`,
