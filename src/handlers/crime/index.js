@@ -46,7 +46,7 @@ module.exports.CrimeHandlers = {
         if(responses.length) {
             var type;
 
-            switch (responses[0].content) {
+            switch (responses[0].content.toLowerCase()) {
                 case "picking":
                     type = "lockPicking";
                     break;
@@ -63,12 +63,58 @@ module.exports.CrimeHandlers = {
 
             var crimeLevel = userProfile.stats.crime.skillCounts[type];
             var chance = (Math.random() * 100) + Math.floor((crimeLevel + 1) * 0.5);
+
+            var gainAmount = Math.floor(((userProfile.econ.wallet.balance / 100) * 1) * (crimeLevel + 1));
+            var lossAmount = Math.floor((userProfile.econ.wallet.balance / 100) * 2.5);
+
+            switch(type) {
+                case "lockPicking":
+                    var gainMessages = [`You successfully picked the lock to the local bank. You stole ${MoneyUtils.format(gainAmount)}!`];
+                    var lossMessages = [`You were caught picking the lock to the local bank. You were fined ${MoneyUtils.format(lossAmount)}!`];
+
+                    var gainIndex = Math.floor(Math.random() * gainMessages.length);
+                    var lossIndex = Math.floor(Math.random() * lossMessages.length);
+                    
+                    var gainMessage = gainMessages[gainIndex];
+                    var lossMessage = lossMessages[lossIndex];
+                    break;
+                case "lockBypass":
+                    var gainMessages = [`You slide a piece of metal behind the lock and slid it unlocked. You stole ${MoneyUtils.format(gainAmount)}!`];
+                    var lossMessages = [`You tried to slide a piece of metal behind a lock but someone saw you. You were fined ${MoneyUtils.format(lossAmount)}!`];
+
+                    var gainIndex = Math.floor(Math.random() * gainMessages.length);
+                    var lossIndex = Math.floor(Math.random() * lossMessages.length);
+                    
+                    var gainMessage = gainMessages[gainIndex];
+                    var lossMessage = lossMessages[lossIndex];
+                    break;
+                case "socialEngineering":
+                    var gainMessages = [`You convinced a bank worker you were a janitor and got into the safe. You stole ${MoneyUtils.format(gainAmount)}!`];
+                    var lossMessages = [`You tried convincing a bank worker you were a janitor but they caught on. You were find ${MoneyUtils.format(lossAmount)}!`];
+
+                    var gainIndex = Math.floor(Math.random() * gainMessages.length);
+                    var lossIndex = Math.floor(Math.random() * lossMessages.length);
+                    
+                    var gainMessage = gainMessages[gainIndex];
+                    var lossMessage = lossMessages[lossIndex];
+                    break;
+                case "pickpocketing":
+                    var gainMessages = [`You grabbed someones wallet and it happened to have ${MoneyUtils.format(gainAmount)} in it.`];
+                    var lossMessages = [`You tried grabbing someones wallet but there was a police officer watching. You were fined ${MoneyUtils.format(lossAmount)}`];
+
+                    var gainIndex = Math.floor(Math.random() * gainMessages.length);
+                    var lossIndex = Math.floor(Math.random() * lossMessages.length);
+                    
+                    var gainMessage = gainMessages[gainIndex];
+                    var lossMessage = lossMessages[lossIndex];
+                    break;
+            }
             
             if (chance < 50) {
                 msg.channel.createMessage({
                     embed: {
                         title: `Whoops!`,
-                        description: `You were caught trying to break in! You were fined ${MoneyUtils.format(Math.floor((userProfile.econ.wallet.balance / 100) * 2.5))}`,
+                        description: lossMessage,
                         color: 16729344
                     }
                 });
@@ -78,7 +124,7 @@ module.exports.CrimeHandlers = {
                 msg.channel.createMessage({
                     embed: {
                         title: `Nice work.`,
-                        description: `You successfully broke into the building and got ${MoneyUtils.format(Math.floor(((userProfile.econ.wallet.balance / 100) * 1.5) * (crimeLevel + 1)))}!`,
+                        description: gainMessage,
                         color: 65280
                     }
                 });
@@ -88,7 +134,7 @@ module.exports.CrimeHandlers = {
                 msg.channel.createMessage({
                     embed: {
                         title: `Amazing work!`,
-                        description: `You successfully broke into the building and got ${MoneyUtils.format(Math.floor(((userProfile.econ.wallet.balance / 100) * 2) * (crimeLevel + 1)))}!
+                        description: `${gainMessage}
 You also leveled up your ${responses[0].content} skill to ${userProfile.crime.skills[type] + 1}.`,
                         color: 65280
                     }
@@ -254,7 +300,7 @@ You also leveled up your ${responses[0].content} skill to ${userProfile.crime.sk
                 msg.channel.createMessage({
                     embed: {
                         title: `Whoops!`,
-                        description: `You were caught robbing someone and got fined ${MoneyUtils.format(payout / 2)}`,
+                        description: `You were caught robbing someone and got fined ${MoneyUtils.format(Math.floor(payout / 2))}`,
                         color: 16729344
                     }
                 });
@@ -302,7 +348,7 @@ You also leveled up your ${responses[0].content} skill to ${userProfile.crime.sk
                 msg.channel.createMessage({
                     embed: {
                         title: `Whoops!`,
-                        description: `You were caught robbing ${robUser.username} and got fined ${MoneyUtils.format(payout / 2)}`,
+                        description: `You were caught robbing ${robUser.username} and got fined ${MoneyUtils.format(Math.floor(payout / 2))}`,
                         color: 16729344
                     }
                 });

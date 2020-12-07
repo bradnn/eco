@@ -38,6 +38,12 @@ const userModel = mongoose.Schema({
             default: false
         }
     },
+    housing: {
+        house: {
+            type: String,
+            default: "None"
+        }
+    },
     crime: {
         skills: {
             lockPicking: {

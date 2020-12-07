@@ -56,8 +56,10 @@ module.exports.WorkHandlers = {
             var availableJobs = ``;
             for (job in jobs) {
                 if (JobList.workReq[jobs[job]] <= profile.stats.work.workCount) {
-                    if (jobs[job] != "None" && profile.work.job != jobs[job] || jobs[job] != "begger" && profile.work.job != jobs[job]) {
-                        availableJobs += `${JobList.formatName[jobs[job]]} **-** ${MoneyUtils.format(JobList.pay[jobs[job]])} per work\n`;
+                    if(jobs[job] != "None" && jobs[job] != "begger") {
+                        if (profile.work.job != jobs[job]) {
+                            availableJobs += `${JobList.formatName[jobs[job]]} **-** ${MoneyUtils.format(JobList.pay[jobs[job]])} per work\n`;
+                        }
                     }
                 }
             }

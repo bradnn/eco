@@ -5,7 +5,7 @@ module.exports = class {
         console.log(`${client.user.username}: Ready in ${client.guilds.size} guilds.`);
 
         let name = {
-            name: `with ${client.guilds.size} servers`,
+            name: `;help | In ${client.guilds.size} servers!`,
             type: 1,
             url: `https://twitch.tv/imsycles`
         };

@@ -77,6 +77,11 @@ ${prefix}flip <amount> **-** Flip your money to either double it or loose it all
 ❗ __Information__
 Dont waste all your money!`,
                     inline: true
+                },
+                {
+                    name: `NEED MORE HELP?`,
+                    value: `Join our support server! [CLICK HERE](https://discord.gg/kvphct3TfY)`,
+                    inline: false
                 }
             ]
         }})

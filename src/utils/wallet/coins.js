@@ -50,5 +50,8 @@ module.exports.CoinUtils = {
         await x.save();
 
         return x.econ.wallet.balance;
+    },
+    format: function (x) {
+        return '$' + x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
 }

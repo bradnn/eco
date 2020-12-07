@@ -59,7 +59,7 @@ module.exports.TownHallHandlers = {
                     name: `Deposit Unlocks`,
                     value: `$1M **-** Unlock Auction House
 $2.5M **-** Unlocks Crimes
-$10M **-** Unlocks DarkNet`
+$5M **-** Unlocks DarkNet`
                 }
             ],
             footer: {

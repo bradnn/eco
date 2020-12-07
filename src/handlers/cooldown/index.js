@@ -4,7 +4,7 @@ const { TimeUtils } = require("../../utils/time");
 const { UserUtils } = require("../../utils/user");
 
 const cooldowns = {
-    work: 60000,
+    work: 30000,
     crime: 60000,
     rob: 60000,
     robUser: 300000,
