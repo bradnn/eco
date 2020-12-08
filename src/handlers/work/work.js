@@ -103,7 +103,7 @@ module.exports.WorkHandlers = {
                         });
                         return;
                     } else {
-                        if (profile.work.job == args[0]) {
+                        if (profile.work.job == applyingFor) {
                             msg.channel.createMessage({
                                 embed: {
                                     title: `Whoops!`,
@@ -126,7 +126,7 @@ module.exports.WorkHandlers = {
                             });
                             return;
                         } else {
-                            JobUtils.set(user.id, args[0]);
+                            JobUtils.set(user.id, applyingFor);
                             msg.channel.createMessage({
                                 embed: {
                                     title: `Congrats! 🎉`,
