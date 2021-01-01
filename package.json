@@ -1,35 +1,19 @@
 {
   "name": "ecobot",
-  "version": "0.0.1",
-  "description": "Economy bot for discord",
+  "version": "1.0.0",
+  "description": "An economy discord bot",
   "main": "src/bot.js",
   "scripts": {
     "test": "node ."
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/sycles/ecobot-code.git"
-  },
   "keywords": [
-    "discord",
-    "bot",
-    "mongodb",
-    "economy"
+    "discord"
   ],
   "author": "sycles",
-  "license": "SEE LICENSE IN LICENSE",
-  "bugs": {
-    "url": "https://github.com/sycles/ecobot-code/issues"
-  },
-  "homepage": "https://github.com/sycles/ecobot-code#readme",
+  "license": "ISC",
   "dependencies": {
-    "canvas": "^2.6.1",
-    "dblapi.js": "^2.4.1",
-    "donatebot-node-api": "^1.0.3",
-    "eris": "^0.14.0",
-    "eris-additions": "^1.4.1",
-    "eris-sharder": "^1.10.0",
+    "discord.js": "^12.5.1",
     "glob": "^7.1.6",
-    "mongoose": "^5.10.14"
+    "mongoose": "^5.11.9"
   }
 }

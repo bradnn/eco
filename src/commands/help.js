@@ -5,7 +5,7 @@ module.exports = class {
     }
 
     async run(client, msg, args, prefix) {
-        msg.channel.createMessage({embed: {
+        msg.channel.send({embed: {
             title: `EcoBot Help Menu`,
             description: `Check out our [github](https://github.com/sycles/EcoBot) for more information!
 Join our support server [here](https://discord.gg/NNXGg4mZQB).
@@ -83,7 +83,8 @@ Dont waste all your money!`,
                     value: `Join our support server! [CLICK HERE](https://discord.gg/kvphct3TfY)`,
                     inline: false
                 }
-            ]
+            ],
+            color: client.colors.default
         }})
         return;
     }
