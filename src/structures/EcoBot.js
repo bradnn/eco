@@ -1,4 +1,5 @@
 const { Client, Collection } = require('discord.js');
+const DBL = require("dblapi.js");
 const { parse } = require('path');
 const { promisify } = require('util'); 
 const glob = promisify(require('glob'));
@@ -23,6 +24,7 @@ module.exports = {
 
             this._loadCommands(this);
             this._loadEvents(this);
+            this._updateList(config, this);
         };
 
         _loadCommands (client) {
@@ -49,6 +51,16 @@ module.exports = {
                     const event = new file(client, name.toLowerCase());
                     client.on(name, (...args) => event.run(client, ...args));
                 }
+            });
+        }
+
+        _updateList (client, config) {
+            const dbl = new DBL(config.DBLApi, client);
+            dbl.on('posted', () => {
+                console.log(`Posted server count to Top.GG`);
+            });
+            dbl.on('error', e => {
+                console.log(`EcoBot: ERROR: ${e}`);
             });
         }
 
