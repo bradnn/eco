@@ -10,7 +10,9 @@ module.exports.Items = {
         lamborghiniAventador: "2020 Lamborghini Aventador",
         teslaModelX: "2021 Tesla Model X",
         teslaModel3: "2021 Tesla Model 3",
-        gem: "Gem"
+        gem: "Gem",
+        christmasTree2020: "2020 Christmas Tree",
+        newYears2021Ball: "2021 New Years Ball"
     },
     categories: {
         monalisa: "Paintings",
@@ -23,7 +25,9 @@ module.exports.Items = {
         lamborghiniAventador: "Cars",
         teslaModelX: "Cars",
         teslaModel3: "Cars",
-        gem: "Currency"
+        gem: "Currency",
+        christmasTree2020: "Seasonal",
+        newYears2021Ball: "Seasonal"
     },
     transactionCurrency: {
         monalisa: "Gems",
@@ -36,20 +40,24 @@ module.exports.Items = {
         lamborghiniAventador: "Coins",
         teslaModelX: "Coins",
         teslaModel3: "Coins",
-        gem: "Coins"
+        gem: "Coins",
+        christmasTree2020: "Gems",
+        newYears2021Ball: "Gems"
     },
     prices: {
         monalisa: 8500000,
         starrynight: 800000,
         scream: 1190000,
-        rollsRoyceSweptail: 500000,
+        rollsRoyceSweptail: 5000,
         mcLarenP1: 3400000,
         bugattiDivo: 5400000,
         bugattiVeyron: 2000000,
         lamborghiniAventador: 400000,
         teslaModelX: 80000,
         teslaModel3: 40000,
-        gem: 1000
+        gem: 1000,
+        christmasTree2020: 99999999999999,
+        newYears2021Ball: 99999999999999
     },
     emojis: {
         monalisa: "🖼",
@@ -62,6 +70,23 @@ module.exports.Items = {
         lamborghiniAventador: "🚗",
         teslaModelX: "🚗",
         teslaModel3: "🚗",
-        gem: "💎"
+        gem: "💎",
+        christmasTree2020: "🎄",
+        newYears2021Ball: "🎊"
+    },
+    purchasable: {
+        monalisa: true,
+        starrynight: true,
+        scream: true,
+        rollsRoyceSweptail: true,
+        mcLarenP1: true,
+        bugattiDivo: true,
+        bugattiVeyron: true,
+        lamborghiniAventador: true,
+        teslaModelX: true,
+        teslaModel3: true,
+        gem: true,
+        christmasTree2020: false,
+        newYears2021Ball: false
     }
 }

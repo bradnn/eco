@@ -13,7 +13,7 @@ module.exports = class {
         let user = msg.author;
         var profile = await ProfileUtils.get(user.id);
         var robUser = msg.mentions.users.first() || msg.guild.members.cache.get(args[0]);
-        let MAX_PAYOUT = 55000;
+        let MAX_PAYOUT = 120000;
         let MIN_PAYOUT = 5000;
 
         if (profile.econ.wallet.balance < 2500) {
@@ -37,7 +37,7 @@ module.exports = class {
 
             if (payout > MAX_PAYOUT) payout = MAX_PAYOUT;
 
-            if(chance < 55) {
+            if(chance < 70) {
                 profile.econ.wallet.balance += payout;
                 profile.save();
                 msg.channel.send({ embed: {

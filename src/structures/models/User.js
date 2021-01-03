@@ -156,6 +156,16 @@ const userModel = mongoose.Schema({
                 type: Number,
                 default: 0
             },
+        },
+        seasonal: {
+            newYears2021Ball: {
+                type: Number,
+                default: 0
+            },
+            christmasTree2020: {
+                type: Number,
+                default: 0
+            }
         }
     },
     stats: {

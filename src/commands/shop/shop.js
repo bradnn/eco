@@ -1,104 +1,97 @@
-const { Items } = require("../../structures/models/Items");
+const { Items } = require("../../structures/models/ItemList");
 const { FormatUtils } = require("../../utils/format/format");
 const shopModel = require('../../structures/models/Shop.js');
 
 module.exports = class {
     constructor() {
         this.cmd = 'shop',
-        this.aliases = ['store']
+        this.aliases = ['store', 'auction', 'auc']
     }
 
     async run(client, msg, args, prefix) {
 
-        var categories = [];
+        var embed = {};
 
-        var categoryObj = {};
-        var itemCategories = Items.categories;
-        var itemList = Object.keys(itemCategories);
-
-        var embed = {
-            fields: [
-                {
-                    name: `hi`,
-                    value: `hi`
-                }
-            ]
-        }
-        
+        var categories = Object.keys(Items);
+        var allItemList = [];
         var pages = 0;
+        var pageObj = {};
         var lastGivenID = 100;
+        var category;
 
-        var cat;
-        for (cat in itemCategories) {
-            if (!categories.includes(itemCategories[cat])) {
-                var category = itemCategories[cat];
-                categoryObj[category] = {};
-                var item;
-                var itemCatCount = 0;
-                var itemCatList = [];
+        for (category in categories) {
+            category = categories[category];
 
-                for (item in itemList) {
-                    var item = itemList[item];
-                    if(Items.categories[item] == category) {
-                        itemCatList.push(item);
-                        itemCatCount++;
-                    }
+            var catItemCount = 0;
+            var catItemList = [];
+            var item;
+            for (item in Items[category]) {
+                if (item != "formatTitle" && Items[category][item].purchasable == true) {
+                    catItemCount++;
+                    catItemList.push(item);
+                    allItemList.push(item);
                 }
-                categories.push(category);
+            }
 
-                categoryObj[category] = {
-                    count: itemCatCount
-                }
+            if (catItemCount <= 0) {
+                continue;
+            }
 
-                var pageCount = Math.floor(itemCatCount / 6);
-                var pageAdded = 0;
+            var catPageCount = Math.floor(catItemCount / 6);
+            var catPageCountAdded = 0;
 
-                var catPageCount = 0;
+            while (catPageCountAdded <= catPageCount) {
+                catPageCountAdded++
+                pages++;
 
-                while (pageAdded <= pageCount) {
-                    catPageCount++;
-                    pageAdded++;
-                    pages++;
+                pageObj[pages] = {
+                    category: category,
+                    categoryPage: catPageCountAdded
+                };
 
-                    categoryObj[pages] = {
-                        category: category,
-                        categoryPage: catPageCount
-                    };
-
-                    for (item in itemCatList) {
-                        var item = itemCatList[item];
-                        if(itemCatList.indexOf(item) < 6) {
-                            if(Items.categories[item] == category) {
-                                lastGivenID++;
-                                categoryObj[pages][item] = {
-                                    formatName: Items.formatName[item],
-                                    currency: Items.transactionCurrency[item],
-                                    price: Items.prices[item],
-                                    emoji: Items.emojis[item],
-                                    id: lastGivenID
-                                }
-                            }
+                for (item in catItemList) {
+                    var item = catItemList[item];
+                    if (catItemList.indexOf(item) < 6) {
+                        lastGivenID++;
+                        pageObj[pages][item] = {
+                            formatName: Items[category][item].formatName,
+                            category: category,
+                            currency: Items[category][item].transactionCurrency,
+                            price: Items[category][item].price,
+                            emoji: Items[category][item].emoji,
+                            id: lastGivenID,
                         }
                     }
-                    itemCatList.splice(0, 6);
                 }
+                catItemList.splice(0, 6);
+            }
 
-                
+
+        }
+
+
+        function getItemID (itemName) {
+            var pageID;
+            for (pageID in pageObj) {
+                var itemList = Object.keys(pageObj[pageID]);
+                if (itemList.includes(itemName)) {
+                    return pageObj[pageID][itemName].id;
+                }
             }
         }
 
-        function getItemID(itemName) {
+        function getItemCategory (itemName) {
             var pageID;
-            for (pageID in categoryObj) {
-                var itemList = Object.keys(categoryObj[pageID]);
+            for (pageID in pageObj) {
+                var itemList = Object.keys(pageObj[pageID]);
                 if (itemList.includes(itemName)) {
-                    return categoryObj[pageID][itemName].id;
+                    return pageObj[pageID][itemName].category;
                 }
             }
         }
 
         var chosenPage = parseInt(args[0]) - 1;
-        if(!chosenPage || isNaN(chosenPage)) {
+        if (!chosenPage || isNaN(chosenPage)) {
             chosenPage = 0;
         }
 
@@ -113,7 +106,7 @@ module.exports = class {
 
         if(chosenPage == 0) {
             
-            var allItems = Object.keys(Items.categories);
+            var allItems = allItemList;
 
             if (res.superSale.resetTime <= Date.now()) {
                 var itemIndex = Math.floor(Math.random() * allItems.length);
@@ -172,20 +165,41 @@ module.exports = class {
             for(featuredItem in featuredItemList) {
                 featuredItem = featuredItemList[featuredItem];
 
+                var itemCategory = getItemCategory(res.shopFeatured[featuredItem]).toLowerCase();
+
+                var thisItemObj = Items[itemCategory][res.shopFeatured[featuredItem]];
+
                 if (res.superSale.item1 == res.shopFeatured[featuredItem]) {
-                    featuredString += `#${getItemID(res.shopFeatured[featuredItem])} ${Items.emojis[res.shopFeatured[featuredItem]]} ${Items.formatName[res.shopFeatured[featuredItem]]} **-** ~~${FormatUtils.numberLetter(Items.prices[res.shopFeatured[featuredItem]])} ${Items.transactionCurrency[res.shopFeatured[featuredItem]]}~~ ${FormatUtils.numberLetter((Items.prices[res.shopFeatured[featuredItem]] / 100) * 60)} ${Items.transactionCurrency[res.shopFeatured[featuredItem]]} (**40% OFF**)\n`
+                    featuredString += `#${getItemID(res.shopFeatured[featuredItem])} ${thisItemObj.emoji} ${thisItemObj.formatName} **-** ~~${FormatUtils.numberLetter(thisItemObj.price)} ${thisItemObj.transactionCurrency}~~ ${FormatUtils.numberLetter((thisItemObj.price / 100) * 60)} ${thisItemObj.transactionCurrency} (**40% OFF**)\n`
                 } else if (res.superSale.item2 == res.shopFeatured[featuredItem]) {
-                    featuredString += `#${getItemID(res.shopFeatured[featuredItem])} ${Items.emojis[res.shopFeatured[featuredItem]]} ${Items.formatName[res.shopFeatured[featuredItem]]} **-** ~~${FormatUtils.numberLetter(Items.prices[res.shopFeatured[featuredItem]])} ${Items.transactionCurrency[res.shopFeatured[featuredItem]]}~~ ${FormatUtils.numberLetter((Items.prices[res.shopFeatured[featuredItem]] / 100) * 80)} ${Items.transactionCurrency[res.shopFeatured[featuredItem]]} (**20% OFF**)\n`
+                    featuredString += `#${getItemID(res.shopFeatured[featuredItem])} ${thisItemObj.emoji} ${thisItemObj.formatName} **-** ~~${FormatUtils.numberLetter(thisItemObj.price)} ${thisItemObj.transactionCurrency}~~ ${FormatUtils.numberLetter((thisItemObj.price / 100) * 80)} ${thisItemObj.transactionCurrency} (**20% OFF**)\n`
                 } else {
-                    featuredString += `#${getItemID(res.shopFeatured[featuredItem])} ${Items.emojis[res.shopFeatured[featuredItem]]} ${Items.formatName[res.shopFeatured[featuredItem]]} **-** ${FormatUtils.numberLetter(Items.prices[res.shopFeatured[featuredItem]])} ${Items.transactionCurrency[res.shopFeatured[featuredItem]]}\n`
+                    featuredString += `#${getItemID(res.shopFeatured[featuredItem])} ${thisItemObj.emoji} ${thisItemObj.formatName} **-** ${FormatUtils.numberLetter(thisItemObj.price)} ${thisItemObj.transactionCurrency}\n`
+                }
+            }
+
+            var saleString = ``;
+            var saleItemList = ['item1', 'item2'];
+            var saleItem;
+            for (saleItem in saleItemList) {
+                saleItem = saleItemList[saleItem];
+
+                var itemCategory = getItemCategory(res.superSale[saleItem]).toLowerCase();
+
+                var thisItemObj = Items[itemCategory][res.superSale[saleItem]];
+                switch (saleItem) {
+                    case "item1":
+                        saleString += `#${getItemID(res.superSale.item1)} ${thisItemObj.emoji} ${thisItemObj.formatName} **-** ~~${FormatUtils.numberLetter(thisItemObj.price)} ${thisItemObj.transactionCurrency}~~ ${FormatUtils.numberLetter((thisItemObj.price / 100) * 60)} ${thisItemObj.transactionCurrency} (**40% OFF**)\n`;
+                        break;
+                    case "item2":
+                        saleString += `#${getItemID(res.superSale.item2)} ${thisItemObj.emoji} ${thisItemObj.formatName} **-** ~~${FormatUtils.numberLetter(thisItemObj.price)} ${thisItemObj.transactionCurrency}~~ ${FormatUtils.numberLetter((thisItemObj.price / 100) * 80)} ${thisItemObj.transactionCurrency} (**20% OFF**)\n`;
+                        break;
                 }
             }
 
             msg.channel.send({ embed: {
                 title: `Home Page`,
-                description: `**ON SALE** 🔥
-#${getItemID(res.superSale.item1)} ${Items.emojis[res.superSale.item1]} ${Items.formatName[res.superSale.item1]} **-** ~~${FormatUtils.numberLetter(Items.prices[res.superSale.item1])} ${Items.transactionCurrency[res.superSale.item1]}~~ ${FormatUtils.numberLetter((Items.prices[res.superSale.item1] / 100) * 60)} ${Items.transactionCurrency[res.superSale.item1]} (**40% OFF**)
-#${getItemID(res.superSale.item2)} ${Items.emojis[res.superSale.item2]} ${Items.formatName[res.superSale.item2]} **-** ~~${FormatUtils.numberLetter(Items.prices[res.superSale.item2])} ${Items.transactionCurrency[res.superSale.item2]}~~ ${FormatUtils.numberLetter((Items.prices[res.superSale.item2] / 100) * 80)} ${Items.transactionCurrency[res.superSale.item2]} (**20% OFF**)
+                description: `**ON SALE** 🔥\n${saleString}
 
 **FEATURED** 😱
 ${featuredString}`,
@@ -197,13 +211,13 @@ ${featuredString}`,
             return;
         }
 
-        if ((chosenPage + 1) > 5) {
+        if ((chosenPage + 1) > pages + 1) {
             chosenPage = 4;
         }
 
         var itemObj;
-        for(itemObj in categoryObj[chosenPage]) {
-            var obj =categoryObj[chosenPage][itemObj];
+        for(itemObj in pageObj[chosenPage]) {
+            var obj =pageObj[chosenPage][itemObj];
             if(obj.emoji != undefined) {
                 if(res.superSale.item1 == itemObj) {
                     itemList += `#${obj.id} ${obj.emoji} ${obj.formatName} **-** ~~${FormatUtils.numberLetter(obj.price)} ${obj.currency}~~ ${FormatUtils.numberLetter((obj.price / 100) * 60)} ${obj.currency} (**40% OFF**)\n`
@@ -216,7 +230,7 @@ ${featuredString}`,
         }
 
         embed = {
-            title: `${categoryObj[chosenPage].category} (Page ${categoryObj[chosenPage].categoryPage})`,
+            title: `${pageObj[chosenPage].category} (Page ${pageObj[chosenPage].categoryPage})`,
             description: `__#ID 📦 Item Name **-** Price__\n${itemList}`,
             footer: {
                 text: `Page ${chosenPage + 1}/${pages + 1} | ${prefix}shop <page> | ${prefix}buy <id> <amount>`

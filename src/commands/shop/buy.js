@@ -1,4 +1,4 @@
-const { Items } = require("../../structures/models/Items");
+const { Items } = require("../../structures/models/ItemList");
 const { FormatUtils } = require("../../utils/format/format");
 const shopModel = require('../../structures/models/Shop.js');
 const { ProfileUtils } = require("../../utils/profile/profile");
@@ -14,23 +14,31 @@ module.exports = class {
         var itemChosen = parseInt(args[0]);
         var itemAmount = parseInt(args[1]);
 
-        var itemList = Object.keys(Items.formatName);
-        var item;
-        var itemObj = {};
+        // var itemList = Object.keys(Items.formatName);
+        var categories = Object.keys(Items);
+        var category;
 
         var lastGivenID = 100;
+        var itemObj = {};
 
-        for (item in itemList) {
-            item = itemList[item];
+        for (category in categories) {
+            category = categories[category];
 
-            lastGivenID++;
-
-            itemObj[lastGivenID] = {
-                formatName: Items.formatName[item],
-                currency: Items.transactionCurrency[item],
-                price: Items.prices[item],
-                category: Items.categories[item],
-                item: item
+            var item;
+            for (item in Items[category]) {
+                if (item != "formatTitle" && Items[category][item].purchasable == true) {
+                    lastGivenID++;
+    
+                    var thisItemObj = Items[category][item];
+    
+                    itemObj[lastGivenID] = {
+                        formatName: thisItemObj.formatName,
+                        currency: thisItemObj.transactionCurrency,
+                        price: thisItemObj.price,
+                        category: category,
+                        item: item
+                    }
+                }
             }
         }
         
@@ -47,7 +55,20 @@ module.exports = class {
             itemAmount = 1;
         }
 
+        var res = await shopModel.findOne({userID: "776935174222249995"}, async function (err, res) {
+            if (err) throw err;
+        });
+        if (!res) {
+            res = await shopModel.create({userID: "776935174222249995"});
+        }
+
         var price = itemObj[itemChosen].price * itemAmount;
+        if (res.superSale.item1 == itemObj[itemChosen].item) {
+            price = (price / 100) * 60;
+        } else if (res.superSale.item2 == itemObj[itemChosen].item) {
+            price = (price / 100) * 80;
+        }
+
         var profile = await ProfileUtils.get(msg.author.id);
 
         
@@ -67,7 +88,7 @@ module.exports = class {
                 profile.econ.wallet.gems -= price;
 
                 switch(itemObj[itemChosen].category) {
-                    case "Currency":
+                    case "currency":
                         switch(itemObj[itemChosen].item) {
                             case "gem":
                                 profile.econ.wallet.gems += itemAmount;
@@ -75,11 +96,11 @@ module.exports = class {
                                 break;
                         }
                         break;
-                    case "Paintings":
+                    case "paintings":
                         profile.collections.paintings[itemObj[itemChosen].item] += itemAmount;
                         profile.save();
                         break;
-                    case "Cars":
+                    case "cars":
                         profile.collections.cars[itemObj[itemChosen].item] += itemAmount;
                         profile.save();
                         break;
@@ -96,9 +117,8 @@ module.exports = class {
                 }
 
                 profile.econ.wallet.balance -= price;
-
                 switch(itemObj[itemChosen].category) {
-                    case "Currency":
+                    case "currency":
                         switch(itemObj[itemChosen].item) {
                             case "gem":
                                 profile.econ.wallet.gems += itemAmount;
@@ -106,11 +126,11 @@ module.exports = class {
                                 break;
                         }
                         break;
-                    case "Paintings":
+                    case "paintings":
                         profile.collections.paintings[itemObj[itemChosen].item] += itemAmount;
                         profile.save();
                         break;
-                    case "Cars":
+                    case "cars":
                         profile.collections.cars[itemObj[itemChosen].item] += itemAmount;
                         profile.save();
                         break;
@@ -122,7 +142,7 @@ module.exports = class {
 
         msg.channel.send({ embed: {
             title: `Purchase Successful 🎉`,
-            description: `You bought ${itemAmount}x ${Items.formatName[itemObj[itemChosen].item]} for ${FormatUtils.numberComma(price)} ${itemObj[itemChosen].currency}.`,
+            description: `You bought ${itemAmount}x ${itemObj[itemChosen].formatName} for ${FormatUtils.numberComma(price)} ${itemObj[itemChosen].currency}.`,
             color: client.colors.success
         }})
     }

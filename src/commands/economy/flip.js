@@ -44,7 +44,7 @@ module.exports = class {
         var chance = Math.random() * 100;
 
         if (chance > 50) {
-            profile.econ.wallet.balance -= (amount * 2);
+            profile.econ.wallet.balance += (amount * 2);
             msg.channel.send({ embed: {
                 title: `Congrats 🎉`,
                 description: `You flipped heads and got ${FormatUtils.money(amount)}!`,

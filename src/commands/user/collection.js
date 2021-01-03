@@ -26,9 +26,9 @@ module.exports = class {
             var items = Object.keys(profile.collections[collection]);
             items.splice(items.indexOf('$init'), 1);
             var collectionTitle = collection.charAt(0).toUpperCase() + collection.slice(1);
-            itemString += `\n**${collectionTitle}**\n`;
             var itemAmount = 0;
             var item;
+            var stringToAdd = ``;
 
             for (item in items) {
                 item = items[item];
@@ -38,13 +38,19 @@ module.exports = class {
 
                 if (itemCount > 0) {
                     itemAmount++;
-                    itemString += `${itemEmoji} ${itemName} **-** ${itemCount}\n`
+                    stringToAdd += `${itemEmoji} ${itemName} **-** ${itemCount}\n`
                 }
             }
 
             if (itemAmount <= 0) {
-                itemString += `None\n`;
+                continue;
+            } else {
+                itemString += `\n**${collectionTitle}**\n${stringToAdd}`;
             }
+        }
+
+        if(itemString == ``) {
+            itemString = `None`;
         }
 
         var embed = {
