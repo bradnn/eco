@@ -1,6 +1,6 @@
 module.exports = class {
     async run(client) {
-        console.log(`${client.user.username}: Ready in ${client.guilds.cache.size} guilds.`);
+        console.log(`${client.user.username}: Start successful.`);
 
         
 

@@ -85,24 +85,28 @@ module.exports = class {
                     return;
                 }
 
-                profile.econ.wallet.gems -= price;
+                profile.econ.wallet.gems = profile.econ.wallet.balance - price;
 
                 switch(itemObj[itemChosen].category) {
                     case "currency":
                         switch(itemObj[itemChosen].item) {
                             case "gem":
-                                profile.econ.wallet.gems += itemAmount;
-                                profile.save();
+                                profile.econ.wallet.gems = profile.econ.wallet.gems + itemAmount;
+                                await profile.save();
                                 break;
                         }
                         break;
                     case "paintings":
                         profile.collections.paintings[itemObj[itemChosen].item] += itemAmount;
-                        profile.save();
+                        await profile.save();
                         break;
                     case "cars":
                         profile.collections.cars[itemObj[itemChosen].item] += itemAmount;
-                        profile.save();
+                        await profile.save();
+                        break;
+                    case "mining":
+                        profile.collections.mining[itemObj[itemChosen].item] += itemAmount;
+                        await profile.save();
                         break;
                 }
                 break;
@@ -115,24 +119,28 @@ module.exports = class {
                     }});
                     return;
                 }
+                profile.econ.wallet.balance = profile.econ.wallet.balance - price;
 
-                profile.econ.wallet.balance -= price;
                 switch(itemObj[itemChosen].category) {
                     case "currency":
                         switch(itemObj[itemChosen].item) {
                             case "gem":
                                 profile.econ.wallet.gems += itemAmount;
-                                profile.save();
+                                await profile.save();
                                 break;
                         }
                         break;
                     case "paintings":
                         profile.collections.paintings[itemObj[itemChosen].item] += itemAmount;
-                        profile.save();
+                        await profile.save();
                         break;
                     case "cars":
                         profile.collections.cars[itemObj[itemChosen].item] += itemAmount;
-                        profile.save();
+                        await profile.save();
+                        break;
+                    case "mining":
+                        profile.collections.mining[itemObj[itemChosen].item] += itemAmount;
+                        await profile.save();
                         break;
                 }
                 break;

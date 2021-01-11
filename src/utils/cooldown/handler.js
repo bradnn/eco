@@ -3,6 +3,7 @@ const { ProfileUtils } = require("../profile/profile");
 
 const cooldowns = {
     work: 30000,
+    mine: 120000,
     crime: 60000,
     rob: 60000,
     robUser: 300000,
@@ -39,7 +40,7 @@ module.exports.CooldownHandlers = {
 
         let profile = await ProfileUtils.get(user.id);
         let userCooldowns = profile.cooldowns;
-        if (type == "work" && profile.work.sick) {
+        if (type == "work" && profile.work.sick == true) {
             var cooldown = cooldowns[type] * 20;
         } else {
             var cooldown = cooldowns[type];

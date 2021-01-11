@@ -157,6 +157,57 @@ const cacheModel = mongoose.Schema({
             type: Date,
             default: 0
         }
+    },
+    votetop: {
+        user1: {
+            username: {
+                type: String
+            },
+            votes: {
+                type: Number,
+                default: 0
+            }
+        },
+        user2: {
+            username: {
+                type: String
+            },
+            votes: {
+                type: Number,
+                default: 0
+            }
+        },
+        user3: {
+            username: {
+                type: String
+            },
+            votes: {
+                type: Number,
+                default: 0
+            }
+        },
+        user4: {
+            username: {
+                type: String
+            },
+            votes: {
+                type: Number,
+                default: 0
+            }
+        },
+        user5: {
+            username: {
+                type: String
+            },
+            votes: {
+                type: Number,
+                default: 0
+            }
+        },
+        cacheClearTime: {
+            type: Date,
+            default: 0
+        }
     }
 });
 module.exports = mongoose.model("cacheModel", cacheModel);

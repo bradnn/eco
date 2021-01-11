@@ -91,6 +91,10 @@ const userModel = mongoose.Schema({
             type: Date,
             default: 0
         },
+        mine: {
+            type: Date,
+            default: 0
+        },
         apply: {
             type: Date,
             default: 0
@@ -114,6 +118,28 @@ const userModel = mongoose.Schema({
         flip: {
             type: Date,
             default: 0
+        }
+    },
+    pets: {
+        type: {
+            type: String,
+            default: "none"
+        },
+        leveling: {
+            xp: {
+                type: Number,
+                default: 0
+            }
+        },
+        buff: {
+            type: {
+                type: String,
+                 default: "none"
+             },
+             value: {
+                 type: Number,
+                 default: 0
+             }
         }
     },
     collections: {
@@ -166,6 +192,16 @@ const userModel = mongoose.Schema({
                 type: Number,
                 default: 0
             }
+        },
+        mining: {
+            pickaxe: {
+                type: Number,
+                default: 0
+            },
+            drill: {
+                type: Number,
+                default: 0
+            }
         }
     },
     stats: {
@@ -175,6 +211,12 @@ const userModel = mongoose.Schema({
                 default: 0
             },
             totalEarnedGems: {
+                type: Number,
+                default: 0
+            }
+        },
+        mining: {
+            timesMined: {
                 type: Number,
                 default: 0
             }
@@ -227,6 +269,10 @@ const userModel = mongoose.Schema({
             voteCount: {
                 type: Number,
                 default: 0
+            },
+            messageToggle: {
+                type: Boolean,
+                default: true
             }
         }
     }

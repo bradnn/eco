@@ -99,12 +99,19 @@ module.exports.Items = {
             purchasable: true
         }
     },
-    farming: {
-        wheatSeed: {
-            formatName: "Wheat Seeds",
+    mining: {
+        pickaxe: {
+            formatName: "Pickaxe",
             transactionCurrency: "Coins",
-            price: 999999999999999,
-            emoji: "🌾",
+            price: 75000,
+            emoji: "⛏",
+            purchasable: true
+        },
+        drill: {
+            formatName: "Drill",
+            transactionCurrency: "Coins",
+            price: 1500000,
+            emoji: "⚙",
             purchasable: true
         }
     },

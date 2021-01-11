@@ -35,22 +35,18 @@ You also have a 2% chance to get fired from your job when you work.`,
                     value: `❗ __Commands__
 ${prefix}profile **-** Shows your balance and job information.
 ${prefix}pay <user> <amount> **-** Send someone money out of your balance
-${prefix}baltop **-** Shows the top 10 money balances.
-${prefix}gemtop **-** Shows the top 10 gem balances.
+${prefix}baltop **-** Shows the top 5 money balances.
+${prefix}gemtop **-** Shows the top 5 gem balances.
 ❗ __Information__
 Your profile shows a brief overview on where you are at.
 Paying is limited to once an hour with a maximum of $100,000 to prevent boosting.`,
                     inline: true
                 },
                 {
-                    name: `Auction Help`,
+                    name: `Shop Help`,
                     value: `❗ __Commands__
-${prefix}auction **-** Displays the auction menu.
-${prefix}auction bid <first|second> **-** Bid on the first or second auction.
-❗ __Information__
-Auctions are a good way to spend your money and get rare collectables.
-Items won from auctions will boost your networth and can be used in trading.
-Auctions are per server, so every server will have different auctions!`,
+${prefix}shop <page> **-** Displays the shop menu.
+${prefix}buy <item> **-** Purchase an item by the ID.`,
                     inline: true
                 },
                 {
@@ -76,6 +72,14 @@ Commiting crimes is a gamble that can pay you a lot or make you loose a lot.`,
 ${prefix}flip <amount> **-** Flip your money to either double it or loose it all
 ❗ __Information__
 Dont waste all your money!`,
+                    inline: true
+                },
+                {
+                    name: `Mining Help`,
+                    value: `❗ __Commands__
+${prefix}mine **-** Go mining for gems.
+❗ __Information__
+After purchasing a pickaxe or drill in the shop you can go mining for up to 400 gems!`,
                     inline: true
                 },
                 {

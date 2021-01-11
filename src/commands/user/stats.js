@@ -37,6 +37,14 @@ module.exports = class {
                     value: `🔧 Times Worked **-** ${profile.stats.work.workCount} (${reqMessage})\n🌎 Times Worked (Since last raise) **-** ${profile.stats.work.workCountRaise}/25`
                 },
                 {
+                    name: `Mining Stats`,
+                    value: `⛏ Times Mined **-** ${profile.stats.mining.timesMined}`
+                },
+                {
+                    name: `Vote Stats`,
+                    value: `🎫 Times Voted **-** ${profile.stats.votes.voteCount}`
+                },
+                {
                     name: `Town Hall`,
                     value: `💷 Coins Deposited **-** ${profile.stats.townhall.depositAmount}`
                 }

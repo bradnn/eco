@@ -1,4 +1,4 @@
-const { Items } = require("../../structures/models/Items");
+const { Items } = require("../../structures/models/ItemList");
 const { JobList } = require("../../structures/models/Jobs");
 const { FormatUtils } = require("../../utils/format/format");
 const { TipUtils } = require("../../utils/message/tip");
@@ -33,8 +33,8 @@ module.exports = class {
             for (item in items) {
                 item = items[item];
                 var itemCount = profile.collections[collection][item];
-                var itemName = Items.formatName[item];
-                var itemEmoji = Items.emojis[item];
+                var itemName = Items[collection][item].formatName;
+                var itemEmoji = Items[collection][item].emoji;
 
                 if (itemCount > 0) {
                     itemAmount++;
