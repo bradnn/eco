@@ -121,25 +121,14 @@ const userModel = mongoose.Schema({
         }
     },
     pets: {
-        type: {
-            type: String,
-            default: "none"
-        },
-        leveling: {
-            xp: {
-                type: Number,
-                default: 0
-            }
-        },
-        buff: {
-            type: {
-                type: String,
-                 default: "none"
-             },
-             value: {
-                 type: Number,
-                 default: 0
-             }
+        type: Object,
+        default: {
+            name: "Rabbit",
+            leveling: {
+                experience: 0,
+                level: 0
+            },
+            buff: "workPayrate"
         }
     },
     collections: {

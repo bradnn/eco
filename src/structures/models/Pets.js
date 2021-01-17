@@ -3,19 +3,13 @@ module.exports.Pets = {
         rabbit: {
             formatName: "Rabbit",
             buff: {
-                0: {
-                    type: "workAmount",
-                    multiplier: 2
-                }
+                type: "workAmount"
             }
         },
         fish: {
             formatName: "Fish",
             buff: {
-                0: {
-                    type: "workCooldown",
-                    multiplier: 2
-                }
+                buffType: "workCooldown"
             }
         }
     }
