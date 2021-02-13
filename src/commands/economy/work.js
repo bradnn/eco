@@ -16,8 +16,6 @@ module.exports = class {
         var user = msg.author;
         var profile = await ProfileUtils.get(user.id);  
 
-        var embed;
-
         if (profile.work.job == "None") {
             msg.channel.send({
                 embed: {
@@ -29,11 +27,15 @@ module.exports = class {
             return;
         }
 
+        var job = profile.work.job;
+
         // const cooldown = await CooldownHandlers.get("work", user);
         // if (cooldown.response) {
         //     msg.channel.send(cooldown.embed);
         //     return;
         // }
+
+        var embed;
 
         const scrambled = await Messages.sendScramble(msg, client); // Send an unscramble challenge
         switch (scrambled.response) {
@@ -43,11 +45,12 @@ module.exports = class {
                 var penaltyString = ``; // List of penalties the user has recieved for this work.
 
                 var chance = Math.random() * 100
-                if (chance > 1) { // If the user should be fired (1% Chance)
+                if (chance > 99) { // If the user should be fired (1% Chance)
                     var failMessage = FinalWorkMessages[profile.work.job].bad[Math.floor(Math.random() * FinalWorkMessages[profile.work.job].bad.length)]; // Chooses a random work fail message
                     embed = { // Sets the embed to be sent
                         title: `You're fired! 🔥`,
                         description: failMessage,
+                        fields: [],
                         color: client.colors.error
                     };
                     profile.work.job = "begger"; // Set users job to begger (FIRED)
@@ -55,11 +58,45 @@ module.exports = class {
                     profile.stats.work.workCountRaise = 0; // Resets progress to next raise
                     penaltyString += `💼 Lost Job\n`; // Adds lost job to the penalty list
                 } else if (chance > 98) { // If the user should get sick (1% Chance)
-                    
+                    embed = { // Sets the embed to be sent
+                        title: `You got sick 🦠`,
+                        description: `You caught a cold and are unable to work for 10 minutes!`,
+                        color: client.colors.sick
+                    }
+
+                    profile.work.sick = true; // Set the user to be sick
                 } else if (chance > 96) { // If the user should recieve double coins (2% Chance)
+                    var perfectMessage = FinalWorkMessages[profile.work.job].perfect[Math.floor(Math.random() * FinalWorkMessages[profile.work.job].perfect.length)]; // Chooses a random perfect work message
+                    var earnedCoins = Math.floor(JobList.pay[job] + (JobList.pay[job] * (profile.work.raiseLevel) / 100) * 1.5); // Calculates how much the user should earn
 
+                    embed = {
+                        title: `Amazing Job 🎊`,
+                        description: perfectMessage,
+                        fields: [],
+                        color: client.colors.success
+                    }
+
+                    profile.stats.work.workCount += 1;
+                    profile.stats.work.workCountRaise += 1;
+                    profile.econ.wallet.balance += earnedCoins;
+                    rewardString += `💰 +50% Earnings (PERFECT WORK)\n💰 +${FormatUtils.money(earnedCoins)}`
                 } else { // Normal work
+                    var goodMessage = FinalWorkMessages[profile.work.job].good[Math.floor(Math.random() * FinalWorkMessages[profile.work.job].good.length)]; // Chooses a random good work message
+                    var earnedCoins = Math.floor(JobList.pay[job] + (JobList.pay[job] * (profile.work.raiseLevel) / 100)); // Calculates how much the user should earn
 
+                    console.log(JobList.pay[job]);
+
+                    embed = {
+                        title: `Good Job 🎉`,
+                        description: goodMessage,
+                        fields: [],
+                        color: client.colors.success
+                    }
+
+                    profile.stats.work.workCount += 1;
+                    profile.stats.work.workCountRaise += 1;
+                    profile.econ.wallet.balance += earnedCoins;
+                    rewardString += `💰 +${FormatUtils.money(earnedCoins)}`
                 }
                 break;
             case "INCORRECT":
@@ -128,7 +165,6 @@ module.exports = class {
             }
         }
         var curField = 0;
-        embed.fields = [];
         if (penaltyString != ``) {
             embed.fields[curField] = {
                 name: `Penalties 🔥`,
