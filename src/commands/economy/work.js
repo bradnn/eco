@@ -1,6 +1,7 @@
 const { JobList } = require("../../structures/models/Jobs");
 const { CooldownHandlers } = require("../../utils/cooldown/handler");
 const { FormatUtils } = require("../../utils/format/format");
+const { Messages } = require("../../utils/message/messages");
 const { ProfileUtils } = require("../../utils/profile/profile");
 
 module.exports = class {
@@ -10,6 +11,8 @@ module.exports = class {
     }
 
     async run(client, msg, args, guildPrefix) {
+
+        Messages.sendMultipleChoice(msg, ["YURT", "YEET", "SKEET"], "POG", {perfect: "PERFECT", good: "GOOD", bad: "BAD"});
 
         var user = msg.author;
         var profile = await ProfileUtils.get(user.id);

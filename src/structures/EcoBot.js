@@ -58,12 +58,7 @@ module.exports = {
             const dbl = new DBL(config.DBLApi, client);
             dbl.on('posted', () => {
                 console.log(`Posted server count to Top.GG (${client.guilds.cache.size})`);
-                let name = {
-                    name: `;help | In ${client.guilds.cache.size} servers!`,
-                    type: 1,
-                    url: `https://twitch.tv/imsycles`
-                };
-                client.user.setActivity(name, { type: 'STREAMING' });
+                client.user.setActivity(`;help | In ${client.guilds.cache.size} servers!`, { type: 'WATCHING' });
             });
             dbl.on('error', e => {
                 console.log(`EcoBot: ERROR: ${e}`);

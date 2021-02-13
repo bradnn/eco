@@ -40,7 +40,7 @@ module.exports.CooldownHandlers = {
 
         let profile = await ProfileUtils.get(user.id);
         let userCooldowns = profile.cooldowns;
-        if (type == "work" && profile.work.sick == true) {
+        if (type == "work" && profile.work.sick) {
             var cooldown = cooldowns[type] * 20;
         } else {
             var cooldown = cooldowns[type];
