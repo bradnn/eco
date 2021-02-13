@@ -80,77 +80,77 @@ module.exports.FinalWorkMessages = {
         ],
         bad: [
             "You couldnt find any work.",
-            ""
+            "You're literally useless. How did you not find a single job."
         ]
     },
     teacher: {
         perfect: [
-            "",
-            ""
+            "You did an amazing job at teaching, your class performed the best in the whole school.",
+            "You were awarded teacher of the month, thus giving you a bonus!"
         ],
         good: [
-            "",
-            ""
+            "You successfully taught your class.",
+            "Good Job! Your students are meeting the school expectations."
         ],
         bad: [
-            "",
-            ""
+            "You made a student cry, their parent is suing you.",
+            "Your entire class managed to fail their finals, so you were fired!"
         ]
     },
     mechanic: {
         perfect: [
-            "",
-            ""
+            "You did a excellent job! The car you repaired looks brand new.",
+            "You repaired the car engine, there were no drawbacks."
         ],
         good: [
-            "",
-            ""
+            "You successfully repaired a car.",
+            "The customer was satisfied with your mediocre service."
         ],
         bad: [
-            "",
-            ""
+            "You did a horrible job. You're not even trusted to fix a bicycle.",
+            "You left your wrench in the car engine, causing an accident."
         ]
     },
     nurse: {
         perfect: [
-            "",
-            ""
+            "You got nurse of the month! You helped the most patients.",
+            "Everyone is praising you for your magnificent nursing skills."
         ],
         good: [
-            "",
-            ""
+            "Your patient was satisfied with your care.",
+            "The patient fell better after the treatment."
         ],
         bad: [
-            "",
-            ""
+            "Your patient passed away due to your lack of skill, maybe attend some more nursing school before you apply again.",
+            "While assisting a surgeon, you handed them the wrong tool, causing a malpractice. So you were fired!"
         ]
     },
     accountant: {
         perfect: [
-            "",
-            ""
+            "Your investment tip racked in huge gains for one of your clients, thus they gave you a share of their profits.",
+            "The business you helped finance, became so successful, they were pleased with your skills."
         ],
         good: [
-            "",
-            ""
+            "You successfully opened a bank account for your client.",
+            "You compiled the monthly reports for your client."
         ],
         bad: [
-            "",
-            ""
+            "You caused a business to go into bankruptcy!",
+            "You screwed up the report for your client and cause problems with the IRS."
         ]
     },
     techsupport: {
         perfect: [
-            "",
-            ""
+            "You successfully secured somebodies OS!",
+            "You did such an amazing job you got a bonus from your employer!"
         ],
         good: [
-            "",
-            ""
+            "You helped an elderly person exit fullscreen.",
+            "You fixed a bug on a solitare website."
         ],
         bad: [
-            "",
-            ""
+            "You stole somebodies SSN.",
+            "You ended up downloading more malware instead of getting rid of it."
         ]
     },
     softwaredeveloper: {
