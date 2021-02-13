@@ -11,6 +11,19 @@ module.exports.Pets = {
             buff: {
                 buffType: "workCooldown"
             }
+        },
+        dog: {
+            formatName: "Dog",
+            buff: {
+                bufftype: "lowcrimeChance"
+                //change to increased hunting chance after hunting
+            }
+        },
+        molerat: {
+            formatName: "Mole-Rat",
+            buff: {
+                bufftype: "minerarityChance"
+            }
         }
     }
 }
