@@ -32,14 +32,14 @@ module.exports = class {
         }
 
         async function info (client, msg, args, prefix) {
-            var townHall = await townHallUtils.get();
+            var profile = await ProfileUtils.get(msg.author);
 
             var embed = {
                 title: `Town Hall 🔔`,
                 fields: [
                     {
-                        name: `Total Deposits`,
-                        value: `💷 Amount **-** ${FormatUtils.money(townHall.deposits.total)}`
+                        name: `Your Deposits`,
+                        value: `💷 Amount **-** ${FormatUtils.money(profile.econ.wallet.balance)}`
                     }
                 ],
                 color: client.colors.default,
