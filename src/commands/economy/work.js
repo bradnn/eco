@@ -36,6 +36,10 @@ module.exports = class {
         const scrambled = await Messages.sendScramble(msg, client); // Send an unscramble challenge
         switch (scrambled.response) {
             case "CORRECT": // If the user unscrambled the word correctly
+
+                var rewardArray = [];
+                
+
                 var chance = Math.random() * 100
                 if (chance > 1) { // If the user should be fired (1% Chance)
                     var failMessage = FinalWorkMessages[profile.work.job].bad[Math.floor(Math.random() * FinalWorkMessages[profile.work.job].bad.length)]; // Chooses a random work fail message
