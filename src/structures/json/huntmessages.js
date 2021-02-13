@@ -1,7 +1,1 @@
-const { modelName } = require("../models/User");
-
-module.exports.HuntMessages = {
-    : {
-
-    }
-}
+module.exports.HuntMessages = [`message 1`, `message 2`];
