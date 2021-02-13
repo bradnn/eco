@@ -16,6 +16,8 @@ module.exports = class {
         var user = msg.author;
         var profile = await ProfileUtils.get(user.id);  
 
+        var embed;
+
         if (profile.work.job == "None") {
             msg.channel.send({
                 embed: {
@@ -37,8 +39,8 @@ module.exports = class {
         switch (scrambled.response) {
             case "CORRECT": // If the user unscrambled the word correctly
 
-                var rewardArray = [];
-                
+                var rewardString = ``; // List of rewards the user has been given for this work.
+                var penaltyString = ``; // List of penalties the user has recieved for this work.
 
                 var chance = Math.random() * 100
                 if (chance > 1) { // If the user should be fired (1% Chance)
@@ -46,19 +48,14 @@ module.exports = class {
                     embed = { // Sets the embed to be sent
                         title: `You're fired! 🔥`,
                         description: failMessage,
-                        fields: [
-                            {
-                                name: `Rewards 💰`,
-                                value: `💼 Lost Your Job`
-                            }
-                        ],
                         color: client.colors.error
                     };
                     profile.work.job = "begger"; // Set users job to begger (FIRED)
                     profile.work.raiseLevel = 0; // Reset raise level
                     profile.stats.work.workCountRaise = 0; // Resets progress to next raise
+                    penaltyString += `💼 Lost Job\n`; // Adds lost job to the penalty list
                 } else if (chance > 98) { // If the user should get sick (1% Chance)
-
+                    
                 } else if (chance > 96) { // If the user should recieve double coins (2% Chance)
 
                 } else { // Normal work
@@ -74,8 +71,6 @@ module.exports = class {
 
         var job = profile.work.job;
         var chance = Math.random() * 100
-
-        var embed;
 
         // if (chance < 98) {
         //     if (profile.stats.work.workCountRaise >= 25) {
@@ -131,6 +126,22 @@ module.exports = class {
             embed.footer = {
                 text: `You randomly found ${gemAmount} gems!`
             }
+        }
+        var curField = 0;
+        embed.fields = [];
+        if (penaltyString != ``) {
+            embed.fields[curField] = {
+                name: `Penalties 🔥`,
+                value: penaltyString
+            };
+            curField++;
+        }
+        if (rewardString != ``) {
+            embed.fields[curField] = {
+                name: `Rewards 💰`,
+                value: rewardString
+            };
+            curField++;
         }
 
         profile.save();
