@@ -118,6 +118,10 @@ const userModel = mongoose.Schema({
         flip: {
             type: Date,
             default: 0
+        },
+        hunt: {
+            type: Date,
+            default: 0
         }
     },
     pets: {
