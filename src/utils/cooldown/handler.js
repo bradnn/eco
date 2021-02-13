@@ -10,7 +10,7 @@ const cooldowns = {
     apply: 600000,
     pay: 3600000, 
     flip: 15000,
-    hunt: 120000
+    hunt: 90000
 };
 
 module.exports.CooldownHandlers = {
