@@ -155,58 +155,58 @@ module.exports.FinalWorkMessages = {
     },
     softwaredeveloper: {
         perfect: [
-            "",
-            ""
+            "The software you designed peaked the interest of a large tech company, and they were very pleased by your work.",
+            "Your client was very happy with your job and wanted to compensate you extra for your hard work."
         ],
         good: [
-            "",
-            ""
+            "You finished the task that you were assigned for the project.",
+            "You fixed a bug, the software works now."
         ],
         bad: [
-            "",
-            ""
+            "One thing led to another... you didn't fix the bug, but actually even worsened it's impact on the software.",
+            "You somehow permanently deleted the software you worked on, and your boss decided he didn't need someone so clumsy like you."
         ]
     },
     lawyer: {
         perfect: [
-            "",
-            ""
+            "You showed great compassion for your job, and landed a permanent contract with a rich business man.",
+            "Your efforts in law school definitely paid off, you just won a huge case!"
         ],
         good: [
-            "",
-            ""
+            "You defended your client in a lawsuit.",
+            "You represented the defendant's rights."
         ],
         bad: [
-            "",
-            ""
+            "You managed to incriminate yourself and got arrested....",
+            "After losing ten cases in a row, you had now completely lost your reputation, and forced to go back to law school."
         ]
     },
     politician: {
         perfect: [
-            "",
+            "Your speech was very inspirational and it moved many people, the mayor even compensated you.",
             ""
         ],
         good: [
-            "",
-            ""
+            "You expressed your views on the current political issues.",
+            "You volunteered to be a spokesperson for the new town's project."
         ],
         bad: [
-            "",
-            ""
+            "You got on the podium and totally blanked out -- there goes your job.",
+            "You tried to exploit the people, thus deemed unworthy of their trust and your position."
         ]
     },
     investor: {
         perfect: [
-            "",
-            ""
+            "You invested in a stock when it was extremely low, and you gained a huge profit!",
+            "You invested at a bank with really good interest rates."
         ],
         good: [
-            "",
-            ""
+            "You invested in some stocks",
+            "You gained some profit!"
         ],
         bad: [
-            "",
-            ""
+            "You decided to invest in a stock without any researching, and you suffered some pretty bad repercussion.",
+            "The local bank you just invested at got robbed and you lost your earnings."
         ]
     }
 }
