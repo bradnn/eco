@@ -30,11 +30,11 @@ module.exports = class {
         var job = profile.work.job;
         var embed;
 
-        const cooldown = await CooldownHandlers.get("work", user);
-        if (cooldown.response) {
-            msg.channel.send(cooldown.embed);
-            return;
-        }
+        // const cooldown = await CooldownHandlers.get("work", user);
+        // if (cooldown.response) {
+        //     msg.channel.send(cooldown.embed);
+        //     return;
+        // }
 
 
         const scrambled = await Messages.sendScramble(msg, client); // Send an unscramble challenge
@@ -79,7 +79,7 @@ module.exports = class {
                     profile.stats.work.workCount += 1;
                     profile.stats.work.workCountRaise += 1;
                     profile.econ.wallet.balance += earnedCoins;
-                    rewardString += `💰 +50% Earnings (PERFECT WORK)\n💰 +${FormatUtils.money(earnedCoins)}`
+                    rewardString += `💰 +50% Earnings (PERFECT WORK)\n💰 +${FormatUtils.money(earnedCoins)}\n`
                 } else { // Normal work
                     var goodMessage = FinalWorkMessages[profile.work.job].good[Math.floor(Math.random() * FinalWorkMessages[profile.work.job].good.length)]; // Chooses a random good work message
                     var earnedCoins = Math.floor(JobList.pay[job] + (JobList.pay[job] * (profile.work.raiseLevel) / 100)); // Calculates how much the user should earn
@@ -94,7 +94,7 @@ module.exports = class {
                     profile.stats.work.workCount += 1;
                     profile.stats.work.workCountRaise += 1;
                     profile.econ.wallet.balance += earnedCoins;
-                    rewardString += `💰 +${FormatUtils.money(earnedCoins)}`
+                    rewardString += `💰 +${FormatUtils.money(earnedCoins)}\n`
                 }
                 break;
             case "INCORRECT":
@@ -117,19 +117,17 @@ module.exports = class {
         if (gemChance > 80) {
             var gemAmount = Math.floor(Math.random() * 49) + 1;
             profile.econ.wallet.gems += gemAmount;
-            embed.footer = {
-                text: `You randomly found ${gemAmount} gems!`
-            }
+            rewardString += `💎 +${FormatUtils.gem(gemAmount)}\n`
         }
         var curField = 0;
-        if (penaltyString != ``) {
+        if (penaltyString != ``) { // Dont add a penalty field if there is no penalty.
             embed.fields[curField] = {
                 name: `Penalties 🔥`,
                 value: penaltyString
             };
             curField++;
         }
-        if (rewardString != ``) {
+        if (rewardString != ``) { // Dont add a rewards field if there is not rewards
             embed.fields[curField] = {
                 name: `Rewards 💰`,
                 value: rewardString
