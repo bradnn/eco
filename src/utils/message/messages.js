@@ -15,7 +15,7 @@ module.exports.Messages = {
         }
         var response;
 
-        await msg.channel.send({embed: {title: `Unscramble the word ${scrambled}, ${msg.author.username} 🧩`, color: client.colors.warning}}).then(async () => {
+        await msg.channel.send({embed: {title: `Hey ${msg.author.username}! Unscramble the word ${scrambled} 🧩`, color: client.colors.warning}}).then(async () => {
             await msg.channel.awaitMessages(filter, {max: 1, time: 30000, errors: ['time']})
                 .then(collected => {
                     if (FormatUtils.capitalize(collected.first().content.toLowerCase()) == string) {
