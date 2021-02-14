@@ -22,7 +22,7 @@ module.exports = class {
 
 
         var chance = Math.floor(Math.random()*100)+1;
-        if(chance<50){  //if user doesnt fail
+        if(chance<80){  //if user doesnt fail
             var earnings = Math.floor((Math.random()*2500) +4999); //random amount of money 5000-7500
                 profile.econ.wallet.balance += earnings;
                 profile.save()
