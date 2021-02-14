@@ -30,11 +30,11 @@ module.exports = class {
         var job = profile.work.job;
         var embed;
 
-        // const cooldown = await CooldownHandlers.get("work", user);
-        // if (cooldown.response) {
-        //     msg.channel.send(cooldown.embed);
-        //     return;
-        // }
+        const cooldown = await CooldownHandlers.get("work", user);
+        if (cooldown.response) {
+            msg.channel.send(cooldown.embed);
+            return;
+        }
 
 
         const scrambled = await Messages.sendScramble(msg, client); // Send an unscramble challenge
