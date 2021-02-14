@@ -2,19 +2,19 @@ const userModel = require('../../../structures/models/User.js');
 
 module.exports = class {
     constructor() {
-        this.id = '005',
+        this.id = '009',
 
-        this.name = 'asbtractPainting',
-        this.formatName = 'Abstract Painting',
-        this.emoji = '🖼',
+        this.name = 'newYears2021Ball',
+        this.formatName = '2021 New Years Ball',
+        this.emoji = '🎊',
 
-        this.currency = 'gems',
-        this.buyPrice = '1000',
-        this.sellPrice = '500',
-        this.purchasable = true,
+        this.currency = 'coins',
+        this.buyPrice = '0',
+        this.sellPrice = '0',
+        this.purchasable = false,
 
-        this.category = 'paintings',
-        this.categoryName = 'Paintings'
+        this.category = 'seasonal',
+        this.categoryName = 'Seasonal'
     }
 
     async add(userID, amount) {
