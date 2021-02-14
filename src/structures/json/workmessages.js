@@ -208,5 +208,33 @@ module.exports.FinalWorkMessages = {
             "You decided to invest in a stock without any researching, and you suffered some pretty bad repercussion.",
             "The local bank you just invested at got robbed and you lost your earnings."
         ]
+    },
+    physician: {
+        perfect: [
+            "You successfully compiled all the new patients' medical records. You felt like you deserved a reward!",
+            "Many of the patients who you counceled have recovered from their illnesses and became healthy. Giving you a bonus!"
+        ],
+        good: [
+            "You gave some healthy tips for your patient.",
+            "You supplied your patient with a new diet plan."
+        ],
+        bad: [
+            "Your lack of empathy towards your patients caused you to get fired!",
+            "Go back to medical school for another million years, then try again."
+        ]
+    },
+    actor: {
+        perfect: [
+            "You premiered in a live-action movie as a lead role, and it was very successful!",
+            "Your debut blasted off and your fanbase had risen to new breaking records."
+        ],
+        good: [
+            "You practiced your role for the upcoming shoot.",
+            "You had a conversation with your director."
+        ],
+        bad: [
+            "You completely bombed the audition and lost the job.",
+            "You did a horrible job and decided to quit the job and go back to acting school."
+        ]
     }
 }

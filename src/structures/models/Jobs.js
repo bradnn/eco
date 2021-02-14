@@ -16,7 +16,8 @@ module.exports.JobList = {
         lawyer: 35000,
         politician: 40000,
         investor: 60000,
-        physician: 100000,
+        physician: 85000,
+        actor: 115000
     },
     workReq: {
         None: 0,
@@ -35,7 +36,8 @@ module.exports.JobList = {
         lawyer: 5000,
         politician: 7500,
         investor: 10000,
-        physician: 15000
+        physician: 13500,
+        actor: 18000
     },
     formatName: {
         None: "None",
@@ -54,6 +56,7 @@ module.exports.JobList = {
         lawyer: "Lawyer",
         politician: "Politician",
         investor: "Investor",
-        physician: "Physician"
+        physician: "Physician",
+        actor: "Actor"
     }
 }
