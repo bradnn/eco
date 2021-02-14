@@ -1,1 +1,9 @@
-module.exports.UnscrambleWords = ["economy", "stocks", "money", "cash", "work", "gamer", "janitor"];
+module.exports.UnscrambleWords = [
+    "economy", 
+    "stocks", 
+    "money", 
+    "cash", 
+    "work", 
+    "gamer", 
+    "janitor"
+];

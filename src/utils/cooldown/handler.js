@@ -2,7 +2,7 @@ const { FormatUtils } = require("../format/format");
 const { ProfileUtils } = require("../profile/profile");
 
 const cooldowns = {
-    work: 30000,
+    work: 15000,
     mine: 120000,
     crime: 60000,
     rob: 60000,
