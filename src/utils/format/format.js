@@ -44,5 +44,9 @@ module.exports.FormatUtils = {
         } else {
             return "None";
         }
+    },
+    capitalize: function (s) {
+        if (typeof s != 'string') return ''
+        return s.charAt(0).toUpperCase() + s.slice(1);
     }
 }
