@@ -2,7 +2,7 @@ const userModel = require('../../../structures/models/User.js');
 
 module.exports = class {
     constructor() {
-        this.id = '',
+        this.id = '00F',
 
         this.name = 'teslaModel3',
         this.formatName = '2021 Tesla Model 3',
