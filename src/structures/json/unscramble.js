@@ -7,9 +7,13 @@ module.exports.UnscrambleWords = [
     "Gamer", 
     "Janitor",
     "Rich",
-    "Discord",
-    "Time",
-    "Life",
     "Company",
     "Profit",
+    "Invest",
+    "Taxes",
+    "Market",
+    "Hunting",
+    "Steal",
+    "Crime",
+    "Bot"
 ];
