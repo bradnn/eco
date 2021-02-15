@@ -149,6 +149,14 @@ const userModel = mongoose.Schema({
                 type: Number,
                 default: 0
             },
+            campbellsSoupCan: {
+                type: Number,
+                default: 0
+            },
+            asbtractPainting: {
+                type: Number,
+                default: 0
+            }
         },
         cars: {
             rollsRoyceSweptail: {
