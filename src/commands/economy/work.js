@@ -3,6 +3,7 @@ const { JobList } = require("../../structures/models/Jobs");
 const { CooldownHandlers } = require("../../utils/cooldown/handler");
 const { FormatUtils } = require("../../utils/format/format");
 const { Messages } = require("../../utils/message/messages");
+const { TipUtils } = require("../../utils/message/tip");
 const { ProfileUtils } = require("../../utils/profile/profile");
 
 module.exports = class {
@@ -134,6 +135,7 @@ module.exports = class {
             };
             curField++;
         }
+        embed = TipUtils.embedTip(embed, guildPrefix);
 
         profile.save();
 

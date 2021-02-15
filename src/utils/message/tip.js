@@ -1,6 +1,14 @@
 module.exports.TipUtils = {
     embedTip: function (embed, prefix) {
-        var tips = [`Want 1,000 free gems? Get some by voting for our bot by doing ${prefix}vote!`, `Don't understand something? Check out the ${prefix}help command!`, `If you need help check out our support server in ${prefix}help!`, `Join our community & support server for frequent giveaways! ${prefix}help!`];
+        var tips = [
+            `Want 1,000 free gems? Get some by voting for our bot by doing ${prefix}vote!`, 
+            `Don't understand something? Check out the ${prefix}help command!`, 
+            `If you need help check out our support server in ${prefix}help!`, 
+            `Join our community & support server for frequent giveaways! ${prefix}help!`,
+            `Check out frequent updates in our discord server! ${prefix}help`,
+            `Have a suggestion? Check out our server in ${prefix}help`,
+            `Check out our new ${prefix}hunt command!`
+        ];
         
         var tip = Math.floor(Math.random() * tips.length);
 

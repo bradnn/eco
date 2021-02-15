@@ -195,6 +195,16 @@ const userModel = mongoose.Schema({
                 type: Number,
                 default: 0
             }
+        },
+        hunting: {
+            spear: {
+                type: Number,
+                default: 0
+            },
+            bow: {
+                type: Number,
+                default: 0
+            }
         }
     },
     stats: {

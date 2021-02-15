@@ -1,4 +1,5 @@
 const { UnscrambleWords } = require("../../structures/json/unscramble");
+const { FormatUtils } = require("../format/format");
 
 module.exports.Messages = {
     sendMultipleChoice: async function (msg, choices, answer, messages) {
@@ -14,10 +15,10 @@ module.exports.Messages = {
         }
         var response;
 
-        await msg.channel.send({embed: {title: `Unscramble the word ${scrambled} 🧩`, color: client.colors.warning}}).then(async () => {
+        await msg.channel.send({embed: {title: `Hey ${msg.author.username}! Unscramble the word ${scrambled} 🧩`, color: client.colors.warning}}).then(async () => {
             await msg.channel.awaitMessages(filter, {max: 1, time: 30000, errors: ['time']})
                 .then(collected => {
-                    if (collected.first().content.toLowerCase() == string) {
+                    if (FormatUtils.capitalize(collected.first().content.toLowerCase()) == string) {
                         response = "CORRECT";
                     } else {
                         response = "INCORRECT";

@@ -20,10 +20,12 @@ module.exports = {
             
             this.commands = new Collection();
             this.events = new Collection();
+            this.items = new Collection();
             this.aliases = new Collection();
 
             this._loadCommands(this);
             this._loadEvents(this);
+            this._loadItems(this);
             this._updateList(this, config);
         };
 
@@ -52,6 +54,19 @@ module.exports = {
                     client.on(name, (...args) => event.run(client, ...args));
                 }
             });
+        }
+
+        _loadItems (client) {
+            glob (`${process.cwd()}/src/resources/items/**/*.js`).then(items => {
+                for (const itemFile of items) {
+                    const { name } = parse(itemFile);
+                    const file = require(itemFile);
+                    const item = new file(client, name.toLowerCase());
+
+                    const itemID = item.id;
+                    client.items.set(itemID, item);
+                }
+            })
         }
 
         _updateList (client, config) {
