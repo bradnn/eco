@@ -30,7 +30,7 @@ module.exports = class {
                 profile.save()
                 msg.channel.send({
                     embed: {
-                        title: `Good Hunt ✔`,
+                        title: `Good Hunt ✅`,
                         description: `You successfully hunted with your Spear and earned ${FormatUtils.money(earnings)}, Good Job!`,//gives player the amount of money earned and message
                         color: client.colors.success
                     }
@@ -41,7 +41,7 @@ module.exports = class {
                 profile.save()
                 msg.channel.send({
                     embed: {
-                        title: `Good Hunt ✔`,
+                        title: `Good Hunt ✅`,
                         description: `You successfully hunted with your Bow and earned ${FormatUtils.money(earnings)}, Good Job!`,//gives player the amount of money earned and message
                         color: client.colors.success
                     }
