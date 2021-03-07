@@ -113,6 +113,11 @@ module.exports = class {
                 }});
                 return;
         }
+        var itemChance = Math.random() * 100;
+        if(itemChance > 95.5) {
+            client.items.get('004').add(msg.author.id, 1);
+            rewardString += `🖼 +1 Campbells Soup Can (UNCOMMON DROP)\n`;
+        }
 
         var gemChance = Math.random() * 100;
         if (gemChance > 80) {

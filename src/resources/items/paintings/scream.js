@@ -2,7 +2,7 @@ const userModel = require('../../../structures/models/User.js');
 
 module.exports = class {
     constructor() {
-        this.id = '003',
+        this.id = '',
 
         this.name = 'scream',
         this.formatName = 'The Scream',
@@ -11,7 +11,11 @@ module.exports = class {
         this.currency = 'gems',
         this.buyPrice = '1190000',
         this.sellPrice = '600000',
-        this.purchasable = true,
+        this.purchasable = false,
+
+        this.tier = 'legendary',
+
+        this.itemshop = true,
 
         this.category = 'paintings',
         this.categoryName = 'Paintings'

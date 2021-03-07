@@ -10,6 +10,10 @@ module.exports.Messages = {
         var string = UnscrambleWords[number];
         var scrambled = string.split('').sort(function(){return 0.5-Math.random()}).join('');
 
+        while (string == scrambled) {
+            scrambled = string.split('').sort(function(){return 0.5-Math.random()}).join('');
+        }
+
         const filter = response => {
             return response.author.id === msg.author.id;
         }

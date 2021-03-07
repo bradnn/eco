@@ -13,6 +13,8 @@ module.exports = class {
         this.sellPrice = '500',
         this.purchasable = true,
 
+        this.tier = 'uncommon',
+
         this.category = 'paintings',
         this.categoryName = 'Paintings'
     }

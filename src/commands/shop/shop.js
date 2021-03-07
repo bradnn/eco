@@ -10,35 +10,35 @@ module.exports = class {
 
     async run(client, msg, args, prefix) {
 
-        var NewShopObj = {
+        var NewShopObj = { // Define shop object
             '1': {
                 category: "Home Page"
             }
         };
 
-        var usedPage = 2;
-        var thisPageCount = 0;
-        var categoryPageCount = 1;
+        var usedPage = 2; // the last used page
+        var thisPageCount = 0; // How many items are on this page
+        var categoryPageCount = 1; // How many pages this category has
 
-        var curCategory;
+        var curCategory; // What category its currently on
         
-        for (const [key, value] of client.items) {
+        for (const [key, value] of client.items) { // Go through all items saved to bot
 
-            if (!value.purchasable) {
+            if (!value.purchasable) { // If the item isnt purchasable, skip
                 continue;
             }
 
-            if (curCategory == undefined) {
+            if (curCategory == undefined) { // If its the first category
                 curCategory = value.category;
             }
-            if (curCategory != value.category) {
+            if (curCategory != value.category) { // If the category has changed since the last item
                 usedPage++;
                 thisPageCount = 0;
                 curCategory = value.category;
                 categoryPageCount = 1;
             }
 
-            if (NewShopObj[usedPage] == undefined) {
+            if (NewShopObj[usedPage] == undefined) { // If its a new page
                 NewShopObj[usedPage] = {
                     category: value.categoryName,
                     pageNumber: categoryPageCount,
@@ -46,36 +46,32 @@ module.exports = class {
                 }
             }
 
-            if(NewShopObj[usedPage].items[value.id] == undefined) {
+            if(NewShopObj[usedPage].items[value.id] == undefined) { // If the item doesn't already exist, make it
                 NewShopObj[usedPage].items[value.id] = value;
             }
-            thisPageCount++;
+            thisPageCount++; // Add to this pages item count
 
-            if (thisPageCount >= 5) {
+            if (thisPageCount >= 5) { // if the page has 5 items or more, make a new page
                 usedPage++;
                 thisPageCount = 0;
                 categoryPageCount++;
             }
         }
-
-        var usedField = 0;
-
-        var newEmbed = {};
         
-        var pageChosen = args[0];
+        var pageChosen = args[0]; // What page the user chose
 
-        if (!pageChosen) {
+        if (!pageChosen) { // If the user didnt choose a page
             pageChosen = 1;
         } else {
-            pageChosen = parseInt(pageChosen);
+            pageChosen = parseInt(pageChosen); // Change page to int
 
-            if(isNaN(pageChosen)) {
+            if(isNaN(pageChosen)) { // If its not a valid number, check if its a category name
                 var getPage;
-                for (getPage in NewShopObj) {
+                for (getPage in NewShopObj) { // Go through every page
                     var pageObj = NewShopObj[getPage];
 
-                    if (pageObj.category.toLowerCase() == args[0].toLowerCase()) {
-                        pageChosen = parseInt(getPage);
+                    if (pageObj.category.toLowerCase() == args[0].toLowerCase()) { // If the page name matches an existing page
+                        pageChosen = parseInt(getPage); // Set pagechosen to the int of the found page
                         if(!isNaN(parseInt(args[1]))) {
                             pageChosen += (parseInt(args[1]) - 1);
                         }
@@ -84,272 +80,67 @@ module.exports = class {
                 }
             }
         }
-        if (NewShopObj[pageChosen].pageNumber == undefined) {
-            newEmbed.title = `${NewShopObj[pageChosen].category}`;
-        } else {
-            newEmbed.title = `${NewShopObj[pageChosen].category} (Page ${NewShopObj[pageChosen].pageNumber})`;
+
+        function genEmbed(page, prefix) {
+            var newEmbed = {};
+
+            if (page === 1) {
+                newEmbed.title = 'Home Page';
+                newEmbed.description = 'The new shop is still in progress, sales and rotating shop coming soon!\nView the rest of the shop by reacting to this message.';
+                return newEmbed;
+            }
+
+
+            if (NewShopObj[page].pageNumber == undefined) {
+                newEmbed.title = `${NewShopObj[page].category}`;
+            } else {
+                newEmbed.title = `${NewShopObj[page].category} (Page ${NewShopObj[page].pageNumber})`;
+            }
+            var pageString = `__ID 📦 Item Name **-** Price__\n`;
+            for (item in NewShopObj[page].items) {
+                var item = NewShopObj[page].items[item];
+                var priceString = `${FormatUtils.numberLetter(item.buyPrice)} ${FormatUtils.capitalize(item.currency)}`;
+                pageString += `${item.id} ${item.emoji} ${item.formatName} **-** ${priceString}\n`;
+            }
+            newEmbed.description = pageString;
+            newEmbed.footer = {
+                text: `Page ${page}/${usedPage} (${NewShopObj[page].category}) | ${prefix}shop <page> | ${prefix}buy <id> <amount>`
+            }
+
+            return newEmbed;
         }
-        var pageString = `__ID 📦 Item Name **-** Price__\n`;
-        for (item in NewShopObj[pageChosen].items) {
-            var item = NewShopObj[pageChosen].items[item];
-            var priceString = `${FormatUtils.numberLetter(item.buyPrice)} ${FormatUtils.capitalize(item.currency)}`;
-            pageString += `${item.id} ${item.emoji} ${item.formatName} **-** ${priceString}\n`;
-        }
-        newEmbed.description = pageString;
-        newEmbed.footer = {
-            text: `Page ${pageChosen}/${usedPage - 1} (${NewShopObj[pageChosen].category}) | ${prefix}shop <page> | ${prefix}buy <id> <amount>`
-        }
 
-        msg.channel.send({embed: newEmbed});
+        msg.channel.send({embed: genEmbed(pageChosen, prefix)}).then(message => {
 
+            if (pageChosen === 1) {
+                message.react('▶');
+                // Main Page
+            } else {
+                message.react('◀');
+                message.react('▶');
+            }
 
+            const collector = message.createReactionCollector(
+                (reaction, user) => ['◀', '▶'].includes(reaction.emoji.name) && user.id === msg.author.id,
 
+                {time: 60000}
+            );
 
+            collector.on('collect', reaction => {
+                message.reactions.removeAll().then(() => {
+                    if (reaction.emoji.name === '◀') {
+                        pageChosen--;
+                        message.edit({embed: genEmbed(pageChosen, prefix)});
+                    } else {
+                        pageChosen++;
+                        message.edit({embed: genEmbed(pageChosen, prefix)});
+                    }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//         var embed = {};
-
-//         var categories = Object.keys(Items);
-//         var allItemList = [];
-//         var pages = 0;
-//         var pageObj = {};
-//         var lastGivenID = 100;
-//         var category;
-
-//         for (category in categories) {
-//             category = categories[category];
-
-//             var catItemCount = 0;
-//             var catItemList = [];
-//             var item;
-//             for (item in Items[category]) {
-//                 if (item != "formatTitle" && Items[category][item].purchasable == true) {
-//                     catItemCount++;
-//                     catItemList.push(item);
-//                     allItemList.push(item);
-//                 }
-//             }
-
-//             if (catItemCount <= 0) {
-//                 continue;
-//             }
-
-//             var catPageCount = Math.floor(catItemCount / 6);
-//             var catPageCountAdded = 0;
-
-//             while (catPageCountAdded <= catPageCount) {
-//                 catPageCountAdded++
-//                 pages++;
-
-//                 pageObj[pages] = {
-//                     category: category,
-//                     categoryPage: catPageCountAdded
-//                 };
-
-//                 for (item in catItemList) {
-//                     var item = catItemList[item];
-//                     if (catItemList.indexOf(item) < 6) {
-//                         lastGivenID++;
-//                         pageObj[pages][item] = {
-//                             formatName: Items[category][item].formatName,
-//                             category: category,
-//                             currency: Items[category][item].transactionCurrency,
-//                             price: Items[category][item].price,
-//                             emoji: Items[category][item].emoji,
-//                             id: lastGivenID,
-//                         }
-//                     }
-//                 }
-//                 catItemList.splice(0, 6);
-//             }
-
-
-//         }
-
-
-//         function getItemID (itemName) {
-//             var pageID;
-//             for (pageID in pageObj) {
-//                 var itemList = Object.keys(pageObj[pageID]);
-//                 if (itemList.includes(itemName)) {
-//                     return pageObj[pageID][itemName].id;
-//                 }
-//             }
-//         }
-
-//         function getItemCategory (itemName) {
-//             var pageID;
-//             for (pageID in pageObj) {
-//                 var itemList = Object.keys(pageObj[pageID]);
-//                 if (itemList.includes(itemName)) {
-//                     return pageObj[pageID][itemName].category;
-//                 }
-//             }
-//         }
-
-//         var chosenPage = parseInt(args[0]) - 1;
-//         if (!chosenPage || isNaN(chosenPage)) {
-//             chosenPage = 0;
-//         }
-
-//         var itemList = ``;
-
-//         var res = await shopModel.findOne({userID: "776935174222249995"}, async function (err, res) {
-//             if (err) throw err;
-//         });
-//         if (!res) {
-//             res = await shopModel.create({userID: "776935174222249995"});
-//         }
-
-//         if(chosenPage == 0) {
-            
-//             var allItems = allItemList;
-
-//             if (res.superSale.resetTime <= Date.now()) {
-//                 var itemIndex = Math.floor(Math.random() * allItems.length);
-//                 var item2Index = Math.floor(Math.random() * allItems.length);
-
-//                 if (itemIndex == item2Index) {
-//                     if ((item2Index + 1) > allItems.length) {
-//                         item2Index -= 1;
-//                     } else {
-//                         item2Index += 1;
-//                     }
-//                 }
-                
-//                 res.superSale.item1 = allItems[itemIndex];
-//                 res.superSale.item2 = allItems[item2Index];
-//                 res.superSale.resetTime = Date.now() + 21600000;
-//             }
-
-//             if (res.shopFeatured.resetTime <= Date.now()) {
-//                 var fitemIndex = Math.floor(Math.random() * allItems.length);
-//                 var fitem2Index = Math.floor(Math.random() * allItems.length);
-//                 var fitem3Index = Math.floor(Math.random() * allItems.length);
-
-//                 if (fitemIndex == fitem2Index) {
-//                     if ((fitem2Index + 1) > allItems.length) {
-//                         fitem2Index -= 1;
-//                     } else {
-//                         fitem2Index += 1;
-//                     }
-//                 } else if (fitem2Index == fitem3Index) {
-//                     if ((fitem3Index + 1) > allItems.length) {
-//                         fitem3Index -= 1;
-//                     } else {
-//                         fitem3Index += 1;
-//                     }
-//                 } else if (fitemIndex == fitem3Index) {
-//                     if ((fitem3Index + 1) > allItems.length) {
-//                         fitem3Index -= 1;
-//                     } else {
-//                         fitem3Index += 1;
-//                     }
-//                 }
-
-//                 res.shopFeatured.item1 = allItems[fitemIndex];
-//                 res.shopFeatured.item2 = allItems[fitem2Index];
-//                 res.shopFeatured.item3 = allItems[fitem3Index];
-//                 res.shopFeatured.resetTime = Date.now() + 10800000;
-//             }
-//             res.save();
-
-//             var featuredString = ``;
-
-//             var featuredItemList = ['item1', 'item2', 'item3'];
-
-//             var featuredItem;
-//             for(featuredItem in featuredItemList) {
-//                 featuredItem = featuredItemList[featuredItem];
-
-//                 var itemCategory = getItemCategory(res.shopFeatured[featuredItem]).toLowerCase();
-
-//                 var thisItemObj = Items[itemCategory][res.shopFeatured[featuredItem]];
-
-//                 if (res.superSale.item1 == res.shopFeatured[featuredItem]) {
-//                     featuredString += `#${getItemID(res.shopFeatured[featuredItem])} ${thisItemObj.emoji} ${thisItemObj.formatName} **-** ~~${FormatUtils.numberLetter(thisItemObj.price)} ${thisItemObj.transactionCurrency}~~ ${FormatUtils.numberLetter((thisItemObj.price / 100) * 60)} ${thisItemObj.transactionCurrency} (**40% OFF**)\n`
-//                 } else if (res.superSale.item2 == res.shopFeatured[featuredItem]) {
-//                     featuredString += `#${getItemID(res.shopFeatured[featuredItem])} ${thisItemObj.emoji} ${thisItemObj.formatName} **-** ~~${FormatUtils.numberLetter(thisItemObj.price)} ${thisItemObj.transactionCurrency}~~ ${FormatUtils.numberLetter((thisItemObj.price / 100) * 80)} ${thisItemObj.transactionCurrency} (**20% OFF**)\n`
-//                 } else {
-//                     featuredString += `#${getItemID(res.shopFeatured[featuredItem])} ${thisItemObj.emoji} ${thisItemObj.formatName} **-** ${FormatUtils.numberLetter(thisItemObj.price)} ${thisItemObj.transactionCurrency}\n`
-//                 }
-//             }
-
-//             var saleString = ``;
-//             var saleItemList = ['item1', 'item2'];
-//             var saleItem;
-//             for (saleItem in saleItemList) {
-//                 saleItem = saleItemList[saleItem];
-
-//                 var itemCategory = getItemCategory(res.superSale[saleItem]).toLowerCase();
-
-//                 var thisItemObj = Items[itemCategory][res.superSale[saleItem]];
-//                 switch (saleItem) {
-//                     case "item1":
-//                         saleString += `#${getItemID(res.superSale.item1)} ${thisItemObj.emoji} ${thisItemObj.formatName} **-** ~~${FormatUtils.numberLetter(thisItemObj.price)} ${thisItemObj.transactionCurrency}~~ ${FormatUtils.numberLetter((thisItemObj.price / 100) * 60)} ${thisItemObj.transactionCurrency} (**40% OFF**)\n`;
-//                         break;
-//                     case "item2":
-//                         saleString += `#${getItemID(res.superSale.item2)} ${thisItemObj.emoji} ${thisItemObj.formatName} **-** ~~${FormatUtils.numberLetter(thisItemObj.price)} ${thisItemObj.transactionCurrency}~~ ${FormatUtils.numberLetter((thisItemObj.price / 100) * 80)} ${thisItemObj.transactionCurrency} (**20% OFF**)\n`;
-//                         break;
-//                 }
-//             }
-
-//             msg.channel.send({ embed: {
-//                 title: `Home Page`,
-//                 description: `**ON SALE** 🔥\n${saleString}
-
-// **FEATURED** 😱
-// ${featuredString}`,
-//                 color: client.colors.default,
-//                 footer: {
-//                     text: `Page ${chosenPage + 1}/${pages + 1} | ${prefix}shop <page> | ${prefix}buy <id> <amount>`
-//                 }
-//             }});
-//             return;
-//         }
-
-//         if ((chosenPage + 1) > pages + 1) {
-//             chosenPage = 4;
-//         }
-
-//         var itemObj;
-//         for(itemObj in pageObj[chosenPage]) {
-//             var obj =pageObj[chosenPage][itemObj];
-//             if(obj.emoji != undefined) {
-//                 if(res.superSale.item1 == itemObj) {
-//                     itemList += `#${obj.id} ${obj.emoji} ${obj.formatName} **-** ~~${FormatUtils.numberLetter(obj.price)} ${obj.currency}~~ ${FormatUtils.numberLetter((obj.price / 100) * 60)} ${obj.currency} (**40% OFF**)\n`
-//                 } else if (res.superSale.item2 == itemObj) {
-//                     itemList += `#${obj.id} ${obj.emoji} ${obj.formatName} **-** ~~${FormatUtils.numberLetter(obj.price)} ${obj.currency}~~ ${FormatUtils.numberLetter((obj.price / 100) * 80)} ${obj.currency} (**20% OFF**)\n`
-//                 } else {
-//                     itemList += `#${obj.id} ${obj.emoji} ${obj.formatName} **-** ${FormatUtils.numberLetter(obj.price)} ${obj.currency}\n`
-//                 }
-//             }
-//         }
-
-//         embed = {
-//             title: `${pageObj[chosenPage].category} (Page ${pageObj[chosenPage].categoryPage})`,
-//             description: `__#ID 📦 Item Name **-** Price__\n${itemList}`,
-//             footer: {
-//                 text: `Page ${chosenPage + 1}/${pages + 1} | ${prefix}shop <page> | ${prefix}buy <id> <amount>`
-//             },
-//             color: client.colors.default
-//         }
-
-//         msg.channel.send({embed: embed});
+                    if (pageChosen !== 1) message.react('◀');
+                    if (pageChosen !== usedPage) message.react('▶');
+                });
+            })
+        });
         return;
 
     }

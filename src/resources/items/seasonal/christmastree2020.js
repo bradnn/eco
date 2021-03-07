@@ -13,6 +13,8 @@ module.exports = class {
         this.sellPrice = '0',
         this.purchasable = false,
 
+        this.tier = 'legendary',
+
         this.category = 'seasonal',
         this.categoryName = 'Seasonal'
     }

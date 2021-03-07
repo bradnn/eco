@@ -26,7 +26,7 @@ module.exports = class {
         if (chances < 98) {
             var gemAmount;
             if(profile.collections.mining.drill) {
-                gemAmount = Math.floor(Math.random() * 199) + 100;
+                gemAmount = Math.floor(Math.random() * 199) + 850;
                 profile.econ.wallet.gems += gemAmount;
                 profile.stats.mining.timesMined += 1;
                 profile.save();

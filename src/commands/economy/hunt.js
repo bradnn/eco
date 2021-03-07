@@ -12,6 +12,7 @@ module.exports = class {
     }
 
     async run(client, msg, args, guildPrefix) {
+
         const cooldown = await CooldownHandlers.get("hunt", msg.author);
         if(cooldown.response){
             msg.channel.send(cooldown.embed);

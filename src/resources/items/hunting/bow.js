@@ -13,6 +13,8 @@ module.exports = class {
         this.sellPrice = '0',
         this.purchasable = true,
 
+        this.tier = 'uncommon',
+
         this.category = 'hunting',
         this.categoryName = 'Hunting'
     }

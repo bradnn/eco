@@ -9,9 +9,13 @@ module.exports = class {
         this.emoji = '🖼',
 
         this.currency = 'gems',
-        this.buyPrice = '8500000',
+        this.buyPrice = '4500000',
         this.sellPrice = '2000000',
-        this.purchasable = true,
+        this.purchasable = false,
+
+        this.tier = 'legendary',
+
+        this.itemshop = true,
 
         this.category = 'paintings',
         this.categoryName = 'Paintings'
