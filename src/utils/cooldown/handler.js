@@ -7,6 +7,7 @@ const cooldowns = {
     crime: 60000,
     rob: 60000,
     robUser: 300000,
+    race: 150000,
     apply: 600000,
     pay: 3600000, 
     flip: 15000,

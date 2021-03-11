@@ -29,10 +29,10 @@ module.exports = class {
                 color: client.colors.warning
             }});
             return;
-        } else if (amount > 100000) {
+        } else if (amount > 250000) {
             msg.channel.send({ embed: {
                 title: `Whoops 🔥`,
-                description: `You can't gamble more than $100,000 at once!`,
+                description: `You can't gamble more than $250,000 at once!`,
                 color: client.colors.warning
             }});
             return;

@@ -122,6 +122,10 @@ const userModel = mongoose.Schema({
         hunt: {
             type: Date,
             default: 0
+        },
+        race: {
+            type: Date,
+            default: 0
         }
     },
     pets: {
@@ -133,6 +137,12 @@ const userModel = mongoose.Schema({
                 level: 0
             },
             buff: "workPayrate"
+        }
+    },
+    racing: {
+        selectedCarID: {
+            type: String,
+            default: "None"
         }
     },
     collections: {

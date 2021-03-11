@@ -34,7 +34,7 @@ module.exports = class {
             fields: [
                 {
                     name: `Work Stats`,
-                    value: `🔧 Times Worked **-** ${profile.stats.work.workCount} (${reqMessage})\n🌎 Times Worked (Since last raise) **-** ${profile.stats.work.workCountRaise}/25`
+                    value: `🔧 Times Worked **-** ${profile.stats.work.workCount} (${reqMessage})\n🌎 Times Worked (Since last raise) **-** ${profile.stats.work.workCountRaise}/25\n💼 Raise Bonus **-** +${profile.work.raiseLevel}%`
                 },
                 {
                     name: `Mining Stats`,

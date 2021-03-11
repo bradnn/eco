@@ -16,7 +16,9 @@ module.exports = class {
         this.tier = 'epic',
 
         this.category = 'cars',
-        this.categoryName = 'Cars'
+        this.categoryName = 'Cars',
+
+        this.maxSpeed = 236
     }
 
     async add(userID, amount) {

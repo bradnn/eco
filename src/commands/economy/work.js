@@ -68,7 +68,7 @@ module.exports = class {
                     profile.work.sick = true; // Set the user to be sick
                 } else if (chance > 96) { // If the user should recieve double coins (2% Chance)
                     var perfectMessage = FinalWorkMessages[profile.work.job].perfect[Math.floor(Math.random() * FinalWorkMessages[profile.work.job].perfect.length)]; // Chooses a random perfect work message
-                    var earnedCoins = Math.floor(JobList.pay[job] + (JobList.pay[job] * (profile.work.raiseLevel) / 100)); // Calculates how much the user should earn
+                    var earnedCoins = Math.floor(JobList.pay[job] + ((JobList.pay[job] / 100) * profile.work.raiseLevel)); // Calculates how much the user should earn
                     earnedCoins += Math.floor(earnedCoins / 2);
                     embed = {
                         title: `Amazing Job 🎊`,
@@ -83,7 +83,7 @@ module.exports = class {
                     rewardString += `💰 +50% Earnings (PERFECT WORK)\n💰 +${FormatUtils.money(earnedCoins)}\n`
                 } else { // Normal work
                     var goodMessage = FinalWorkMessages[profile.work.job].good[Math.floor(Math.random() * FinalWorkMessages[profile.work.job].good.length)]; // Chooses a random good work message
-                    var earnedCoins = Math.floor(JobList.pay[job] + (JobList.pay[job] * (profile.work.raiseLevel) / 100)); // Calculates how much the user should earn
+                    var earnedCoins = Math.floor(JobList.pay[job] + ((JobList.pay[job] / 100) * profile.work.raiseLevel)); // Calculates how much the user should earn
 
                     embed = {
                         title: `Good Job 🎉`,
@@ -113,6 +113,13 @@ module.exports = class {
                 }});
                 return;
         }
+
+        if (profile.stats.work.workCountRaise >= 25) {
+            profile.stats.work.workCountRaise = 0;
+            profile.work.raiseLevel++;
+            rewardString += `🔧 You got a raise! (+1% Bonus)\n`;
+        }
+
         var itemChance = Math.random() * 100;
         if(itemChance > 95.5) {
             client.items.get('004').add(msg.author.id, 1);
