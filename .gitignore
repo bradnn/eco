@@ -3,6 +3,10 @@
 config.js
 config-alpha.js
 
+# Secret files
+
+/secret
+
 # Logs
 logs
 *.log

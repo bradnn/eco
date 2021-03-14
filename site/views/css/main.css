@@ -1,0 +1,107 @@
+body {
+    font-family: 'Poppins';
+    background-color: #202225;
+}
+
+* {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.index {
+    padding: 10px 25px;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+}
+
+.name {
+    font-weight: bold;
+    font-size: 24px;
+    text-align: center;
+    color: #FFFCED;
+}
+
+.ListNav {
+    display: block;
+}
+
+.NavButtons {
+    list-style: none;
+    display: flex;
+
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    padding-inline-start: 40px;
+}
+
+.NavButtons li {
+    padding: 0 10px;
+}
+
+.NavButtons li a {
+    color: #B9BBBE;
+    text-decoration: none;
+}
+
+.HeroHeader {
+    padding-top: 300px;
+    color: #FFFCED;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    position: relative;
+}
+
+.HeroHeader h1 {
+    margin: 0px;
+    font-size: 38px;
+}
+
+.HeroHeader p {
+    margin: 12px 0px 30px;
+    font-size: 22px;
+    line-height: 2;
+    color: #B9BBBE;
+}
+
+.HeroButtons {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    vertical-align: baseline;
+}
+
+.blue {
+    background-color: #38D1FC;
+}
+
+.blue:hover {
+    background-color: #18afd8;
+}
+
+.gray {
+    background-color: #19191A;
+}
+.gray:hover {
+    background-color: #111111;
+}
+
+.button {
+    transition: 0.3s;
+    margin: 0px 10px;
+    height: 60px;
+    width: 260px;
+    font-weight: 600px;
+    font-size: 18px;
+    color: white;
+    padding: 10px 24px;
+    cursor: pointer;
+    float: left;
+    border: none;
+}

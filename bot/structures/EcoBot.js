@@ -6,8 +6,9 @@ const glob = promisify(require('glob'));
 
 module.exports = {
     EcoBot: class extends Client {
-        constructor(config, clientOptions) {
-            super(config.TOKEN, clientOptions);
+        constructor(config, clientOptions, CANARY) {
+            super(config, clientOptions, CANARY);
+            this.CANARY = CANARY;
             this.config = config;
 
             this.colors = {
@@ -26,11 +27,11 @@ module.exports = {
             this._loadCommands(this);
             this._loadEvents(this);
             this._loadItems(this);
-            this._updateList(this, config);
+            if (!this.CANARY) this._updateList(this, config);
         };
 
         _loadCommands (client) {
-            glob (`${process.cwd()}/src/commands/**/*.js`).then(commands => {
+            glob (`${process.cwd()}/bot/commands/**/*.js`).then(commands => {
                 for (const commandFile of commands) {
                     const { name } = parse(commandFile);
                     const file = require(commandFile);
@@ -46,7 +47,7 @@ module.exports = {
         }
 
         _loadEvents (client) {
-            glob (`${process.cwd()}/src/events/**/*.js`).then(events => {
+            glob (`${process.cwd()}/bot/events/**/*.js`).then(events => {
                 for (const eventFile of events) {
                     const { name } = parse(eventFile);
                     const file = require(eventFile);
@@ -57,7 +58,7 @@ module.exports = {
         }
 
         _loadItems (client) {
-            glob (`${process.cwd()}/src/resources/items/**/*.js`).then(items => {
+            glob (`${process.cwd()}/bot/resources/items/**/*.js`).then(items => {
                 for (const itemFile of items) {
                     const { name } = parse(itemFile);
                     const file = require(itemFile);
@@ -81,7 +82,8 @@ module.exports = {
         }
 
         async start() {
-            await this.login(this.config.TOKEN);
+            if (this.CANARY) await this.login(this.config.CANARY_TOKEN);
+            else await this.login(this.config.BOT_TOKEN);
         }
     }
 }
