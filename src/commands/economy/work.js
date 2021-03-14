@@ -32,10 +32,10 @@ module.exports = class {
         var embed;
 
         const cooldown = await CooldownHandlers.get("work", user);
-        if (cooldown.response) {
-            msg.channel.send(cooldown.embed);
-            return;
-        }
+        if (cooldown.response) { 
+            msg.channel.send(cooldown.embed); 
+            return; 
+        };
 
 
         const scrambled = await Messages.sendScramble(msg, client); // Send an unscramble challenge
@@ -85,28 +85,28 @@ module.exports = class {
                     var goodMessage = FinalWorkMessages[profile.work.job].good[Math.floor(Math.random() * FinalWorkMessages[profile.work.job].good.length)]; // Chooses a random good work message
                     var earnedCoins = Math.floor(JobList.pay[job] + ((JobList.pay[job] / 100) * profile.work.raiseLevel)); // Calculates how much the user should earn
 
-                    embed = {
+                    embed = { // Sets the embed to be sent
                         title: `Good Job 🎉`,
                         description: goodMessage,
                         fields: [],
                         color: client.colors.success
                     }
 
-                    profile.stats.work.workCount += 1;
-                    profile.stats.work.workCountRaise += 1;
-                    profile.econ.wallet.balance += earnedCoins;
-                    rewardString += `💰 +${FormatUtils.money(earnedCoins)}\n`
+                    profile.stats.work.workCount += 1; 
+                    profile.stats.work.workCountRaise += 1; // Adds 1 work count towards getting the next raise (25 per raise)
+                    profile.econ.wallet.balance += earnedCoins; // Adds earned coins to database profile
+                    rewardString += `💰 +${FormatUtils.money(earnedCoins)}\n` // Adds earned money to reward string
                 }
                 break;
-            case "INCORRECT":
-                msg.channel.send({ embed: {
+            case "INCORRECT": // If the user unscambled the word incorrectly
+                msg.channel.send({ embed: { // Sends wrong answer alert
                     title: `Wrong Answer ❌`,
                     description: `That was the wrong answer! Try again.`,
                     color: client.colors.error
                 }});
                 return;
-            case "NOT ANSWERED":
-                msg.channel.send({ embed: {
+            case "NOT ANSWERED": // If the user didn't answer the prompt
+                msg.channel.send({ embed: { // Sends not answered alert
                     title: `You didn't answer! ❌`,
                     description: `Your forgot to answer! Try again.`,
                     color: client.colors.error

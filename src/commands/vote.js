@@ -12,7 +12,7 @@ module.exports = class {
 
             msg.channel.send({embed: {
                 title: `EcoBot Vote Links`,
-                description: `Vote for us [here](https://ecobot.syclesdev.com/vote)!`,
+                description: `Vote for us [here](http://ecobot.sycles.me/vote)!`,
                 color: client.colors.default
             }})
             return;
