@@ -126,6 +126,10 @@ const userModel = mongoose.Schema({
         race: {
             type: Date,
             default: 0
+        },
+        paint: {
+            type: Date,
+            default: 0
         }
     },
     pets: {
