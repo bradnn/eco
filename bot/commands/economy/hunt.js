@@ -25,18 +25,7 @@ module.exports = class {
         var chance = Math.floor(Math.random()*100)+1;
         if(chance<80){  //if user doesnt fail
             var earnings;
-            if(profile.collections.hunting.spear) {
-                earnings = Math.floor((Math.random()*2500) +9999);
-                profile.econ.wallet.balance += earnings;
-                profile.save()
-                msg.channel.send({
-                    embed: {
-                        title: `Good Hunt ✅`,
-                        description: `You successfully hunted with your Spear and earned ${FormatUtils.money(earnings)}, Good Job!`,//gives player the amount of money earned and message
-                        color: client.colors.success
-                    }
-                });
-            } else if(profile.collections.hunting.bow) {
+            if(profile.collections.hunting.bow) {
                 earnings = Math.floor((Math.random()*2500) +14999);
                 profile.econ.wallet.balance += earnings;
                 profile.save()
@@ -47,6 +36,18 @@ module.exports = class {
                         color: client.colors.success
                     }
                 });
+            } else if(profile.collections.hunting.spear) {
+                earnings = Math.floor((Math.random()*2500) +9999);
+                profile.econ.wallet.balance += earnings;
+                profile.save()
+                msg.channel.send({
+                    embed: {
+                        title: `Good Hunt ✅`,
+                        description: `You successfully hunted with your Spear and earned ${FormatUtils.money(earnings)}, Good Job!`,//gives player the amount of money earned and message
+                        color: client.colors.success
+                    }
+                });
+           
             } else {
                 earnings = Math.floor((Math.random()*2500) +4999);
                 profile.econ.wallet.balance += earnings;
