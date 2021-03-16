@@ -132,6 +132,22 @@ module.exports = class {
                     var opponentSpeed = opponentCar.maxSpeed - Math.floor(Math.random() * 49) + 1;
                     var yourSpeed = yourCar.maxSpeed - Math.floor(Math.random() * 39) + 1;
 
+                    var crashChance = yourCar.crashChance;
+                    var crash = Math.floor(Math.random() * 99);
+                    var repair = yourCar.repairCost;
+
+                    if (crashChance >= crash){
+                        profile.econ.wallet.balance -= repair;
+                        profile.save();
+
+                        msg.channel.send({ embed: {
+                            title: `Uh Oh! 💥🏎`,
+                            description: ` Your ${yourCar.formatName} crashed! You lost the race and paid the repair cost of $${repair}`,
+                            color: client.colors.error
+                        }
+                        });
+                        return;
+                    }
                     if (yourSpeed > opponentSpeed) {
                         var winAmount = Math.floor((Math.random()*2500) +14999);
 

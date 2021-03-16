@@ -87,7 +87,7 @@ module.exports = class {
                     break;
                 case "socialEngineering":
                     var gainMessages = [`You convinced a bank worker you were a janitor and got into the safe. You stole ${FormatUtils.money(gainAmount)}!`];
-                    var lossMessages = [`You tried convincing a bank worker you were a janitor but they caught on. You were find ${FormatUtils.money(lossAmount)}!`];
+                    var lossMessages = [`You tried convincing a bank worker you were a janitor but they caught on. You were fined ${FormatUtils.money(lossAmount)}!`];
 
                     var gainIndex = Math.floor(Math.random() * gainMessages.length);
                     var lossIndex = Math.floor(Math.random() * lossMessages.length);

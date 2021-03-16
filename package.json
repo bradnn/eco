@@ -4,7 +4,7 @@
   "description": "",
   "main": "error.js",
   "scripts": {
-    "bot": "node bot/src/bot.js",
+    "bot": "node bot/bot.js",
     "site": "node site/index.js"
   },
   "repository": {

@@ -18,7 +18,9 @@ module.exports = class {
         this.category = 'cars',
         this.categoryName = 'Cars',
 
-        this.maxSpeed = 155
+        this.maxSpeed = 155,
+        this.crashChance = 20,
+        this.repairCost= '8000'
     }
 
     async add(userID, amount) {
