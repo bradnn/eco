@@ -18,13 +18,9 @@ module.exports = class {
         this.category = 'cars',
         this.categoryName = 'Cars',
 
-<<<<<<< Updated upstream
-        this.maxSpeed = 220,
+        this.maxSpeed = 230,
         this.crashChance = 5,
         this.repairCost= '40000'
-=======
-        this.maxSpeed = 230
->>>>>>> Stashed changes
     }
 
     async add(userID, amount) {
