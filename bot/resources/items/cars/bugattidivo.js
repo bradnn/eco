@@ -9,7 +9,7 @@ module.exports = class {
         this.emoji = '🚗',
 
         this.currency = 'coins',
-        this.buyPrice = '5400000',
+        this.buyPrice = '1400000',
         this.sellPrice = '3250000',
         this.purchasable = true,
 
@@ -18,9 +18,13 @@ module.exports = class {
         this.category = 'cars',
         this.categoryName = 'Cars',
 
+<<<<<<< Updated upstream
         this.maxSpeed = 236,
         this.crashChance = 1,
         this.repairCost= '540000'
+=======
+        this.maxSpeed = 240
+>>>>>>> Stashed changes
     }
 
     async add(userID, amount) {

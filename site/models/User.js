@@ -91,6 +91,10 @@ const userModel = mongoose.Schema({
             type: Date,
             default: 0
         },
+        mine: {
+            type: Date,
+            default: 0
+        },
         apply: {
             type: Date,
             default: 0
@@ -114,6 +118,35 @@ const userModel = mongoose.Schema({
         flip: {
             type: Date,
             default: 0
+        },
+        hunt: {
+            type: Date,
+            default: 0
+        },
+        race: {
+            type: Date,
+            default: 0
+        },
+        paint: {
+            type: Date,
+            default: 0
+        }
+    },
+    pets: {
+        type: Object,
+        default: {
+            name: "Rabbit",
+            leveling: {
+                experience: 0,
+                level: 0
+            },
+            buff: "workPayrate"
+        }
+    },
+    racing: {
+        selectedCarID: {
+            type: String,
+            default: "None"
         }
     },
     collections: {
@@ -130,6 +163,14 @@ const userModel = mongoose.Schema({
                 type: Number,
                 default: 0
             },
+            campbellsSoupCan: {
+                type: Number,
+                default: 0
+            },
+            asbtractPainting: {
+                type: Number,
+                default: 0
+            }
         },
         cars: {
             rollsRoyceSweptail: {
@@ -161,6 +202,30 @@ const userModel = mongoose.Schema({
             newYears2021Ball: {
                 type: Number,
                 default: 0
+            },
+            christmasTree2020: {
+                type: Number,
+                default: 0
+            }
+        },
+        mining: {
+            pickaxe: {
+                type: Number,
+                default: 0
+            },
+            drill: {
+                type: Number,
+                default: 0
+            }
+        },
+        hunting: {
+            spear: {
+                type: Number,
+                default: 0
+            },
+            bow: {
+                type: Number,
+                default: 0
             }
         }
     },
@@ -171,6 +236,12 @@ const userModel = mongoose.Schema({
                 default: 0
             },
             totalEarnedGems: {
+                type: Number,
+                default: 0
+            }
+        },
+        mining: {
+            timesMined: {
                 type: Number,
                 default: 0
             }
@@ -227,6 +298,16 @@ const userModel = mongoose.Schema({
             messageToggle: {
                 type: Boolean,
                 default: true
+            },
+            streak: {
+                lastVote: {
+                    type: Date,
+                    default: 0
+                },
+                voteStreak: {
+                    type: Number,
+                    default: 0
+                }
             }
         }
     }

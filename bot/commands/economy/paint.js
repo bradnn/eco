@@ -19,7 +19,6 @@ module.exports = class {
         var user = msg.author;
         var profile = await ProfileUtils.get(user.id);
 
-
         var chance = Math.floor(Math.random()*100)+1;
         if(chance<80){
             var earnings;

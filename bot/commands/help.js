@@ -1,3 +1,5 @@
+const { ProfileUtils } = require('../utils/profile/profile');
+
 module.exports = class {
     constructor() {
         this.cmd = 'help',
@@ -5,6 +7,12 @@ module.exports = class {
     }
 
     async run(client, msg, args, prefix) {
+
+        const userClass = require('../resources/classes/userClass');
+        const user = new userClass(await ProfileUtils.get(msg.author.id), user);
+        client.profiles.set(msg.author.id, user);
+
+
         msg.channel.send({embed: {
             title: `EcoBot Help Menu`,
             description: `Check out our [github](https://github.com/sycles/EcoBot) for more information!

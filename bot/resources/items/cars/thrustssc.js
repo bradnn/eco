@@ -2,25 +2,23 @@ const userModel = require('../../../structures/models/User.js');
 
 module.exports = class {
     constructor() {
-        this.id = '00E',
+        this.id = '010',
 
-        this.name = 'rollsRoyceSweptail',
-        this.formatName = 'Rolls-Royce Sweptail',
-        this.emoji = '🚗',
+        this.name = 'thrustssc',
+        this.formatName = 'ThrustSSC',
+        this.emoji = '🏎',
 
         this.currency = 'gems',
-        this.buyPrice = '50000',
-        this.sellPrice = '5000',
+        this.buyPrice = '7500000',
+        this.sellPrice = '1000000',
         this.purchasable = true,
 
-        this.tier = 'rare',
+        this.tier = 'legendary',
 
         this.category = 'cars',
         this.categoryName = 'Cars',
 
-        this.maxSpeed = 150,
-        this.crashChance = 12,
-        this.repairCost= '75000'
+        this.maxSpeed = 763
     }
 
     async add(userID, amount) {

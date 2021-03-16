@@ -42,6 +42,7 @@ module.exports = class {
                         color: client.colors.warning
                     }
                 });
+                return;
             }
             switch(itemObject.currency){ // Remove money based on currency
                 case "coins":

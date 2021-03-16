@@ -1,8 +1,14 @@
 const userModel = require('../../structures/models/User.js');
+const userClass = require('../../resources/classes/userClass');
 
 module.exports.ProfileUtils = {
-    get: async function (userID) {
-        let res = await userModel.findOne ({userID: userID}, async function (err, res) {
+    get: async function (user, client) {
+        if (client.profiles.get(user.id)) {
+            console.log('is in collection');
+            return client.profiles.get(user.id);
+        }
+
+        let res = await userModel.findOne ({userID: user.id}, async function (err, res) {
             if (err) throw err;
             if (res) {
                 return res;
@@ -11,9 +17,13 @@ module.exports.ProfileUtils = {
 
         if (!res) {
             res = await userModel.create({
-                userID: userID
+                userID: user.id
             });
         }
-        return res;
+        
+        console.log('is not in collection');
+        const newClass = new userClass(res, user);
+        client.profiles.set(user.id, newClass);
+        return newClass;
     }
 }

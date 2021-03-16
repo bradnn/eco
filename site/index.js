@@ -71,9 +71,22 @@ app.post('/dblwebhook', webhook.middleware(), async (req, res) => {
     }
 
     try {
+        if (val.stats.votes.streak.lastVote) {
+            if (val.stats.votes.streak.lastVote + 86400000 < Date.now()) {
+                val.stats.votes.streak.lastVote = Date.now();
+                val.stats.votes.streak.voteStreak += 1;
+            } else {
+                val.stats.votes.streak.lastVote = Date.now();
+                val.stats.votes.streak.voteStreak = 0;
+            }
+        }
+
+        var gemGain = 2500 + ( 2500 / 100) * (val.stats.votes.streak.voteStreak - 1) * 5
+        var coinGain = 20000 + ( 20000 / 100) * (val.stats.votes.streak.voteStreak - 1) * 5
+
         val.stats.votes.voteCount += 1;
-        val.econ.wallet.gems += 2500;
-        val.econ.wallet.balance += 20000;
+        val.econ.wallet.gems += gemGain;
+        val.econ.wallet.balance += coinGain;
         var voteMessage = val.stats.votes.messageToggle;
 
         const IMAGE_URL = 'https://cdn.discordapp.com/avatars/776935174222249995/8eba884b7181fd550a1796554b59e0a5';
@@ -83,7 +96,7 @@ app.post('/dblwebhook', webhook.middleware(), async (req, res) => {
         var user1 = await bot.getRESTUser(req.vote.user);
         const embed = new MessageBuilder()
         .setTitle(`${user1.username} voted!`)
-        .setDescription(`${user1.username} just voted at [top.gg](http://ecobot.syclesdev.com/vote) and earned 2,500 gems and $20,000!`);
+        .setDescription(`${user1.username} just voted at [top.gg](http://ecobot.syclesdev.com/vote) and earned ${gemGain} gems and $${coinGain}!`);
         hook.send(embed);
 
         if (voteMessage == true) {
@@ -93,11 +106,11 @@ app.post('/dblwebhook', webhook.middleware(), async (req, res) => {
                 fields: [
                     {
                         name: `Rewards 💎`,
-                        value: `You have been rewarded 2,500 gems and $20,000.`
+                        value: `You have been rewarded ${gemGain} gems and $${coinGain}.`
                     },
                     {
                         name: `Earn more! 🎫`,
-                        value: `Earn more gems, items, and balance from giveaways in our support server! [here](https://discord.gg/kvphct3TfY).`
+                        value: `Everyday you will earn +5% more gems for your streak!\nEarn more gems, items, and balance from giveaways in our support server! [here](https://discord.gg/kvphct3TfY).`
                     }
                 ],
                 footer: {

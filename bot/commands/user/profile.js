@@ -12,29 +12,8 @@ module.exports = class {
     async run (client, msg, args, gPrefix) {
         let user = msg.mentions.users.first() || msg.guild.members.cache.get(args[0]);
         if (!user) user = msg.author;
-
-        function getNet(profile) {
-            var worths = {
-                gemWorth: profile.econ.wallet.gems * 1000,
-                coinWorth: profile.econ.wallet.balance,
-                otherWorth: 100
-            }
-
-            var net = 0;
-
-            var job;
-
-            for (job in worths) {
-                net += parseInt(worths[job]);
-            }
-
-            return net;
-        }
         
-
-        var profile = await ProfileUtils.get(user.id);
-
-        getNet(profile);
+        const profile = await ProfileUtils.get(user, client);
 
         var embed = {
             author: {
@@ -44,14 +23,14 @@ module.exports = class {
             fields: [
                 {
                     name: `Wallet`,
-                    value: `💷 Balance **-** ${FormatUtils.money(profile.econ.wallet.balance)}
-💎 Gems **-** ${FormatUtils.gem(profile.econ.wallet.gems)}`
+                    value: `💷 Balance **-** ${FormatUtils.money(profile.getCoins())}
+💎 Gems **-** ${FormatUtils.gem(profile.getGems())}`
                 },
                 {
                     name: `Job`,
-                    value: `💼 Current Job **-** ${JobList.formatName[profile.work.job]}
-💷 Raise Level **-** ${profile.work.raiseLevel}
-💎 Pay per Work ${FormatUtils.money(Math.floor(JobList.pay[profile.work.job] + (JobList.pay[profile.work.job] * profile.work.raiseLevel / 10)))} / Work`
+                    value: `💼 Current Job **-** ${JobList.formatName[profile.getJob()]}
+💷 Raise Level **-** ${profile.getRaise().newRaise}
+💎 Pay per Work ${FormatUtils.money(Math.floor(JobList.pay[profile.getJob()] + (JobList.pay[profile.getJob()] * profile.getRaise().newRaise / 10)))} / Work`
                 }
             ],
             color: client.colors.default

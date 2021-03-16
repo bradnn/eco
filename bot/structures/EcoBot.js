@@ -23,6 +23,7 @@ module.exports = {
             this.events = new Collection();
             this.items = new Collection();
             this.aliases = new Collection();
+            this.profiles = new Collection();
 
             this._loadCommands(this);
             this._loadEvents(this);

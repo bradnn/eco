@@ -31,53 +31,53 @@ module.exports.CooldownHandlers = {
         return embed;
     },
     get: async function (type, user, set) {
-        if (!type) {
-            return {
-                response: false
-            };
-        }
-        if(!user) {
-            console.log("(COOLDOWN) Missing Argument: USER_MODEL");
-            return null;
-        }
+        // if (!type) {
+        //     return {
+        //         response: false
+        //     };
+        // }
+        // if(!user) {
+        //     console.log("(COOLDOWN) Missing Argument: USER_MODEL");
+        //     return null;
+        // }
 
-        let profile = await ProfileUtils.get(user.id);
-        let userCooldowns = profile.cooldowns;
-        if (type == "work" && profile.work.sick) {
-            var cooldown = 600000;
-        } else {
-            var cooldown = cooldowns[type];
-        }
-        const previousTime = userCooldowns[type];
-        const nowTime = new Date();
-        const timePassed = Math.abs(previousTime - nowTime);
+        // let user = await ProfileUtils.get(user.id);
+        // let userCooldowns = user.getCooldowns();
+        // if (type == "work" && profile.work.sick) {
+        //     var cooldown = 600000;
+        // } else {
+        //     var cooldown = cooldowns[type];
+        // }
+        // const previousTime = userCooldowns[type];
+        // const nowTime = new Date();
+        // const timePassed = Math.abs(previousTime - nowTime);
 
-        if (timePassed < cooldown) {
-            const timeLeftMs = Math.ceil(cooldown - timePassed);
-            const timeLeftSec = (timeLeftMs / 1000);
-            const timeLeftFormatted = FormatUtils.time(timeLeftMs);
+        // if (timePassed < cooldown) {
+        //     const timeLeftMs = Math.ceil(cooldown - timePassed);
+        //     const timeLeftSec = (timeLeftMs / 1000);
+        //     const timeLeftFormatted = FormatUtils.time(timeLeftMs);
 
-            return {
-                response: true,
-                timeLeftSec: timeLeftSec,
-                timeLeftMs: timeLeftMs,
-                timeLeftFormatted: timeLeftFormatted,
-                message: `${type} is on cooldown! ${timeLeftFormatted} remaining until you can perform ${type}`,
-                embed: this.generateEmbed(user.username, type, timeLeftFormatted)
-            }
-        }
+        //     return {
+        //         response: true,
+        //         timeLeftSec: timeLeftSec,
+        //         timeLeftMs: timeLeftMs,
+        //         timeLeftFormatted: timeLeftFormatted,
+        //         message: `${type} is on cooldown! ${timeLeftFormatted} remaining until you can perform ${type}`,
+        //         embed: this.generateEmbed(user.username, type, timeLeftFormatted)
+        //     }
+        // }
 
-        if(profile.work.sick == true) {
-            profile.work.sick = false;
-        }
+        // if(profile.work.sick == true) {
+        //     profile.work.sick = false;
+        // }
 
-        if(!set || set == true) {
-            profile.cooldowns[type] = nowTime;
-        }
-        profile.save();
-        return {
-            response: false
-        };
+        // if(!set || set == true) {
+        //     profile.cooldowns[type] = nowTime;
+        // }
+        // profile.save();
+        // return {
+        //     response: false
+        // };
 
     },
     getMsLeft: async function (type, user) {

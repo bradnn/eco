@@ -14,10 +14,9 @@ module.exports = class {
 
     async run(client, msg, args, guildPrefix) {
 
-        var user = msg.author;
-        var profile = await ProfileUtils.get(user.id);  
+        const user = await ProfileUtils.get(msg.author, client);  
 
-        if (profile.work.job == "None") {
+        if (user.getJob() == "None") {
             msg.channel.send({
                 embed: {
                     title: `You don't have a job!`,
@@ -28,14 +27,10 @@ module.exports = class {
             return;
         }
 
-        var job = profile.work.job;
+        var job = user.getJob();
         var embed;
 
-        const cooldown = await CooldownHandlers.get("work", user);
-        if (cooldown.response) { 
-            msg.channel.send(cooldown.embed); 
-            return; 
-        };
+        if (user.getCooldown("work", true, msg).response) return;
 
 
         const scrambled = await Messages.sendScramble(msg, client); // Send an unscramble challenge
@@ -47,29 +42,28 @@ module.exports = class {
 
                 var chance = Math.random() * 100
                 if (chance > 99) { // If the user should be fired (1% Chance)
-                    var failMessage = FinalWorkMessages[profile.work.job].bad[Math.floor(Math.random() * FinalWorkMessages[profile.work.job].bad.length)]; // Chooses a random work fail message
+                    var failMessage = FinalWorkMessages[job].bad[Math.floor(Math.random() * FinalWorkMessages[job].bad.length)]; // Chooses a random work fail message
                     embed = { // Sets the embed to be sent
                         title: `You're fired! 🔥`,
                         description: failMessage,
                         fields: [],
                         color: client.colors.error
                     };
-                    profile.work.job = "begger"; // Set users job to begger (FIRED)
-                    profile.work.raiseLevel = 0; // Reset raise level
-                    profile.stats.work.workCountRaise = 0; // Resets progress to next raise
+                    user.resetRaise();
+                    user.setJob("begger");
                     penaltyString += `💼 Lost Job\n`; // Adds lost job to the penalty list
                 } else if (chance > 98) { // If the user should get sick (1% Chance)
                     embed = { // Sets the embed to be sent
                         title: `You got sick 🦠`,
                         description: `You caught a cold and are unable to work for 10 minutes!`,
+                        fields: [],
                         color: client.colors.sick
                     }
 
-                    profile.work.sick = true; // Set the user to be sick
+                    user.setSick(true);
                 } else if (chance > 96) { // If the user should recieve double coins (2% Chance)
                     var perfectMessage = FinalWorkMessages[profile.work.job].perfect[Math.floor(Math.random() * FinalWorkMessages[profile.work.job].perfect.length)]; // Chooses a random perfect work message
-                    var earnedCoins = Math.floor(JobList.pay[job] + ((JobList.pay[job] / 100) * profile.work.raiseLevel)); // Calculates how much the user should earn
-                    earnedCoins += Math.floor(earnedCoins / 2);
+
                     embed = {
                         title: `Amazing Job 🎊`,
                         description: perfectMessage,
@@ -77,13 +71,11 @@ module.exports = class {
                         color: client.colors.success
                     }
 
-                    profile.stats.work.workCount += 1;
-                    profile.stats.work.workCountRaise += 1;
-                    profile.econ.wallet.balance += earnedCoins;
-                    rewardString += `💰 +50% Earnings (PERFECT WORK)\n💰 +${FormatUtils.money(earnedCoins)}\n`
+                    user.addWork();
+                    var earnedCoins = user.getPay(true, true);
+                    rewardString += `💰 +50% Earnings (PERFECT WORK)\n💰 +${FormatUtils.money(earnedCoins)}\n`;
                 } else { // Normal work
-                    var goodMessage = FinalWorkMessages[profile.work.job].good[Math.floor(Math.random() * FinalWorkMessages[profile.work.job].good.length)]; // Chooses a random good work message
-                    var earnedCoins = Math.floor(JobList.pay[job] + ((JobList.pay[job] / 100) * profile.work.raiseLevel)); // Calculates how much the user should earn
+                    var goodMessage = FinalWorkMessages[job].good[Math.floor(Math.random() * FinalWorkMessages[job].good.length)]; // Chooses a random good work message
 
                     embed = { // Sets the embed to be sent
                         title: `Good Job 🎉`,
@@ -91,11 +83,10 @@ module.exports = class {
                         fields: [],
                         color: client.colors.success
                     }
+                    user.addWork();
 
-                    profile.stats.work.workCount += 1; 
-                    profile.stats.work.workCountRaise += 1; // Adds 1 work count towards getting the next raise (25 per raise)
-                    profile.econ.wallet.balance += earnedCoins; // Adds earned coins to database profile
-                    rewardString += `💰 +${FormatUtils.money(earnedCoins)}\n` // Adds earned money to reward string
+                    var earnedCoins = user.getPay(false, true);
+                    rewardString += `💰 +${FormatUtils.money(earnedCoins)}\n`; // Adds earned money to reward string
                 }
                 break;
             case "INCORRECT": // If the user unscambled the word incorrectly
@@ -114,23 +105,20 @@ module.exports = class {
                 return;
         }
 
-        if (profile.stats.work.workCountRaise >= 25) {
-            profile.stats.work.workCountRaise = 0;
-            profile.work.raiseLevel++;
-            rewardString += `🔧 You got a raise! (+1% Bonus)\n`;
-        }
-
-        var itemChance = Math.random() * 100;
-        if(itemChance > 95.5) {
+        if (Math.random() * 100 > 95.5) {
             client.items.get('004').add(msg.author.id, 1);
             rewardString += `🖼 +1 Campbells Soup Can (UNCOMMON DROP)\n`;
         }
 
-        var gemChance = Math.random() * 100;
-        if (gemChance > 80) {
-            var gemAmount = Math.floor(Math.random() * 49) + 1;
-            profile.econ.wallet.gems += gemAmount;
+        if (Math.random() * 100 > 80) {
+            var gemAmount = Math.floor(Math.random() * 50);
+
+            user.addGems(gemAmount);
             rewardString += `💎 +${FormatUtils.gem(gemAmount)}\n`
+        }
+
+        if(user.getRaise().levelUp) {
+            rewardString += `🔧 You got a raise! (+1% Bonus)\n`;
         }
         var curField = 0;
         if (penaltyString != ``) { // Dont add a penalty field if there is no penalty.
@@ -149,8 +137,7 @@ module.exports = class {
         }
         embed = TipUtils.embedTip(embed, guildPrefix);
 
-        profile.save();
-
+        user.save();
         msg.channel.send({embed: embed});
     }
 }
