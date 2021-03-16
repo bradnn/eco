@@ -4,7 +4,6 @@ const userClass = require('../../resources/classes/userClass');
 module.exports.ProfileUtils = {
     get: async function (user, client) {
         if (client.profiles.get(user.id)) {
-            console.log('is in collection');
             return client.profiles.get(user.id);
         }
 
@@ -20,8 +19,6 @@ module.exports.ProfileUtils = {
                 userID: user.id
             });
         }
-        
-        console.log('is not in collection');
         const newClass = new userClass(res, user);
         client.profiles.set(user.id, newClass);
         return newClass;

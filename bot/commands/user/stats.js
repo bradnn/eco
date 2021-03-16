@@ -13,9 +13,9 @@ module.exports = class {
         let user = msg.mentions.users.first() || msg.guild.members.cache.get(args[0]);
         if (!user) user = msg.author;
 
-        var profile = await ProfileUtils.get(user.id);
+        var profile = await ProfileUtils.get(user, client);
         const jobList = Object.keys(JobList.pay);
-        var jobIndex = jobList.indexOf(profile.work.job);
+        var jobIndex = jobList.indexOf(profile.getJob());
         var job = jobList[jobIndex + 1];
         var nextReq = JobList.workReq[job];
         var reqMessage = ``;
@@ -34,19 +34,19 @@ module.exports = class {
             fields: [
                 {
                     name: `Work Stats`,
-                    value: `🔧 Times Worked **-** ${profile.stats.work.workCount} (${reqMessage})\n🌎 Times Worked (Since last raise) **-** ${profile.stats.work.workCountRaise}/25\n💼 Raise Bonus **-** +${profile.work.raiseLevel}%`
+                    value: `🔧 Times Worked **-** ${profile.getWorkCount()} (${reqMessage})\n🌎 Times Worked (Since last raise) **-** ${profile.getRaise().newRaise}/25\n💼 Raise Bonus **-** +${profile.getRaise().newRaise}%`
                 },
                 {
                     name: `Mining Stats`,
-                    value: `⛏ Times Mined **-** ${profile.stats.mining.timesMined}`
+                    value: `⛏ Times Mined **-** ${profile.getMineCount()}`
                 },
                 {
                     name: `Vote Stats`,
-                    value: `🎫 Times Voted **-** ${profile.stats.votes.voteCount}`
+                    value: `🎫 Times Voted **-** ${profile.getVoteCount()}`
                 },
                 {
                     name: `Town Hall`,
-                    value: `💷 Coins Deposited **-** ${profile.stats.townhall.depositAmount}`
+                    value: `💷 Coins Deposited **-** ${profile.getTownHallDeposited()}`
                 }
             ],
             color: client.colors.default

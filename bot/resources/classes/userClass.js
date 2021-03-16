@@ -58,7 +58,7 @@ module.exports = class {
         this.model.econ.wallet.gems -= amount;
         if (this.model.econ.wallet.gems < 0) this.model.econ.wallet.gems = 0;
     }
-    
+
     getGems() {
         return this.model.econ.wallet.gems;
     }
@@ -128,6 +128,34 @@ module.exports = class {
     addWork() {
         this.model.stats.work.workCountRaise++;
         this.model.work.workCount++;
+    }
+
+    getWorkCount() {
+        return this.model.stats.work.workCount;
+    }
+
+    // ==================================================================================
+    // MINING MANAGEMENT
+    // ==================================================================================
+
+    getMineCount() {
+        return this.model.stats.mining.timesMined;
+    }
+
+    // ==================================================================================
+    // VOTE MANAGEMENT
+    // ==================================================================================
+
+    getVoteCount() {
+        return this.model.stats.votes.voteCount;
+    }
+
+    // ==================================================================================
+    // TOWN HALL MANAGEMENT
+    // ==================================================================================
+
+    getTownHallDeposited() {
+        return this.model.stats.townhall.depositAmount;
     }
 
     // ==================================================================================
