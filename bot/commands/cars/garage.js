@@ -22,14 +22,14 @@ module.exports = class {
         var lastField = 0;
         var infoObj = {};
 
-        var profile = await ProfileUtils.get(user.id);
+        var profile = await ProfileUtils.get(user, client);
         var [cars, notCars] = client.items.partition(i => i.category === "cars");
         cars = cars.array();
 
         for (var car in cars) {
             const value = cars[car];
             
-            if (profile.collections[value.category][value.name] > 0) {
+            if (profile.model.collections[value.category][value.name] > 0) {
                 if (!infoObj[value.category]) {
                     infoObj[value.category] = {
                         field: lastField
@@ -41,7 +41,7 @@ module.exports = class {
                         inline: true
                     }
                 }
-                finalEmbed.fields[infoObj[value.category].field].value += `${value.id} ${value.emoji} ${profile.collections[value.category][value.name]}x ${value.formatName} **-** Top Speed: ${value.maxSpeed} mph\n`;
+                finalEmbed.fields[infoObj[value.category].field].value += `${value.id} ${value.emoji} ${profile.model.collections[value.category][value.name]}x ${value.formatName} **-** Top Speed: ${value.maxSpeed} mph\n`;
             }
         }
 

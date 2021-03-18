@@ -18,6 +18,7 @@ const cooldowns = {
 
 module.exports = class {
     constructor(model, user) {
+
         this.user = user;
         this.userID = user.id;
 
@@ -201,7 +202,36 @@ module.exports = class {
         return true;
     }
 
-    
+    // ==================================================================================
+    // COLLECTION MANAGEMENT
+    // ==================================================================================
+
+    getCollections() {
+        return this.model.collections;
+    }
+
+    getCars() {
+        return this.model.collections.cars;
+    }
+
+    getItem(client, id) {
+        if (!amount) amount = 1;
+        client.items.get(id).add(this.userID, amount);
+        return;
+    }
+
+    addItem(client, id, amount) {
+        if (!amount) amount = 1;
+        client.items.get(id).add(this.userID, amount);
+        return;
+    }
+
+    delItem(client, id, amount) {
+        if (!amount) amount = 1;
+        client.items.get(id).remove(this.userID, amount);
+        return;
+    }
+
     // ==================================================================================
     // EMBED GENERATORS
     // ==================================================================================

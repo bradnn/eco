@@ -71,7 +71,7 @@ module.exports = class {
                         color: client.colors.success
                     }
 
-                    user.addWork();
+                    await user.addWork();
                     var earnedCoins = user.getPay(true, true);
                     rewardString += `💰 +50% Earnings (PERFECT WORK)\n💰 +${FormatUtils.money(earnedCoins)}\n`;
                 } else { // Normal work

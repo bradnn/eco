@@ -6,8 +6,8 @@ const { ProfileUtils } = require("../../utils/profile/profile")
 
 module.exports = class {
     constructor () {
-        this.cmd = 'profile'
-        this.aliases = ['balance', 'bal', 'user']
+        this.cmd = 'collection'
+        this.aliases = ['items']
     }
 
     async run (client, msg, args, gPrefix) {
@@ -22,10 +22,10 @@ module.exports = class {
         var lastField = 0;
         var infoObj = {};
 
-        var profile = await ProfileUtils.get(user.id);
+        var profile = await ProfileUtils.get(user, client);
 
         for (const [key, value] of client.items) {
-            if (profile.collections[value.category][value.name] > 0) {
+            if (profile.model.collections[value.category][value.name] > 0) {
                 if (!infoObj[value.category]) {
                     infoObj[value.category] = {
                         field: lastField
@@ -37,7 +37,7 @@ module.exports = class {
                         inline: true
                     }
                 }
-                finalEmbed.fields[infoObj[value.category].field].value += `${value.emoji} ${value.formatName} **-** ${profile.collections[value.category][value.name]} \n`;
+                finalEmbed.fields[infoObj[value.category].field].value += `${value.emoji} ${value.formatName} **-** ${profile.model.collections[value.category][value.name]} \n`;
             }
         }
 

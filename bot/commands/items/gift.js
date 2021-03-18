@@ -37,16 +37,16 @@ module.exports = class {
             giftAmount = 1;
         }
 
-        var profile = await ProfileUtils.get(msg.author.id);
+        var profile = await ProfileUtils.get(msg.author, client);
         
         if(profile.collections[item.category][item.name] >= giftAmount) {
-            var toProfile = await ProfileUtils.get(giftTo.id);
+            var toProfile = await ProfileUtils.get(giftTo, client);
 
 
-            profile.collections[item.category][item.name] -= giftAmount;
-            toProfile.collections[item.category][item.name] += giftAmount;
+            profile.delItem(client, item.id, giftAmount);
+            profile.addItem(client, item.id, giftAmount);
 
-            await profile.save();
+            profile.save();
             toProfile.save();
 
             msg.channel.send({ embed: {
