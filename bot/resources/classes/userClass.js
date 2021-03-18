@@ -214,21 +214,21 @@ module.exports = class {
         return this.model.collections.cars;
     }
 
-    getItem(client, id) {
+    getItem(client, itemID) {
         if (!amount) amount = 1;
-        client.items.get(id).add(this.userID, amount);
+        client.items.get(itemID).get(this.userID);
         return;
     }
 
-    addItem(client, id, amount) {
+    addItem(client, itemID, amount) {
         if (!amount) amount = 1;
-        client.items.get(id).add(this.userID, amount);
+        client.items.get(itemID).add(this.userID, amount);
         return;
     }
 
-    delItem(client, id, amount) {
+    delItem(client, itemID, amount) {
         if (!amount) amount = 1;
-        client.items.get(id).remove(this.userID, amount);
+        client.items.get(itemID).remove(this.userID, amount);
         return;
     }
 
