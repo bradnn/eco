@@ -44,7 +44,7 @@ module.exports = class {
 
 
             profile.delItem(client, item.id, giftAmount);
-            profile.addItem(client, item.id, giftAmount);
+            toProfile.addItem(client, item.id, giftAmount);
 
             profile.save();
             toProfile.save();
