@@ -69,11 +69,7 @@ module.exports = class {
                 return;
             }
 
-            const cooldown = await CooldownHandlers.get("robUser", user);
-            if (cooldown.response) {
-                msg.channel.send(cooldown.embed);
-                return;
-            }
+            if (await profile.getCooldown("robUser", true, msg).response) return; 
 
             var payout = Math.floor((theirBalance / 100 * 1) + MIN_PAYOUT);
             var chance = Math.floor(Math.random() * 100) + 1;
