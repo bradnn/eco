@@ -14,31 +14,28 @@ module.exports = class {
         var user = msg.author;
         var profile = await ProfileUtils.get(user, client);
 
-        const cooldown = await CooldownHandlers.get("mine", user);
-        if (cooldown.response) {
-            msg.channel.send(cooldown.embed);
-            return;
-        }
+        if (profile.getCooldown("work", true, msg).response) return;
+        
 
         var chances = Math.random() * 100;
         var embed;
 
         if (chances < 98) {
             var gemAmount;
-            if(profile.collections.mining.drill) {
+            if (await profile.getItem(client, '007') > 0) {
                 gemAmount = Math.floor(Math.random() * 199) + 850;
-                profile.econ.wallet.gems += gemAmount;
-                profile.stats.mining.timesMined += 1;
+                profile.addGems(gemAmount) ;
+                profile.addMineCount() ;
                 profile.save();
                 embed = {
                     title: `Great Job 🎉`,
                     description: `You mined ${FormatUtils.gem(gemAmount)} gems with your drill!`,
                     color: client.colors.success
                 }
-            } else if (profile.collections.mining.pickaxe) {
+            } else if (await profile.getItem(client, '006') > 0) {
                 gemAmount = Math.floor(Math.random() * 99) + 100;
-                profile.econ.wallet.gems += gemAmount;
-                profile.stats.mining.timesMined += 1;
+                profile.addGems(gemAmount) ;
+                profile.addMineCount() ;
                 profile.save();
                 embed = {
                     title: `Great Job 🎉`,
@@ -47,8 +44,8 @@ module.exports = class {
                 }
             } else {
                 gemAmount = Math.floor(Math.random() * 49) + 1;
-                profile.econ.wallet.gems += gemAmount;
-                profile.stats.mining.timesMined += 1;
+                profile.addGems(gemAmount) ;
+                profile.addMineCount() ;
                 profile.save();
                 embed = {
                     title: `Great Job 🎉`,
@@ -57,16 +54,16 @@ module.exports = class {
                 }
             }
         } else {
-            if(profile.collections.mining.drill) {
-                profile.collections.mining.drill -= 1;
+            if(await profile.getItem(client, '007') > 0) {
+                profile.delItem(client, '007') ;
                 profile.save();
                 embed = {
                     title: `You did a terrible job! 🔥`,
                     description: `You broke your drill!`,
                     color: client.colors.error
                 }
-            } else if (profile.collections.mining.pickaxe) {
-                profile.collections.mining.pickaxe -= 1;
+            } else if (await profile.getItem(client, '006') > 0) {
+                profile.delItem(client, '006') ;
                 profile.save();
                 embed = {
                     title: `You did a terrible job! 🔥`,
