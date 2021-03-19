@@ -20,9 +20,9 @@ module.exports = class {
             return;
         }
 
-        var profile = await ProfileUtils.get(user.id);
+        var profile = await ProfileUtils.get(user, client);
 
-        if(amount > profile.econ.wallet.balance) {
+        if(amount > profile.getCoins()) {
             msg.channel.send({ embed: {
                 title: `Whoops 🔥`,
                 description: `You don't have enough money for this!`,
@@ -47,8 +47,8 @@ module.exports = class {
                 color: client.colors.success
             }});
 
-            profile.econ.wallet.balance = profile.econ.wallet.balance + amount;
-            await profile.save();
+            profile.addCoins(amount);
+            profile.save();
             return;
         } else {
             msg.channel.send({embed: {
@@ -57,8 +57,8 @@ module.exports = class {
                 color: client.colors.error
             }});
 
-            profile.econ.wallet.balance = profile.econ.wallet.balance - amount;
-            await profile.save();
+            profile.delCoins(amount) ;
+            profile.save();
             return;
         }
     }
