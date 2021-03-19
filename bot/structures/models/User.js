@@ -174,6 +174,10 @@ const userModel = mongoose.Schema({
                 type: Number,
                 default: 0
             },
+            bugattiDivo: {
+                type: Number,
+                default: 0
+            },
             lamborghiniAventador: {
                 type: Number,
                 default: 0

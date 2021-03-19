@@ -11,7 +11,7 @@ module.exports = class {
     }
 
     async run(client, msg, args, prefix) {
-        var itemChosen = args[0]; // Item the user wants to buy
+        var itemChosen = args[0].toUpperCase(); // Item the user wants to buy
         var itemAmount = parseInt(args[1]); // Amount of this item the user wants to buy
             var itemObject = client.items.get(itemChosen); // Gets the item from the bot
             if (itemObject == null) { // If item doesn't exist send error
