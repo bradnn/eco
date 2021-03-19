@@ -22,7 +22,7 @@ module.exports = class {
                 }});
                 return;
             } 
-            var profile = await ProfileUtils.get(msg.author.id); // Get users profile from database
+            var profile = await ProfileUtils.get(msg.author, client); // Get users profile from database
             var theircoins;
             if(isNaN(itemAmount)) itemAmount = 1; // If the user didnt give an item amount or it wasn't a number, set item amount to 1
             switch(itemObject.currency){ // What currency is the item

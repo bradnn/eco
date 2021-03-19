@@ -54,4 +54,21 @@ module.exports = class {
         res.collections[this.category][this.name] -= amount;
         res.save();
     }
+
+    async get(userID) {
+        let res = await userModel.findOne({userID: userID}, async function (err, res) {
+            if (err) throw err;
+            if (res) {
+                return res;
+            }
+        });
+
+        if (!res) {
+            res = await userModel.create({
+                userID: userID
+            });
+        }
+
+        return res.collections[this.category][this.name];
+    }
 }

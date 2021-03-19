@@ -198,7 +198,6 @@ module.exports = class {
 
     setCooldown(type) {
         this.model.cooldowns[type] = new Date();
-        this.model.save();
         return true;
     }
 
