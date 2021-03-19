@@ -27,10 +27,10 @@ module.exports = class {
             if(isNaN(itemAmount)) itemAmount = 1; // If the user didnt give an item amount or it wasn't a number, set item amount to 1
             switch(itemObject.currency){ // What currency is the item
                 case "coins": 
-                theircoins = profile.econ.wallet.balance;
+                theircoins = profile.getCoins();
                     break;
                     case "gems":
-                        theircoins = profile.econ.wallet.gems;
+                        theircoins = profile.getGems();
                         break;
                         
             }
@@ -46,14 +46,14 @@ module.exports = class {
             }
             switch(itemObject.currency){ // Remove money based on currency
                 case "coins":
-                    profile.econ.wallet.balance -= itemObject.buyPrice *itemAmount;
+                    profile.delCoins(itemObject.buyPrice *itemAmount)
                     break;
                     case "gems": 
-                        profile.econ.wallet.gems -= itemObject.buyPrice *itemAmount;
+                    profile.delGems(itemObject.buyPrice *itemAmount)
                         break;
             }           
             profile.save(); // Save profile back to database
-            client.items.get(itemChosen).add(msg.author.id, itemAmount); // Add item to user
+            itemObject.add(msg.author.id, itemAmount); // Add item to user
             msg.channel.send ({ embed: { // Send purchase message
                 title: `Success 🎉`,
                 description: `You bought ${itemAmount}x ${itemObject.formatName} for ${FormatUtils.numberLetter(itemObject.buyPrice *itemAmount)}, Congratulations!`,

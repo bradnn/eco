@@ -142,6 +142,11 @@ module.exports = class {
     getMineCount() {
         return this.model.stats.mining.timesMined;
     }
+    
+    addMineCount() {
+        this.model.stats.mining.timesMined += 1;
+        return;
+    }
 
     // ==================================================================================
     // VOTE MANAGEMENT
