@@ -22,9 +22,9 @@ module.exports = class {
             var availableJobs = ``;
             var job;
             for (job in jobs) {
-                if (JobList.workReq[jobs[job]] <= profile.stats.work.workCount) {
+                if (JobList.workReq[jobs[job]] <= profile.getWorkCount()) {
                     if (jobs[job] != "None" && jobs[job] != "begger") {
-                        if (profile.work.job != jobs[job]) {
+                        if (profile.getJob() != jobs[job]) {
                             availableJobs += `${JobList.formatName[jobs[job]]} **-** ${FormatUtils.money(JobList.pay[jobs[job]])} per work\n`
                         }
                     }
@@ -52,9 +52,9 @@ module.exports = class {
 
             if(jobs.includes(applyingFor)) {
                 var requirement = JobList.workReq[applyingFor];
-                if (profile.stats.work.workCount >= requirement) {
+                if (profile.getWorkCount() >= requirement) {
 
-                    if (profile.work.job == applyingFor) {
+                    if (profile.getJob() == applyingFor) {
                         msg.channel.send({ embed: {
                             title: `Whoops 🔥`,
                             description: `You can't apply for a job you already have! You'll have to wait for a raise.`,
@@ -66,8 +66,8 @@ module.exports = class {
                     if (profile.getCooldown("work", true, msg).response) return;
                     
 
-                    if  (profile.work.job == "None") {
-                        profile.work.job = applyingFor;
+                    if  (profile.getJob() == "None") {
+                        profile.getJob(applyingFor) ;
                         profile.save();
 
                         msg.channel.send({embed: {
@@ -87,7 +87,7 @@ module.exports = class {
                             }});
                             return;
                         } else {
-                            profile.work.job = applyingFor;
+                            profile.setJob(applyingFor) ;
                             profile.save();
                             msg.channel.send({ embed: {
                                 title: `Congrats 🎉`,
