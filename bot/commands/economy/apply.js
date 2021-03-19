@@ -11,7 +11,7 @@ module.exports = class {
 
     async run(client, msg, args, guildPrefix) {
         var user = msg.author;
-        var profile = await ProfileUtils.get(user.id);
+        var profile = await ProfileUtils.get(user, client);
         let jobs = Object.keys(JobList.workReq);
 
         if (!args[0]) {
@@ -63,11 +63,8 @@ module.exports = class {
                         return;
                     }
 
-                    const cooldown = await CooldownHandlers.get("apply", user);
-                    if (cooldown.response) {
-                        msg.channel.send(cooldown.embed);
-                        return;
-                    }
+                    if (profile.getCooldown("work", true, msg).response) return;
+                    
 
                     if  (profile.work.job == "None") {
                         profile.work.job = applyingFor;

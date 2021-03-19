@@ -12,7 +12,7 @@ module.exports = class {
     async run(client, msg, args, guildPrefix) {
         
         var user = msg.author;
-        var profile = await ProfileUtils.get(user.id);
+        var profile = await ProfileUtils.get(user, client);
 
         const cooldown = await CooldownHandlers.get("mine", user);
         if (cooldown.response) {
