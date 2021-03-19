@@ -52,8 +52,8 @@ module.exports = class {
                     profile.delGems(itemObject.buyPrice *itemAmount)
                         break;
             }           
+            profile.addItem(client, itemChosen, itemAmount);
             profile.save(); // Save profile back to database
-            itemObject.add(msg.author.id, itemAmount); // Add item to user
             msg.channel.send ({ embed: { // Send purchase message
                 title: `Success 🎉`,
                 description: `You bought ${itemAmount}x ${itemObject.formatName} for ${FormatUtils.numberLetter(itemObject.buyPrice *itemAmount)}, Congratulations!`,

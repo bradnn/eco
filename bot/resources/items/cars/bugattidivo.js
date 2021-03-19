@@ -39,7 +39,7 @@ module.exports = class {
 
         res.collections[this.category][this.name] += amount;
         res.save();
-        return;
+        return "ADDED";
     }
 
     async remove(userID, amount) {

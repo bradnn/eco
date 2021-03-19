@@ -219,17 +219,18 @@ module.exports = class {
     }
 
     getItem(client, itemID) {
-        client.items.get(itemID).get(this.userID);
-        return;
+        return client.items.get(itemID).get(this.userID);
     }
 
     addItem(client, itemID, amount = 1) {
-        client.items.get(itemID).add(this.userID, amount);
+        var itemObj = client.items.get(itemID);
+        this.model.collections[itemObj.category][itemObj.name] += amount;
         return;
     }
 
     delItem(client, itemID, amount = 1) {
-        client.items.get(itemID).remove(this.userID, amount);
+        var itemObj = client.items.get(itemID);
+        this.model.collections[itemObj.category][itemObj.name] -= amount;
         return;
     }
 
