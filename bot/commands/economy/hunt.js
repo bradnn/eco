@@ -2,6 +2,7 @@ const { ProfileUtils } = require("../../utils/profile/profile");
 const { FormatUtils } = require("../../utils/format/format");
 const {CooldownHandlers } = require("../../utils/cooldown/handler");
 const { FailHuntMessages } = require("../../structures/json/huntmessages");
+const { get } = require("mongoose");
 
 
 
@@ -13,21 +14,18 @@ module.exports = class {
 
     async run(client, msg, args, guildPrefix) {
 
-        const cooldown = await CooldownHandlers.get("hunt", msg.author);
-        if(cooldown.response){
-            msg.channel.send(cooldown.embed);
-            return; 
-        }
         var user = msg.author;
-        var profile = await ProfileUtils.get(user.id);
+        var profile = await ProfileUtils.get(user, client);
+
+        if (await profile.getCooldown("hunt", true, msg).response) return;      
 
 
         var chance = Math.floor(Math.random()*100)+1;
         if(chance<80){  //if user doesnt fail
             var earnings;
-            if(profile.collections.hunting.bow) {
+            if(profile.getItem(client, "012")) {
                 earnings = Math.floor((Math.random()*2500) +14999);
-                profile.econ.wallet.balance += earnings;
+                profile.addCoins(earnings);
                 profile.save()
                 msg.channel.send({
                     embed: {
@@ -36,9 +34,9 @@ module.exports = class {
                         color: client.colors.success
                     }
                 });
-            } else if(profile.collections.hunting.spear) {
+            } else if(profile.getItem(client, "011")) {
                 earnings = Math.floor((Math.random()*2500) +9999);
-                profile.econ.wallet.balance += earnings;
+                profile.addCoins(earnings);
                 profile.save()
                 msg.channel.send({
                     embed: {
@@ -50,7 +48,7 @@ module.exports = class {
            
             } else {
                 earnings = Math.floor((Math.random()*2500) +4999);
-                profile.econ.wallet.balance += earnings;
+                profile.addCoins(earnings);
                 profile.save()
                 msg.channel.send({
                     embed: {
@@ -71,7 +69,9 @@ module.exports = class {
                     color: client.colors.error
                 }
             });
+            profile.save();
             return;
+
         }
     }
 }

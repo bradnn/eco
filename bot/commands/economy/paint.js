@@ -12,19 +12,18 @@ module.exports = class {
     async run(client, msg, args, guildPrefix) {
 
         const cooldown = await CooldownHandlers.get("paint", msg.author);
-        if(cooldown.response){
-            msg.channel.send(cooldown.embed);
-            return;
-        }
+
         var user = msg.author;
-        var profile = await ProfileUtils.get(user.id);
+        var profile = await  ProfileUtils.get(user, client);
+
+        if (await profile.getCooldown("paint", true, msg).response) return;
 
         var chance = Math.floor(Math.random()*100)+1;
         if(chance<80){
             var earnings;
             earnings = (+15000);
-            profile.econ.wallet.balance += earnings;
-            profile.save()
+            profile.addCoins(earnings);
+            profile.save();
             msg.channel.send({
                 embed: {
                     title: `Amazing Work ✅`,
@@ -41,6 +40,7 @@ module.exports = class {
                     color: client.colors.error
                 }
             });
+            profile.save();
             return;
         }
     }

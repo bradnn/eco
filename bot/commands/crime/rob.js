@@ -11,12 +11,12 @@ module.exports = class {
 
     async run (client, msg, args) {
         let user = msg.author;
-        var profile = await ProfileUtils.get(user.id);
+        var profile = await ProfileUtils.get(user, client);
         var robUser = msg.mentions.users.first() || msg.guild.members.cache.get(args[0]);
         let MAX_PAYOUT = 120000;
         let MIN_PAYOUT = 5000;
 
-        if (profile.econ.wallet.balance < 2500) {
+        if (profile. getCoins() < 2500) {
             msg.channel.send({ embed: {
                 title: `Whoops 🔥`,
                 description: `You can't rob anyone if your balance is under $2,500.`,
@@ -26,19 +26,16 @@ module.exports = class {
         }
 
         if(!robUser) {
-            const cooldown = await CooldownHandlers.get("rob", user);
-            if (cooldown.response) {
-                msg.channel.send(cooldown.embed);
-                return;
-            }
 
-            var payout = Math.floor((profile.econ.wallet.balance / 100 * 1) + MIN_PAYOUT);
+            if (await profile.getCooldown("rob", true, msg).response) return; 
+
+            var payout = Math.floor((profile.getCoins() / 100 * 1) + MIN_PAYOUT);
             var chance = Math.floor(Math.random() * 100) + 1;
 
             if (payout > MAX_PAYOUT) payout = MAX_PAYOUT;
 
             if(chance < 70) {
-                profile.econ.wallet.balance += payout;
+                profile.addCoins(payout);
                 profile.save();
                 msg.channel.send({ embed: {
                     title: `Nice Work 💼`,
@@ -47,7 +44,7 @@ module.exports = class {
                 }});
                 return;
             } else {
-                profile.econ.wallet.balance -= Math.floor(payout / 2);
+                profile.delCoins( Math.floor(payout / 2));
                 profile.save();
                 msg.channel.send({ embed: {
                     title: `Whoops 🔥`,
@@ -58,8 +55,8 @@ module.exports = class {
             }
         } else {
             
-            var theirProfile = await ProfileUtils.get(robUser.id);
-            var theirBalance = theirProfile.econ.wallet.balance;
+            var theirProfile = await ProfileUtils.get(robUser, client);
+            var theirBalance = theirProfile.getCoins();
 
             MAX_PAYOUT = 120000;
 
@@ -84,8 +81,8 @@ module.exports = class {
             if (payout > MAX_PAYOUT) payout = MAX_PAYOUT;
 
             if (chance > 65) {
-                profile.econ.wallet.balance += payout;
-                theirProfile.econ.wallet.balance -= payout;
+                profile.addCoins(payout);
+                theirProfile.delCoins(payout);
 
                 msg.channel.send({ embed: {
                     title: `Nice Work 💼`,
@@ -94,14 +91,15 @@ module.exports = class {
                 }});
                 return;
             } else {
-                profile.econ.wallet.balance -= Math.floor(payout / 2);
-                theirProfile.econ.wallet.balance += Math.floor(payout / 2);
+                profile.delCoins( Math.floor(payout / 2));
+                theirProfile.addCoins( Math.floor(payout / 2));
 
                 msg.channel.send({ embed: {
                     title: `Whoops 🔥`,
                     description: `You were caught robbing ${robUser.username} and got fined ${FormatUtils.money(Math.floor(payout / 2))}`,
                     color: client.colors.error
                 }});
+                profile.save();
                 return;
             }
             

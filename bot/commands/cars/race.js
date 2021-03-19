@@ -12,7 +12,7 @@ module.exports = class {
 
     async run(client, msg, args, guildPrefix) {
 
-        var profile = await ProfileUtils.get(msg.author.id);
+        var profile = await ProfileUtils.get(msg.author, client);
 
         switch (args[0]) {
             case "s":
@@ -32,7 +32,7 @@ module.exports = class {
                     return;
                 }
 
-                profile.racing.selectedCarID = carItem.id;
+                profile.model.racing.selectedCarID = carItem.id;
                 profile.save();
 
                 msg.channel.send({ embed: {
@@ -42,7 +42,7 @@ module.exports = class {
                 }});
                 return;
             case "disable":
-                profile.racing.selectedCarID = "None";
+                profile.model.racing.selectedCarID = "None";
                 profile.save();
 
                 msg.channel.send({ embed: {
@@ -53,7 +53,7 @@ module.exports = class {
                 return;
             default:
 
-                if(profile.racing.selectedCarID === "None") {
+                if(profile.model.racing.selectedCarID === "None") {
                     msg.channel.send({ embed: {
                         title: `Whoops 🔥`,
                         description: `You don't have a car selected! Do \`${guildPrefix}race select <car ID>\` to select one.`,
@@ -66,15 +66,11 @@ module.exports = class {
 
                 if (!opponent) {
                 
-                    const cooldown = await CooldownHandlers.get("race", msg.author);
-                    if (cooldown.response) {
-                        msg.channel.send(cooldown.embed);
-                        return;
-                    }
+                    if (await profile.getCooldown("race", true, msg).response) return;
 
                     const [cars, notCars] = client.items.partition(i => i.category === "cars");
                     var opponentCar = cars.random();
-                    var yourCar = client.items.get(profile.racing.selectedCarID);
+                    var yourCar = client.items.get(profile.model.racing.selectedCarID);
 
                     var opponentSpeed = opponentCar.maxSpeed - Math.floor(Math.random() * 49) + 1;
                     var yourSpeed = yourCar.maxSpeed - Math.floor(Math.random() * 59) + 1;
@@ -82,7 +78,7 @@ module.exports = class {
                     if (yourSpeed > opponentSpeed) {
                         var winAmount = Math.floor((Math.random()*2500) +14999);
 
-                        profile.econ.wallet.balance += winAmount;
+                        profile. addCoins(winAmount);
                         profile.save();
 
                         msg.channel.send({ embed: {
@@ -94,9 +90,9 @@ module.exports = class {
                     } else {
                         var loseAmount = Math.floor((Math.random()*2500) +9999);
 
-                        profile.econ.wallet.balance -= loseAmount;
-                        if (profile.econ.wallet.balance < 0) {
-                            profile.econ.wallet.balance = 0;
+                        profile.delCoins(loseAmount);
+                        if (profile.getCoins() < 0) {
+                            profile.getCoins() = 0;
                         }
                         profile.save();
 
@@ -109,9 +105,9 @@ module.exports = class {
                     }
 
                 } else {
-                    var opponentProfile = await ProfileUtils.get(opponent.id);
+                    var opponentProfile = await ProfileUtils.get(opponent, client);
 
-                    if(opponentProfile.racing.selectedCarID === "None") {
+                    if(opponentProfile.model.racing.selectedCarID === "None") {
                         msg.channel.send({ embed: {
                             title: `Whoops 🔥`,
                             description: `They don't have a car selected! Do \`${guildPrefix}race select <car ID>\` to select one.`,
@@ -120,14 +116,10 @@ module.exports = class {
                         return;
                     };
                 
-                const cooldown = await CooldownHandlers.get("race", msg.author);
-                if (cooldown.response) {
-                    msg.channel.send(cooldown.embed);
-                    return;
-                }
+                    if (await profile.getCooldown("race", true, msg).response) return;   
 
-                    var opponentCar = client.items.get(opponentProfile.racing.selectedCarID);
-                    var yourCar = client.items.get(profile.racing.selectedCarID);
+                    var opponentCar = client.items.get(opponentProfile.model.racing.selectedCarID);
+                    var yourCar = client.items.get(profile.model.racing.selectedCarID);
 
                     var opponentSpeed = opponentCar.maxSpeed - Math.floor(Math.random() * 49) + 1;
                     var yourSpeed = yourCar.maxSpeed - Math.floor(Math.random() * 39) + 1;
@@ -137,7 +129,7 @@ module.exports = class {
                     var repair = yourCar.repairCost;
 
                     if (crashChance >= crash){
-                        profile.econ.wallet.balance -= repair;
+                        profile.delCoins(repair);
                         profile.save();
 
                         msg.channel.send({ embed: {
@@ -151,13 +143,13 @@ module.exports = class {
                     if (yourSpeed > opponentSpeed) {
                         var winAmount = Math.floor((Math.random()*2500) +14999);
 
-                        if (!opponentProfile.econ.wallet.balance >= winAmount) {
-                            winAmount = opponentProfile.econ.wallet.balance;
+                        if (!opponentProfile.getCoins() >= winAmount) {
+                            winAmount = opponentProfile.getCoins();
                         }
 
-                        profile.econ.wallet.balance += winAmount;
+                        profile.addCoins(winAmount);
                         profile.save();
-                        opponentProfile.econ.wallet.balance -= winAmount;
+                        opponentProfile.delCoins(winAmount);
                         opponentProfile.save();
 
                         msg.channel.send({ embed: {
@@ -169,13 +161,13 @@ module.exports = class {
                     } else {
                         var loseAmount = Math.floor((Math.random()*2500) +9999);
 
-                        if (!profile.econ.wallet.balance >= loseAmount) {
-                            loseAmount = profile.econ.wallet.balance;
+                        if (!profile.getCoins() >= loseAmount) {
+                            loseAmount = profile.getCoins();
                         }
 
-                        profile.econ.wallet.balance -= loseAmount;
+                        profile. delCoins(loseAmount);
                         profile.save();
-                        opponentProfile.econ.wallet.balance += loseAmount;
+                        opponentProfile. addCoins(loseAmount);
                         opponentProfile.save();
 
                         msg.channel.send({ embed: {
@@ -187,8 +179,6 @@ module.exports = class {
                     }
 
                 }
-
-                break;
         } 
 
     }
