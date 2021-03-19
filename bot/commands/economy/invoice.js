@@ -32,10 +32,10 @@ module.exports = class {
             return;
         }
 
-        var userProfile = await ProfileUtils.get(user.id);
-        var toUserProfile = await ProfileUtils.get(toUser.id);
+        var userProfile = await ProfileUtils.get(user, client);
+        var toUserProfile = await ProfileUtils.get(toUser, client);
 
-        if (payAmount > toUserProfile.econ.wallet.balance) {
+        if (payAmount > toUserProfile.getCoins()) {
             msg.channel.send({ embed: {
                 title: `Whoops 🔥`,
                 description: `They don't have enough money for this!`,
@@ -51,11 +51,7 @@ module.exports = class {
             return;
         }
 
-        const cooldown = await CooldownHandlers.get("pay", toUser, false);
-        if (cooldown.response) {
-            msg.channel.send(cooldown.embed);
-            return;
-        }
+        if (userProfile.getCooldown("pay", false, msg).response) return;
 
         msg.channel.send({ embed: {
             title: `Be Careful ${toUser.username} ⚠`,
@@ -67,10 +63,10 @@ module.exports = class {
         const collector = msg.channel.createMessageCollector(filter, { max: 1, time: 30000});
 
         collector.on('collect', async m => {
-            const cooldown = await CooldownHandlers.get("pay", toUser);
-            toUserProfile.econ.wallet.balance -= payAmount;
-            userProfile.econ.wallet.balance += payAmount;
-            await toUserProfile.save();
+            userProfile.setCooldown("pay");
+            toUserProfile.delCoins(payAmount);
+            userProfile.addCoins(payAmount);
+            toUserProfile.save();
             userProfile.save();
 
             msg.channel.send({ embed: {

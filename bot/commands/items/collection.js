@@ -7,7 +7,7 @@ const { ProfileUtils } = require("../../utils/profile/profile")
 module.exports = class {
     constructor () {
         this.cmd = 'collection'
-        this.aliases = ['items']
+        this.aliases = ['items', 'inventory']
     }
 
     async run (client, msg, args, gPrefix) {
