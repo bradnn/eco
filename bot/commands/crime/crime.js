@@ -12,11 +12,11 @@ module.exports = class {
     async run (client, msg, args) {
 
         let user = msg.author;
-        var profile = await ProfileUtils.get(user.id);
+        var profile = await ProfileUtils.get(user, client);
         const jobList = Object.keys(JobList.pay);
-        var jobIndex = jobList.indexOf(profile.work.job);
+        var jobIndex = jobList.indexOf(profile.getJob());
 
-        if (jobIndex < 6 || profile.stats.townhall.depositAmount < 2500000) {
+        if (jobIndex < 6 || profile.getTownHallDeposited() < 2500000) {
             msg.channel.send({ embed: {
                 title: `Whoops 🔥`,
                 description: `You can't access crimes unless you have the job ${JobList.formatName[jobList[6]]}+ and have deposited $2,500,000 to the town hall.`,
@@ -26,10 +26,8 @@ module.exports = class {
         }
 
         const cooldown = await CooldownHandlers.get("crime", user, false);
-        if (cooldown.response) {
-            msg.channel.send(cooldown.embed);
-            return;
-        }
+
+        if (await profile.getCooldown("crime", true, msg).response) return;  
 
         msg.channel.send({embed: {
             title: `Crime 💰`,
@@ -60,11 +58,11 @@ module.exports = class {
                     break;
             }
 
-            var crimeLevel = profile.stats.crime.skillCounts[type];
+            var crimeLevel = profile.model.stats.crime.skillCounts[type];
             var chance = (Math.random() * 100) + Math.floor((crimeLevel + 1) * 0.5);
 
-            var gainAmount = Math.floor(((profile.econ.wallet.balance / 100) * 1) * (crimeLevel + 1));
-            var lossAmount = Math.floor((profile.econ.wallet.balance / 100) * 2.5);
+            var gainAmount = Math.floor(((profile.getCoins() / 100) * 1) * (crimeLevel + 1));
+            var lossAmount = Math.floor((profile.getCoins() / 100) * 2.5);
 
             switch (type) {
                 case "lockPicking":
@@ -113,7 +111,7 @@ module.exports = class {
                     description: lossMessage,
                     color: client.colors.error
                 }});
-                profile.econ.wallet.balance -= Math.floor((profile.econ.wallet.balance / 100) * 2.5);
+                profile.delCoins(Math.floor((profile.getCoins() / 100) * 2.5));
                 profile.save();
             } else if (chance < 97) {
                 msg.channel.send({ embed: {
@@ -121,22 +119,21 @@ module.exports = class {
                     description: gainMessage,
                     color: client.colors.success
                 }});
-                profile.econ.wallet.balance += Math.floor(((profile.econ.wallet.balance / 100) * 1.5) * (crimeLevel + 1));
+                profile.addCoins(Math.floor(((profile.getCoins() / 100) * 1.5) * (crimeLevel + 1)));
                 profile.save();
             } else {
                 msg.channel.send({ embed: {
                     title: `The job went better than expected 🔫`,
-                    description: `${gainMessage}
-You leveled up your ${m.content.toLowerCase()} skill to ${profile.crime.skills[type] +1}`,
+                    description: `${gainMessage} You leveled up your ${m.content.toLowerCase()} skill to ${profile.model.crime.skills[type] +1}`,
                     color: client.colors.success
                 }});
-                profile.crime.skills[type] += 1;
-                profile.econ.wallet.balance += Math.floor(((profile.econ.wallet.balance / 100) * 1) * (crimeLevel + 1));
+                profile.model.crime.skills[type] += 1;
+                profile.addCoins(Math.floor(((profile.getCoins() / 100) * 1) * (crimeLevel + 1)));
                 profile.save();
             }
 
         });
-
-        
+        profile.save();
+        return;
     }
 }
