@@ -32,14 +32,14 @@ module.exports = class {
         }
 
         async function info (client, msg, args, prefix) {
-            var profile = await ProfileUtils.get(msg.author);
+            var profile = await ProfileUtils.get(msg.author, client);
 
             var embed = {
                 title: `Town Hall 🔔`,
                 fields: [
                     {
                         name: `Your Deposits`,
-                        value: `💷 Amount **-** ${FormatUtils.money(profile.econ.wallet.balance)}`
+                        value: `💷 Amount **-** ${FormatUtils.money(profile.getTownHallDeposited())}`
                     }
                 ],
                 color: client.colors.default,
@@ -72,7 +72,7 @@ $10M **-** Unlocks DarkNet`
 
         async function deposit (client, msg, args, prefix) {
             var user = msg.author;
-            var profile = await ProfileUtils.get(user.id);
+            var profile = await ProfileUtils.get(user, client);
             var amount = parseInt(args[1]);
 
             if (isNaN(amount) || !amount) {
@@ -82,7 +82,7 @@ $10M **-** Unlocks DarkNet`
                     color: client.colors.warning
                 }});
                 return;
-            } else if (amount > profile.econ.wallet.balance || amount <= 0 || profile.econ.wallet.balance == 0) {
+            } else if (amount > profile.getCoins() || amount <= 0 || profile.getCoins() == 0) {
                 msg.channel.send({ embed: {
                     title: `Whoops 🔥`,
                     description: `You don't have enough to deposit!`,
@@ -91,14 +91,8 @@ $10M **-** Unlocks DarkNet`
                 return;
             }
 
-            var townHall = await townHallUtils.get();
-
-            townHall.deposits.total += amount;
-
-            profile.econ.wallet.balance -= amount;
-            profile.stats.townhall.depositAmount += amount;
-
-            townHall.save();
+            profile.delCoins(amount);
+            profile.addTownHallDeposit(amount);
             profile.save();
 
             msg.channel.send({ embed: {

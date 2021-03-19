@@ -164,6 +164,11 @@ module.exports = class {
         return this.model.stats.townhall.depositAmount;
     }
 
+    addTownHallDeposit(amount = 0) {
+        this.model.stats.townhall.depositAmount += amount;
+        return;
+    }
+
     // ==================================================================================
     // COOLDOWN MANAGEMENT
     // ==================================================================================
