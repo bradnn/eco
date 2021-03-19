@@ -215,19 +215,16 @@ module.exports = class {
     }
 
     getItem(client, itemID) {
-        if (!amount) amount = 1;
         client.items.get(itemID).get(this.userID);
         return;
     }
 
-    addItem(client, itemID, amount) {
-        if (!amount) amount = 1;
+    addItem(client, itemID, amount = 1) {
         client.items.get(itemID).add(this.userID, amount);
         return;
     }
 
-    delItem(client, itemID, amount) {
-        if (!amount) amount = 1;
+    delItem(client, itemID, amount = 1) {
         client.items.get(itemID).remove(this.userID, amount);
         return;
     }
