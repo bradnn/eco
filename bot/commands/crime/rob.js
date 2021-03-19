@@ -54,6 +54,15 @@ module.exports = class {
                 return;
             }
         } else {
+
+            if (user == robUser) {
+                msg.channel.send({ embed: {
+                    title: `Whoops 🔥`,
+                    description: `You can't rob yourself!`,
+                    color: client.colors.warning
+                }});
+                return;
+            }
             
             var theirProfile = await ProfileUtils.get(robUser, client);
             var theirBalance = theirProfile.getCoins();

@@ -39,7 +39,7 @@ module.exports = class {
 
         var profile = await ProfileUtils.get(msg.author, client);
         
-        if(profile.collections[item.category][item.name] >= giftAmount) {
+        if(profile.model.collections[item.category][item.name] >= giftAmount) {
             var toProfile = await ProfileUtils.get(giftTo, client);
 
 

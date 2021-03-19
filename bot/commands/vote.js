@@ -7,11 +7,6 @@ module.exports = class {
     }
 
     async run(client, msg, args, prefix) {
-
-        const user = client.profiles.get(msg.author.id)
-
-        user.addCoins(500);
-
         if (!args[0]) {
 
             msg.channel.send({embed: {

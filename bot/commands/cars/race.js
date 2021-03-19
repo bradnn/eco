@@ -105,6 +105,15 @@ module.exports = class {
                     }
 
                 } else {
+                    if (opponent == msg.author) {
+                        msg.channel.send({ embed: {
+                            title: `Whoops 🔥`,
+                            description: `You can't race yourself!`,
+                            color: client.colors.warning
+                        }});
+                        return;
+                    }
+
                     var opponentProfile = await ProfileUtils.get(opponent, client);
 
                     if(opponentProfile.model.racing.selectedCarID === "None") {

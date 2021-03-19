@@ -11,7 +11,7 @@ module.exports = class {
     }
 
     async run(client, msg, args, prefix) {
-        var itemChosen = args[0].toUpperCase(); // Item the user wants to buy
+        var itemChosen = args[0]; // Item the user wants to buy
         var itemAmount = parseInt(args[1]); // Amount of this item the user wants to buy
             var itemObject = client.items.get(itemChosen); // Gets the item from the bot
             if (itemObject == null) { // If item doesn't exist send error
@@ -22,6 +22,7 @@ module.exports = class {
                 }});
                 return;
             } 
+            itemChosen = itemChosen.toUpperCase();
             var profile = await ProfileUtils.get(msg.author, client); // Get users profile from database
             var theircoins;
             if(isNaN(itemAmount)) itemAmount = 1; // If the user didnt give an item amount or it wasn't a number, set item amount to 1

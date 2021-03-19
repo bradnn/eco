@@ -62,7 +62,7 @@ module.exports = class {
 
                     user.setSick(true);
                 } else if (chance > 96) { // If the user should recieve double coins (2% Chance)
-                    var perfectMessage = FinalWorkMessages[profile.work.job].perfect[Math.floor(Math.random() * FinalWorkMessages[profile.work.job].perfect.length)]; // Chooses a random perfect work message
+                    var perfectMessage = FinalWorkMessages[profile.getJob()].perfect[Math.floor(Math.random() * FinalWorkMessages[profile.getJob()].perfect.length)]; // Chooses a random perfect work message
 
                     embed = {
                         title: `Amazing Job 🎊`,
