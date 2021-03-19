@@ -163,7 +163,7 @@ module.exports = class {
     // COOLDOWN MANAGEMENT
     // ==================================================================================
 
-    getCooldown(type, set = true, msg) {
+    async getCooldown(type, set = true, msg) {
         const previousTime = this.model.cooldowns[type]; // When command was last used
         const nowTime = new Date(); //
         const timePassed = Math.abs(previousTime - nowTime);
@@ -190,13 +190,13 @@ module.exports = class {
         }
 
         if (this.getSick()) this.setSick(false);
-        if (set) this.setCooldown(type);
+        if (set) await this.setCooldown(type);
         return {
             response: false
         };
     }
 
-    setCooldown(type) {
+    async setCooldown(type) {
         this.model.cooldowns[type] = new Date();
         this.model.save();
         return true;
