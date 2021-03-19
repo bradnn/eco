@@ -1,4 +1,4 @@
-module.exports.JobList = {
+module.exports.JobList = { 
     pay: {
         None: 0,
         begger: 250,

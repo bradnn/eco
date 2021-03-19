@@ -14,7 +14,7 @@ module.exports = class {
         var user = msg.author;
         var profile = await ProfileUtils.get(user, client);
 
-        if (profile.getCooldown("work", true, msg).response) return;
+        if (profile.getCooldown("mine", true, msg).response) return;
         
 
         var chances = Math.random() * 100;

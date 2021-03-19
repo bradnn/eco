@@ -5,7 +5,7 @@ const { ProfileUtils } = require("../../utils/profile/profile");
 
 module.exports = class {
     constructor() {
-        this.cmd = 'apply',
+        this.cmd = 'apply', 
         this.aliases = ['applyfor']
     }
 

@@ -83,8 +83,8 @@ module.exports = class {
                         fields: [],
                         color: client.colors.success
                     }
-                    user.addWork();
 
+                    await user.addWork();
                     var earnedCoins = user.getPay(false, true);
                     rewardString += `💰 +${FormatUtils.money(earnedCoins)}\n`; // Adds earned money to reward string
                 }
