@@ -81,8 +81,8 @@ app.post('/dblwebhook', webhook.middleware(), async (req, res) => {
             }
         }
 
-        var gemGain = 2500 + ( 2500 / 100) * (val.stats.votes.streak.voteStreak - 1) * 5
-        var coinGain = 20000 + ( 20000 / 100) * (val.stats.votes.streak.voteStreak - 1) * 5
+        var gemGain = 2500 + ( 2500 / 100) * (val.stats.votes.streak.voteStreak) * 5
+        var coinGain = 20000 + ( 20000 / 100) * (val.stats.votes.streak.voteStreak) * 5
 
         val.stats.votes.voteCount += 1;
         val.econ.wallet.gems += gemGain;
