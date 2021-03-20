@@ -23,7 +23,7 @@ module.exports = class {
             return;
         }
 
-        if (!payAmount || isNaN(payAmount)) {
+        if (!payAmount || isNaN(payAmount) || payAmount < 1) {
             msg.channel.send({ embed: {
                 title: `Whoops 🔥`,
                 description: `Please supply a valid amount of money!`,

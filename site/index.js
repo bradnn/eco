@@ -31,14 +31,14 @@ var path = require('path');
 app.use('/icon.ico', express.static('assets/icon.ico'));
 app.use('/icon.png', express.static('assets/icon.png'));
 
+app.set("view engine", "ejs")
+app.use(express.static(path.join(__dirname, '../views')));
+
 app.get('/', async function (req, res) {
 
-    app.set("view engine", "ejs")
-
-    app.use(express.static(path.join(__dirname, "views")));
 
     res.render("main");
-})
+});
 
 const Topgg = require('@top-gg/sdk');
 const webhook = new Topgg.Webhook(Config.BOT_LIST_AUTH);
@@ -96,13 +96,13 @@ app.post('/dblwebhook', webhook.middleware(), async (req, res) => {
         var user1 = await bot.getRESTUser(req.vote.user);
         const embed = new MessageBuilder()
         .setTitle(`${user1.username} voted!`)
-        .setDescription(`${user1.username} just voted at [top.gg](http://ecobot.syclesdev.com/vote) and earned ${gemGain} gems and $${coinGain}!`);
+        .setDescription(`${user1.username} just voted at [top.gg](http://ecobot.sycles.me/vote) and earned ${gemGain} gems and $${coinGain}!`);
         hook.send(embed);
 
         if (voteMessage == true) {
             (await bot.getDMChannel(req.vote.user)).createMessage({ embed: {
                 title: `Thank you! 🎊`,
-                description: `Thank you for voting for our bot on [top.gg](http://ecobot.syclesdev.com/vote)!`,
+                description: `Thank you for voting for our bot on [top.gg](http://ecobot.sycles.me/vote)!`,
                 fields: [
                     {
                         name: `Rewards 💎`,
@@ -130,7 +130,7 @@ app.post('/dblwebhook', webhook.middleware(), async (req, res) => {
 });
 
 app.get('/docs', async function (req, res) {
-    res.redirect('https://docs.syclesdev.com/');
+    res.redirect('https://github.com/sycles/EcoBot/wiki');
 })
 
 app.get('/invite', async function (req, res) {
@@ -232,10 +232,6 @@ bot.on('error', function(error, shard) {
 bot.connect();
 
 app.get('/top', async function (req, res) {
-
-    app.set("view engine", "ejs")
-
-    app.use(express.static(path.join(__dirname, "views")));
 
 
     User.find({}).sort([['econ.wallet.balance', -1]]).exec(async function(err, docs) {

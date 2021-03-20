@@ -132,17 +132,6 @@ const userModel = mongoose.Schema({
             default: 0
         }
     },
-    pets: {
-        type: Object,
-        default: {
-            name: "Rabbit",
-            leveling: {
-                experience: 0,
-                level: 0
-            },
-            buff: "workPayrate"
-        }
-    },
     racing: {
         selectedCarID: {
             type: String,
@@ -185,6 +174,10 @@ const userModel = mongoose.Schema({
                 type: Number,
                 default: 0
             },
+            bugattiDivo: {
+                type: Number,
+                default: 0
+            },
             lamborghiniAventador: {
                 type: Number,
                 default: 0
@@ -197,6 +190,10 @@ const userModel = mongoose.Schema({
                 type: Number,
                 default: 0
             },
+            thrustssc: {
+                type: Number,
+                default: 0
+            }
         },
         seasonal: {
             newYears2021Ball: {

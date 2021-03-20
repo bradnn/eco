@@ -72,7 +72,7 @@ module.exports = {
         }
 
         _updateList (client, config) {
-            const dbl = new DBL(config.DBLApi, client);
+            const dbl = new DBL(config.BOT_LIST_TOKEN, client);
             dbl.on('posted', () => {
                 console.log(`Posted server count to Top.GG (${client.guilds.cache.size})`);
                 client.user.setActivity(`;help | In ${client.guilds.cache.size} servers!`, { type: 'WATCHING' });

@@ -295,6 +295,16 @@ const userModel = mongoose.Schema({
             messageToggle: {
                 type: Boolean,
                 default: true
+            },
+            streak: {
+                lastVote: {
+                    type: Date,
+                    default: 0
+                },
+                voteStreak: {
+                    type: Number,
+                    default: 0
+                }
             }
         }
     }
