@@ -127,8 +127,8 @@ module.exports = class {
     }
 
     addWork() {
-        this.model.stats.work.workCountRaise++;
-        this.model.work.workCount++;
+        this.model.stats.work.workCountRaise += 1;
+        this.model.stats.work.workCount += 1;
     }
 
     getWorkCount() {

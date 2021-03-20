@@ -32,6 +32,15 @@ module.exports = class {
                     return;
                 }
 
+                if(await profile.getItem(client, selectedCar) < 1) {
+                    msg.channel.send({ embed: {
+                        title: `Whoops 🔥`,
+                        description: `Please supply a car ID you own.`,
+                        color: client.colors.warning
+                    }});
+                    return;
+                }
+
                 profile.model.racing.selectedCarID = carItem.id;
                 profile.save();
 
