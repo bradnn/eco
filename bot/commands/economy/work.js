@@ -41,7 +41,7 @@ module.exports = class {
                 var penaltyString = ``; // List of penalties the user has recieved for this work.
 
                 var chance = Math.random() * 100
-                if (chance > 99) { // If the user should be fired (1% Chance)
+                if (chance > 0) { // If the user should be fired (1% Chance)
                     var failMessage = FinalWorkMessages[job].bad[Math.floor(Math.random() * FinalWorkMessages[job].bad.length)]; // Chooses a random work fail message
                     embed = { // Sets the embed to be sent
                         title: `You're fired! 🔥`,
@@ -49,9 +49,9 @@ module.exports = class {
                         fields: [],
                         color: client.colors.error
                     };
+                    penaltyString += `💼 You lost your job, you'll have to apply again. (\`${guildPrefix}apply ${job}\`)\n`; // Adds lost job to the penalty list
                     user.resetRaise();
                     user.setJob("begger");
-                    penaltyString += `💼 Lost Job\n`; // Adds lost job to the penalty list
                 } else if (chance > 98) { // If the user should get sick (1% Chance)
                     embed = { // Sets the embed to be sent
                         title: `You got sick 🦠`,
@@ -62,7 +62,7 @@ module.exports = class {
 
                     user.setSick(true);
                 } else if (chance > 96) { // If the user should recieve double coins (2% Chance)
-                    var perfectMessage = FinalWorkMessages[profile.getJob()].perfect[Math.floor(Math.random() * FinalWorkMessages[profile.getJob()].perfect.length)]; // Chooses a random perfect work message
+                    var perfectMessage = FinalWorkMessages[user.getJob()].perfect[Math.floor(Math.random() * FinalWorkMessages[user.getJob()].perfect.length)]; // Chooses a random perfect work message
 
                     embed = {
                         title: `Amazing Job 🎊`,
@@ -120,6 +120,11 @@ module.exports = class {
         if(user.getRaise().levelUp) {
             rewardString += `🔧 You got a raise! (+1% Bonus)\n`;
         }
+
+        if(user.canGetNextJob().canApply) {
+            rewardString += `🎉 You can now apply for the next job! (\`${guildPrefix}apply ${user.canGetNextJob().nextJob}\`)`
+        }
+
         var curField = 0;
         if (penaltyString != ``) { // Dont add a penalty field if there is no penalty.
             embed.fields[curField] = {

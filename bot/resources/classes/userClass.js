@@ -135,6 +135,25 @@ module.exports = class {
         return this.model.stats.work.workCount;
     }
 
+    canGetNextJob() {
+        if (this.getJob() == "begger") return {canApply: false, nextJob: this.getJob()};
+        const jobList = Object.keys(JobList.pay);
+        const jobIndex = jobList.indexOf(this.getJob());
+        const nextJob = jobList[jobIndex + 1];
+        const nextReq = JobList.workReq[nextJob];
+        if (this.model.stats.work.workCount >= nextReq) {
+            return {
+                canApply: true,
+                nextJob
+            }
+        } else {
+            return {
+                canApply: false,
+                nextJob
+            }
+        }
+    }
+
     // ==================================================================================
     // MINING MANAGEMENT
     // ==================================================================================

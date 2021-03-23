@@ -1,0 +1,19 @@
+module.exports.UnscrambleWords = [
+    "Economy", 
+    "Stocks", 
+    "Money", 
+    "Cash", 
+    "Work", 
+    "Gamer", 
+    "Janitor",
+    "Rich",
+    "Company",
+    "Profit",
+    "Invest",
+    "Taxes",
+    "Market",
+    "Hunting",
+    "Steal",
+    "Crime",
+    "Bot"
+];

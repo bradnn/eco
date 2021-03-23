@@ -27,7 +27,7 @@ const userModel = mongoose.Schema({
     work: {
         job: {
             type: String,
-            default: "None"
+            default: "janitor"
         },
         raiseLevel: {
             type: Number,
@@ -223,6 +223,16 @@ const userModel = mongoose.Schema({
             bow: {
                 type: Number,
                 default: 0
+            }
+        }
+    },
+    pet: {
+        selectedPet: {
+
+        },
+        pets: {
+            rabbit: {
+                
             }
         }
     },

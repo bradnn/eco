@@ -19,6 +19,7 @@
   "homepage": "https://github.com/sycles/EcoBot-Code#readme",
   "dependencies": {
     "@top-gg/sdk": "^3.0.9",
+    "chalk": "^4.1.0",
     "dblapi.js": "^2.4.1",
     "discord-webhook-node": "^1.1.8",
     "discord.js": "^12.5.1",
@@ -28,6 +29,7 @@
     "express": "^4.17.1",
     "fs": "0.0.1-security",
     "glob": "^7.1.6",
+    "moment": "^2.29.1",
     "mongoose": "^5.12.0"
   }
 }
