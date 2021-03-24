@@ -9,11 +9,11 @@ module.exports.User = {
             return client.profiles.get(user.id);
         }
 
-        let lookup = await userSchema({userID: user.id}, function (err, res) {
+        let lookup = await userSchema.findOne({userID: user.id}, function (err, res) {
             if (err) throw err;
-            if (res) throw res;
+            if (res) return res;
         });
-        if (!lookup) { lookup = this.create(user.id) };
+        if (!lookup) { lookup = await this.create(user.id) };
         const newUser = new userClass(user, lookup);
         client.profiles.set(user.id, newUser);
         return newUser;

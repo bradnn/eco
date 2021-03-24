@@ -82,6 +82,10 @@ module.exports = class {
             }
         }
 
+        if(user.canGetNextJob().canApply) {
+            rewardString += `🎉 You can now apply for the next job! (\`${guildPrefix}apply ${user.canGetNextJob().nextJob.name}\`)`;
+        }
+
         var curField = 0;
         if (penaltyString != ``) { // Dont add a penalty field if there is no penalty.
             embed.fields[curField] = {

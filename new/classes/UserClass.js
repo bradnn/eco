@@ -101,7 +101,25 @@ module.exports = class {
     }
 
     getJob() {
-        return this.model.profiles.stats.work.job;
+        return this.model.profiles.stats.work.job.toLowerCase();
+    }
+
+    canGetNextJob() {
+        if (this.getJob() == 'begger') return {canApply: false, nextJob: this.getJob()};
+        var jobArray = client.jobs.array().sort((a, b) => {return a.workRequirement - b.workRequirement});
+        var index = jobArray.map(function(e) { return e.name; }).indexOf(this.model.profiles.stats.work.job);
+        var nextJob = jobArray[index + 1];
+        if(this.getWorkCount() >= nextJob.workRequirement) {
+            return {
+                canApply: true,
+                nextJob
+            }
+        } else {
+            return {
+                canApply: false,
+                nextJob
+            }
+        }
     }
 
     getPay(perfect = false, add = true) {
@@ -130,7 +148,7 @@ module.exports = class {
         if (this.model.profiles.stats.work.raise.count >= 25) {
             this.model.profiles.stats.work.raise.coint = 0;
             this.model.profiles.stats.work.raise.level += 1;
-            client.logger.job(`${this.id} got a raise to level ${this.model.work.raiseLevel}`);
+            client.logger.job(`${this.id} got a raise to level ${this.model.profiles.stats.work.raise.level}`);
             return {
                 levelUp: true,
                 newRaise: this.model.profiles.stats.work.raise.level
