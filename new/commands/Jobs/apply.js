@@ -4,11 +4,12 @@ module.exports = class {
     constructor() {
         this.cmd = 'apply',
         this.aliases = ['applyfor']
+        this.unlockLevel = 0;
     }
 
-    async run(client, msg, args, guildPrefix) {
+    async run(client, msg, args, options) {
         var message = ``;
-        var user = await User.get(msg.author);
+        var user = options.author;
         var job = args[0];
         if (!job) {
             var array = client.jobs.array().sort((a, b) => {return a.pay - b.pay});
@@ -27,16 +28,16 @@ module.exports = class {
             if (!job) {
                 msg.channel.send({ embed: {
                     title: `Whoops 🔥`,
-                    description: `That isn't a valid job! Do \`${guildPrefix}apply\` to see a list of available jobs!`,
+                    description: `That isn't a valid job! Do \`${options.prefix}apply\` to see a list of available jobs!`,
                     color: client.colors.warning
                 }});
                 return;
             }
 
-            if (job.workRequirement > user.getWorkCount) {
+            if (job.workRequirement > user.getWorkCount()) {
                 msg.channel.send({ embed: {
                     title: `Whoops 🔥`,
-                    description: `You can't apply for this job! Do \`${guildPrefix}apply\` to see a list of available jobs!`,
+                    description: `You can't apply for this job! Do \`${options.prefix}apply\` to see a list of available jobs!`,
                     color: client.colors.warning
                 }});
                 return;

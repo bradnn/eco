@@ -6,13 +6,18 @@ module.exports = class {
     constructor() {
         this.cmd = 'stats',
         this.aliases = ['stat', 'mystats']
+        this.unlockLevel = 0;
     }
 
-    async run(client, msg, args, guildPrefix) {
+    async run(client, msg, args, options) {
         let user = msg.mentions.users.first() || msg.guild.members.cache.get(args[0]);
-        if (!user) user = msg.author;
-
-        const profile = await User.get(user);
+        var profile;
+        if (!user) {
+            user = msg.author;
+            profile = options.author;
+        } else {
+            profile = await User.get(user);
+        }
 
         var embed = {
             author: {
@@ -20,6 +25,10 @@ module.exports = class {
                 icon_url: user.avatarURL
             },
             fields: [
+                {
+                    name: `Leveling`,
+                    value: `⭐ Level **-** ${profile.getLevel()} (${profile.getExp()} exp/${profile.getLevelReq()} exp)`
+                },
                 {
                     name: `Working`,
                     value: `💼 Work Count **-** ${Number.numberComma(profile.getWorkCount())}`

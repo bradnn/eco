@@ -4,9 +4,10 @@ module.exports = class {
     constructor() {
         this.cmd = 'jobs',
         this.aliases = ['alljobs']
+        this.unlockLevel = 0;
     }
 
-    async run(client, msg, args, guildPrefix) {
+    async run(client, msg, args, options) {
         var message = ``;
         var array = client.jobs.array().sort((a, b) => {return a.pay - b.pay});
         for (var item of array) {

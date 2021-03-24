@@ -6,13 +6,18 @@ module.exports = class {
     constructor() {
         this.cmd = 'balance',
         this.aliases = ['bal', 'money']
+        this.unlockLevel = 0;
     }
 
-    async run(client, msg, args, guildPrefix) {
+    async run(client, msg, args, options) {
         let user = msg.mentions.users.first() || msg.guild.members.cache.get(args[0]);
-        if (!user) user = msg.author;
-
-        const profile = await User.get(user);
+        var profile;
+        if (!user) {
+            user = msg.author;
+            profile = options.author;
+        } else {
+            profile = await User.get(user);
+        }
 
         var embed = {
             author: {

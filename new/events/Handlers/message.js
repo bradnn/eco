@@ -1,3 +1,5 @@
+const { User } = require("../../modules/User");
+
 module.exports = class {
     async run(client, msg) {
         if (msg.channel.type == 1 | msg.author.bot) return;
@@ -16,8 +18,21 @@ module.exports = class {
         const command = client.commands.get(cmd.toLowerCase()) || client.commands.get(client.aliases.get(cmd.toLowerCase()));
         if (command) {
             try {
+                const userClass = await User.get(msg.author);
+                if(command.unlockLevel > userClass.getLevel()) {
+                    msg.channel.send({ embed: {
+                        title: `Level Too Low ❌`,
+                        description: `You have to be level ${command.unlockLevel} to use this command.`,
+                        color: client.colors.error
+                    }});
+                    return;
+                }
+                var options = {
+                    prefix,
+                    author: userClass
+                }
                 client.logger.command(`Command ${prefix}${cmd} ran by ${msg.author.username}#${msg.author.discriminator} (${msg.author.id})`);
-                command.run(client, msg, args, prefix);
+                command.run(client, msg, args, options);
             } catch (e) {
                 msg.channel.send({
                     embed: {

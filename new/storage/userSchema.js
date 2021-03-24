@@ -13,6 +13,12 @@ const user = Schema({
                 default: 0
             }
         },
+        level: {
+            exp: {
+                type: Number,
+                default: 0
+            }
+        },
         storage: {
             items: {
                 type: Array,
@@ -33,7 +39,7 @@ const user = Schema({
                 },
                 job: {
                     type: String,
-                    default: 'janitor'
+                    default: 'Janitor'
                 },
                 sick: {
                     type: Boolean,

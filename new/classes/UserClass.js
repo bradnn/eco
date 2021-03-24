@@ -105,11 +105,11 @@ module.exports = class {
     }
 
     canGetNextJob() {
-        if (this.getJob() == 'begger') return {canApply: false, nextJob: this.getJob()};
+        if (this.getJob() == 'Begger') return {canApply: false, nextJob: this.getJob()};
         var jobArray = client.jobs.array().sort((a, b) => {return a.workRequirement - b.workRequirement});
         var index = jobArray.map(function(e) { return e.name; }).indexOf(this.model.profiles.stats.work.job);
         var nextJob = jobArray[index + 1];
-        if(this.getWorkCount() >= nextJob.workRequirement) {
+        if(this.getWorkCount() >= nextJob.workRequirement && nextJob.name != "Begger") {
             return {
                 canApply: true,
                 nextJob
@@ -146,7 +146,7 @@ module.exports = class {
 
     getRaise() {
         if (this.model.profiles.stats.work.raise.count >= 25) {
-            this.model.profiles.stats.work.raise.coint = 0;
+            this.model.profiles.stats.work.raise.count = 0;
             this.model.profiles.stats.work.raise.level += 1;
             client.logger.job(`${this.id} got a raise to level ${this.model.profiles.stats.work.raise.level}`);
             return {
@@ -228,6 +228,50 @@ module.exports = class {
             }
         }
         return embed;
+    }
+    
+    // ==================================================================================
+    // LEVEL MANAGEMENT
+    // ==================================================================================
+
+    getExp() {
+        return this.model.profiles.level.exp;
+    }
+
+    addExp(amount = 0) {
+        return this.model.profiles.level.exp += amount;
+    }
+
+    addRandomExp(min = 10, max = 30) {
+        var ogLevel = this.getLevel();
+        const amount = Math.floor(Math.random() * (max - min + 1) + min)
+        this.model.profiles.level.exp += amount;
+        var level = this.getLevel();
+        var levelUp = false;
+        if (ogLevel < level) levelUp = true;
+        return {
+            added: amount,
+            levelUp
+        };
+    }
+
+    delExp(amount = 0) {
+        return this.model.profiles.level.exp -= amount;
+    }
+
+    setExp(amount = 0) {
+        return this.model.profiles.level.exp = amount;
+    }
+
+    getLevel() {
+        const exp = this.model.profiles.level.exp;
+        return Math.floor(Math.floor(95 + Math.sqrt(9025 + 380 * exp )) / 190);
+    }
+
+    getLevelReq() {
+        const exp = this.model.profiles.level.exp;
+        const nextLevel = Math.floor(Math.floor(95 + Math.sqrt(9025 + 380 * exp )) / 190) + 1;
+        return 95 * nextLevel * nextLevel - 95 * nextLevel;
     }
     
     // ==================================================================================
