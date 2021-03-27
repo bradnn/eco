@@ -2,7 +2,7 @@ module.exports = class {
     constructor() {
         this.name = 'Assistant';
         this.pay = 6000;
-        this.workRequirement = 170;
+        this.workRequirement = 340;
     }
 
     getMessage(type = "good") {

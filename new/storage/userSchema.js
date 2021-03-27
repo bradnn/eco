@@ -20,9 +20,9 @@ const user = Schema({
             }
         },
         storage: {
-            items: {
-                type: Array,
-                default: []
+            inventory: {
+                type: Object,
+                default: {}
             }
         },
         stats: {
@@ -54,6 +54,12 @@ const user = Schema({
                         type: Number,
                         default: 0
                     }
+                }
+            },
+            mining: {
+                mineCount: {
+                    type: Number,
+                    default: 0
                 }
             }
         }

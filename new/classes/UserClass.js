@@ -5,7 +5,7 @@ const client = Client.get();
 
 const cooldowns = {
     work: 20000,
-    mine: 120000,
+    mine: 0, //120000
     crime: 60000,
     rob: 60000,
     robUser: 300000,
@@ -108,6 +108,10 @@ module.exports = class {
         if (this.getJob() == 'Begger') return {canApply: false, nextJob: this.getJob()};
         var jobArray = client.jobs.array().sort((a, b) => {return a.workRequirement - b.workRequirement});
         var index = jobArray.map(function(e) { return e.name; }).indexOf(this.model.profiles.stats.work.job);
+        if (index = jobArray.length) return {
+            canApply: false,
+            nextJob: this.getJob()
+        }
         var nextJob = jobArray[index + 1];
         if(this.getWorkCount() >= nextJob.workRequirement && nextJob.name != "Begger") {
             return {
@@ -129,7 +133,7 @@ module.exports = class {
         var FINAL_BONUS = RAISE_BONUS;
         if (perfect == true) FINAL_BONUS += 0.5
 
-        const PAYOUT = Math.floor(JOB_PAY * 1 + FINAL_BONUS);
+        const PAYOUT = Math.floor(JOB_PAY * (1 + FINAL_BONUS));
         if (add) this.addCoins(PAYOUT);
         return PAYOUT;
     }
@@ -186,7 +190,7 @@ module.exports = class {
 
         var cooldown = cooldowns[type];
 
-        if (type == "work" && this.getSick()) cooldown = 600000;
+        if (type == "work" && this.getSick()) cooldown = 300000;
 
         if (timePassed + 300 < cooldown) {
             const timeLeftMs = Math.ceil(cooldown - timePassed);
@@ -242,7 +246,7 @@ module.exports = class {
         return this.model.profiles.level.exp += amount;
     }
 
-    addRandomExp(min = 10, max = 30) {
+    addRandomExp(min = 10, max = 40) {
         var ogLevel = this.getLevel();
         const amount = Math.floor(Math.random() * (max - min + 1) + min)
         this.model.profiles.level.exp += amount;
@@ -275,10 +279,74 @@ module.exports = class {
     }
     
     // ==================================================================================
+    // MINE MANAGEMENT
+    // ==================================================================================
+
+    getTool() {
+        if (this.model.profiles.storage.inventory['005'] > 0) {
+            return "pickaxe";
+        } else {
+            return "none";
+        }
+    }
+
+    breakTool() {
+        if (this.model.profiles.storage.inventory['005']) {
+            this.model.profiles.storage.inventory['005'] -= 1;
+            return "pickaxe";
+        } else {
+            return "none";
+        }
+    }
+    
+    // ==================================================================================
+    // STORAGE MANAGEMENT
+    // ==================================================================================
+
+    getInventory() {
+        return this.model.profiles.storage.inventory;
+    }
+
+    addItem(id, amount = 1) {
+        var item = client.items.get(id);
+        if (!item) return false;
+
+        var itemPath = this.model.profiles.storage.inventory[item.id];
+        if (!itemPath) {
+            this.model.profiles.storage.inventory[item.id] = amount;
+        } else {
+            this.model.profiles.storage.inventory[item.id] += amount;
+        }
+        return true;
+    }
+
+    delItem(id, amount = 1) {
+        var item = client.items.get(id);
+        if (!item) return false;
+
+        var itemPath = this.model.profiles.storage.inventory[item.id];
+        if (!itemPath) {
+            this.model.profiles.storage.inventory[item.id] = 0;
+        } else {
+            this.model.profiles.storage.inventory[item.id] -= amount;
+        }
+        return true;
+    }
+
+    getItem(id) {
+        var item = client.items.get(id);
+        if (!item) return undefined;
+        
+        return this.model.profiles.storage.inventory[item.id];
+    }
+    
+    // ==================================================================================
     // SAVE DATABASE
     // ==================================================================================
 
     save() {
+        this.model.markModified('profiles.storage.inventory');
+        this.model.markModified('profiles.stats.cooldowns');
         this.model.save();
         return true;
     }

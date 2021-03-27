@@ -39,7 +39,7 @@ async function start() {
         }
     });
 
-    // Loading Events    
+    // Loading Commands    
     glob (`${process.cwd()}/new/commands/**/*.js`).then(commands => {
         for (const commandFile of commands) {
             const { name } = parse(commandFile);
@@ -60,7 +60,7 @@ async function start() {
         for (const itemFile of items) {
             const { name } = parse(itemFile);
             const file = require(itemFile);
-            const item = new file(client, name.toLowerCase());
+            const item = new file();
             const itemID = item.id;
             client.logger.item(`Loading Item: ${name} (${itemID})`);
             client.items.set(itemID, item);
@@ -72,7 +72,7 @@ async function start() {
         for (const jobFile of jobs) {
             const { name } = parse(jobFile);
             const file = require(jobFile);
-            const job = new file(client, name.toLowerCase());
+            const job = new file();
             client.logger.job(`Loading Job: ${job.name}`);
             client.jobs.set(name, job);
         }

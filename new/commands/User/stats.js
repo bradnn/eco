@@ -31,7 +31,7 @@ module.exports = class {
                 },
                 {
                     name: `Working`,
-                    value: `💼 Work Count **-** ${Number.numberComma(profile.getWorkCount())}`
+                    value: `💼 Work Count **-** ${Number.numberComma(profile.getWorkCount())}\n💼 Job **-** ${profile.getJob()}`
                 }
             ]
         }

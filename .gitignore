@@ -2,6 +2,7 @@
 
 config.js
 config-alpha.js
+new/commands/Gambling/blackjack.js
 
 # Secret files
 

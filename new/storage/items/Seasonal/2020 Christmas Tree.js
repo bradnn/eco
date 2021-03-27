@@ -2,7 +2,7 @@ module.exports = class {
     constructor() {
         this.id = '001';
 
-        this.name = '2021 New Years Ball';
+        this.name = '2020 Christmas Tree';
         this.emoji = '🎊';
 
         this.purchasable = false;
@@ -14,7 +14,6 @@ module.exports = class {
 
         this.tier = 'legendary';
 
-        this.category = 'seasonal',
-        this.categoryName = 'Seasonal'
+        this.category = 'Seasonal';
     }
 }

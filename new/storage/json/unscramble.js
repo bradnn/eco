@@ -15,5 +15,9 @@ module.exports.UnscrambleWords = [
     "Hunting",
     "Steal",
     "Crime",
-    "Bot"
+    "Bot",
+    "Miner",
+    "Crypto",
+    "Storage",
+    "Gamble"
 ];

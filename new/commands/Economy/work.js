@@ -36,7 +36,7 @@ module.exports = class {
                 } else if (chance > 98) {
                     embed = {
                         title: `You got sick 🦠`,
-                        description: `You caught a cold and are unable to work for 10 minutes!`,
+                        description: `You caught a cold and are unable to work for 5 minutes!`,
                         fields: [],
                         color: client.colors.sick
                     }
@@ -52,7 +52,7 @@ module.exports = class {
                     var earnedCoins = user.getPay(true, true);
                     var expAdded = user.addRandomExp(25, 50);
                     if(expAdded.levelUp) rewardString += `⭐ Level Up!\n`;
-                    rewardString += `⭐ +${Number.numberComma(expAdded.added)} exp\n`
+                    rewardString += `⭐ +${Number.numberComma(expAdded.added)} exp\n`;
                     rewardString += `💰 +50% Earnings (PERFECT WORK)\n💰 +${Number.money(earnedCoins)}\n`;
                 } else {
                     embed = {
@@ -66,7 +66,7 @@ module.exports = class {
                     var earnedCoins = user.getPay(false, true);
                     var expAdded = user.addRandomExp();
                     if(expAdded.levelUp) rewardString += `⭐ Level Up!\n`;
-                    rewardString += `⭐ +${Number.numberComma(expAdded.added)} exp\n`
+                    rewardString += `⭐ +${Number.numberComma(expAdded.added)} exp\n`;
                     rewardString += `💰 +${Number.money(earnedCoins)}\n`;
                 }
                 break;

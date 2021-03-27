@@ -6,7 +6,7 @@ module.exports = class {
     constructor() {
         this.cmd = 'flip',
         this.aliases = ['5050']
-        this.unlockLevel = 15;
+        this.unlockLevel = 10;
     }
 
     async run(client, msg, args, options) {
