@@ -3,7 +3,7 @@ EcoBot is an economy based discord bot.
 
 ### 💼 Getting Started
 
-If you're just getting started with the bot you can check out the docs [here](https://docs.syclesdev.com/)! This will show you everything you need to know about the bot.
+If you're just getting started with the bot you can check out the docs [here](https://github.com/sycles/EcoBot/wiki)! This will show you everything you need to know about the bot.
 
 ### 📫 Support
 
