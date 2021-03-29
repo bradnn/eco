@@ -8,6 +8,14 @@ module.exports = class {
     }
 
     async run(client, msg, args, options) {
+
+        options.author.setActivePet('001');
+        console.log(options.author.getPetExp());
+        console.log(options.author.addPetExp(500));
+        console.log(options.author.getPetExp());
+        console.log(options.author.getPetBoost());
+        options.author.save();
+
         var message = ``;
         var array = client.jobs.array().sort((a, b) => {return a.pay - b.pay});
         for (var item of array) {

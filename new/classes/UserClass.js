@@ -1,11 +1,12 @@
 const User = require('../storage/userSchema');
 const { Client } = require('../bot');
 const { Time } = require('../modules/Time');
+const { Number } = require('../modules/Number');
 const client = Client.get();
 
 const cooldowns = {
     work: 20000,
-    mine: 0, //120000
+    mine: 120000, //120000
     crime: 60000,
     rob: 60000,
     robUser: 300000,
@@ -132,6 +133,7 @@ module.exports = class {
         
         var FINAL_BONUS = RAISE_BONUS;
         if (perfect == true) FINAL_BONUS += 0.5
+        FINAL_BONUS += this.getPetBoost("workAmount");
 
         const PAYOUT = Math.floor(JOB_PAY * (1 + FINAL_BONUS));
         if (add) this.addCoins(PAYOUT);
@@ -191,6 +193,7 @@ module.exports = class {
         var cooldown = cooldowns[type];
 
         if (type == "work" && this.getSick()) cooldown = 300000;
+        if (type == "mine" && this.getTool() == "tanzPickaxe") cooldown = cooldown / 2;
 
         if (timePassed + 300 < cooldown) {
             const timeLeftMs = Math.ceil(cooldown - timePassed);
@@ -283,7 +286,9 @@ module.exports = class {
     // ==================================================================================
 
     getTool() {
-        if (this.model.profiles.storage.inventory['005'] > 0) {
+        if (this.model.profiles.storage.inventory['00b'] > 0) {
+            return "tanzPickaxe";
+        } else if (this.model.profiles.storage.inventory['005'] > 0) {
             return "pickaxe";
         } else {
             return "none";
@@ -291,7 +296,10 @@ module.exports = class {
     }
 
     breakTool() {
-        if (this.model.profiles.storage.inventory['005']) {
+        if (this.model.profiles.storage.inventory['00b'] > 0) {
+            this.model.profiles.storage.inventory['00b'] -= 1;
+            return "tanzPickaxe";
+        } else if (this.model.profiles.storage.inventory['005'] > 0) {
             this.model.profiles.storage.inventory['005'] -= 1;
             return "pickaxe";
         } else {
@@ -341,11 +349,99 @@ module.exports = class {
     }
     
     // ==================================================================================
+    // PET MANAGEMENT
+    // ==================================================================================
+
+    addPet(name, tier) {
+        var pet = client.pets.get(name);
+        if (!pet) { return false; }
+        var nextID, highestID = 0;
+        var petStorage = this.model.profiles.storage.pets;
+
+        for (var pet in petStorage) {
+            var thisPetID = parseInt(petStorage[pet].id, 16);
+            if (thisPetID > highestID) { highestID = thisPetID };
+        }
+        nextID = Number.convertToHex(highestID += 1);
+
+        this.model.profiles.storage.pets.push({
+            id: nextID,
+            name: name,
+            tier: tier,
+            exp: 0,
+            active: false
+        });
+
+        return;
+    }
+
+    setActivePet(id) {
+        let obj = this.model.profiles.storage.pets.find(obj => obj.active == true);
+        if (obj) { 
+            var objIndex = this.model.profiles.storage.pets.indexOf(obj);
+            this.model.profiles.storage.pets[objIndex].active = false; 
+        };
+
+        let pet = this.model.profiles.storage.pets.find(obj => obj.id == id);
+        if (pet) { 
+            var petIndex = this.model.profiles.storage.pets.indexOf(pet);
+            this.model.profiles.storage.pets[petIndex].active = true; 
+        };
+        return;
+    }
+
+    getPetExp() {
+        let obj = this.model.profiles.storage.pets.find(obj => obj.active == true);
+        if (obj) {
+            return obj.exp;
+        } else {
+            return "none";
+        }
+    }
+
+    addPetExp(amt = 1) {
+        let obj = this.model.profiles.storage.pets.find(obj => obj.active == true);
+        if (obj) { 
+            var objIndex = this.model.profiles.storage.pets.indexOf(obj);
+            this.model.profiles.storage.pets[objIndex].exp += amt; 
+        };
+    }
+
+    getPetBoost(type = "all") {
+        if (type == "all") {
+            let obj = this.model.profiles.storage.pets.find(obj => obj.active == true);
+            if (obj) { 
+                var pet = client.pets.get(obj.name);
+                return {
+                    type: pet.boostType,
+                    amount: pet.boostAmount[obj.tier]
+                };
+            };
+            return {
+                type: "None",
+                amount: 0
+            };
+        } else {
+            let obj = this.model.profiles.storage.pets.find(obj => obj.active == true);
+            if (obj) { 
+                var pet = client.pets.get(obj.name);
+                if (pet.boostType == type) {
+                    return pet.boostAmount[obj.tier];
+                } else {
+                    return 0;
+                }
+            };
+            return 0;
+        }
+    }
+    
+    // ==================================================================================
     // SAVE DATABASE
     // ==================================================================================
 
     save() {
         this.model.markModified('profiles.storage.inventory');
+        this.model.markModified('profiles.storage.pets');
         this.model.markModified('profiles.stats.cooldowns');
         this.model.save();
         return true;

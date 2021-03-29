@@ -6,7 +6,7 @@ module.exports = class {
     constructor() {
         this.cmd = 'buy',
         this.aliases = ['purchase']
-        this.unlockLevel = 10;
+        this.unlockLevel = 5;
     }
 
     async run(client, msg, args, options) {

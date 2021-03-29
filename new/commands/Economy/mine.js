@@ -6,7 +6,7 @@ module.exports = class {
     constructor() {
         this.cmd = 'mine',
         this.aliases = ['minefor']
-        this.unlockLevel = 20;
+        this.unlockLevel = 10;
     }
 
     async run(client, msg, args, options) {
@@ -58,6 +58,8 @@ module.exports = class {
             item = client.items.get('00a');
             amount = Math.floor(Math.random() * 17 + 5);
         }
+
+        if (user.getTool() == "tanzPickaxe") { amount * 1.25 };
 
         rewardString += `💎 You mined ${amount} ${item.name}!`
 

@@ -20,5 +20,23 @@ module.exports.Number = {
     },
     gem: function (x) {
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    },
+    convertToHex: function(int) {
+        var hex = int.toString(16);
+        switch (hex.length) {
+            case 1: {
+                hex = `00${hex}`;
+                break;
+            }
+            case 2: {
+                hex = `0${hex}`;
+                break;
+            }
+            default: {
+                break;
+            }
+        }
+
+        return hex;
     }
 }

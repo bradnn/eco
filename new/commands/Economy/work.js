@@ -1,3 +1,4 @@
+const { response } = require("express");
 const { Challenge } = require("../../modules/Challenge");
 const { Number } = require("../../modules/Number");
 const { User } = require("../../modules/User")
@@ -19,7 +20,7 @@ module.exports = class {
         const scambled = await Challenge.scramble(msg, client);
         let rewardString = ``;
         let penaltyString = ``;
-        switch (scambled.response) {
+        switch (scambled.response.type) {
             case "CORRECT": {
 
                 var chance = Math.random() * 100;
@@ -74,7 +75,7 @@ module.exports = class {
             case "INCORRECT": {
                 msg.channel.send({ embed: {
                     title: `Wrong Answer ❌`,
-                    description: `That was the wrong answer! Try again.`,
+                    description: `That was the wrong answer! The word was \`${scambled.response.word}\``,
                     color: client.colors.error
                 }});
                 return;
@@ -82,7 +83,7 @@ module.exports = class {
             case "NOT ANSWERED": {
             msg.channel.send({ embed: {
                 title: `You didn't answer! ❌`,
-                description: `Your forgot to answer! Try again.`,
+                description: `Your forgot to answer! The word was \`${scambled.response.word}\``,
                 color: client.colors.error
             }});
             return;

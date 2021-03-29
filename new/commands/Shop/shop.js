@@ -6,7 +6,7 @@ module.exports = class {
     constructor() {
         this.cmd = 'shop',
         this.aliases = ['market', 'store']
-        this.unlockLevel = 10;
+        this.unlockLevel = 5;
     }
 
     async run(client, msg, args, options) {
@@ -23,8 +23,11 @@ module.exports = class {
         var categoryPageCount = 1; // How many pages this category has
 
         var curCategory; // What category its currently on
+
+        var itemArray = client.items.array().sort((a, b) => {return parseInt(a.id, 16) - parseInt(b.id, 16)});
+        itemArray = itemArray.sort((a, b) => {return b.priority - a.priority});
         
-        for (const value of client.items.array().sort((a, b) => {return parseInt(a.id, 16) - parseInt(b.id, 16)})) { // Go through all items saved to bot
+        for (const value of itemArray) { // Go through all items saved to bot
 
             if (!value.purchasable) { // If the item isnt purchasable, skip
                 continue;

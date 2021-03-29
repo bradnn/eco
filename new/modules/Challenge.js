@@ -20,13 +20,22 @@ module.exports.Challenge = {
             await msg.channel.awaitMessages(filter, {max: 1, time: 30000, errors: ['time']})
                 .then(collected => {
                     if (String.capitalize(collected.first().content.toLowerCase()) == string) {
-                        response = "CORRECT";
+                        response = {
+                            type: "CORRECT",
+                            word: string
+                        };
                     } else {
-                        response = "INCORRECT";
+                        response = {
+                            type: "INCORRECT",
+                            word: string
+                        };
                     }
                 })
                 .catch(collected => {
-                    response = "NOT ANSWERED";
+                    response = {
+                        type: "NOT ANSWERED",
+                        word: string
+                    };
                 });
         });
 

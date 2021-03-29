@@ -15,6 +15,7 @@ client.aliases = new Collection();
 client.profiles = new Collection();
 client.items = new Collection();
 client.jobs = new Collection();
+client.pets = new Collection();
 
 client.config = config;
 client.logger = require('./modules/Logger');
@@ -75,6 +76,17 @@ async function start() {
             const job = new file();
             client.logger.job(`Loading Job: ${job.name}`);
             client.jobs.set(name, job);
+        }
+    });
+
+    // Loading Pets
+    glob (`${process.cwd()}/new/storage/pets/**/*.js`).then(pets => {
+        for (const petFile of pets) {
+            const { name } = parse(petFile);
+            const file = require(petFile);
+            const pet = new file();
+            client.logger.pet(`Loading Pet: ${name}`);
+            client.pets.set(name, pet);
         }
     });
 

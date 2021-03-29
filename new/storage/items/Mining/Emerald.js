@@ -14,5 +14,7 @@ module.exports = class {
 
         this.tier = 'epic';
         this.category = 'Mining';
+
+        this.priority = 4;
     }
 }

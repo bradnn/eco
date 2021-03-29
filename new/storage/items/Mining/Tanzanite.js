@@ -14,5 +14,7 @@ module.exports = class {
 
         this.tier = 'legendary';
         this.category = 'Mining';
+
+        this.priority = 5;
     }
 }

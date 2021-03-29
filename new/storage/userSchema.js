@@ -23,6 +23,10 @@ const user = Schema({
             inventory: {
                 type: Object,
                 default: {}
+            },
+            pets: {
+                type: Array,
+                default: []
             }
         },
         stats: {

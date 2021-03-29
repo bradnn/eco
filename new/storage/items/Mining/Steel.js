@@ -14,5 +14,7 @@ module.exports = class {
 
         this.tier = 'uncommon';
         this.category = 'Mining';
+
+        this.priority = 1;
     }
 }
