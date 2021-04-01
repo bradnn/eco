@@ -61,7 +61,14 @@ module.exports = class {
 
         if (user.getPickaxe() == "tanzPickaxe") { amount = Math.floor(amount * 1.25) };
 
-        rewardString += `💎 You mined ${amount} ${item.name}!`
+        rewardString += `💎 You mined ${amount} ${item.name}!\n`
+
+        var expAdded = user.addRandomExp();
+        if(expAdded.levelUp) {
+            rewardString += `⭐ Level Up! (+${Number.numberComma(expAdded.added)} exp)\n`
+        } else {
+            rewardString += `⭐ +${Number.numberComma(expAdded.added)} exp\n`;
+        }
 
         user.addItem(item.id, amount);
         user.addMineCount();

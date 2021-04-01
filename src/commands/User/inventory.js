@@ -29,6 +29,7 @@ module.exports = class {
         var userInventory = profile.getInventory();
         for (var itemID of Object.keys(userInventory)) {
             var item = client.items.get(itemID);
+            if (userInventory[item.id] < 1) { continue; }
             if (!invObject[item.category]) {
                 invObject[item.category] = {
                     field: lastField
