@@ -157,8 +157,8 @@ module.exports = class {
     }
 }`
 
-        if (!fs.existsSync(`./new/storage/items/${category}`)) {
-            await fs.mkdir(`./new/storage/items/${category}`, (err) => {
+        if (!fs.existsSync(`./src/storage/items/${category}`)) {
+            await fs.mkdir(`./src/storage/items/${category}`, (err) => {
                 if (err) {
                     throw err;
                 }
@@ -166,7 +166,7 @@ module.exports = class {
             });
         }
 
-        await fs.writeFile(`./new/storage/items/${category}/${name}.js`, fileData, (err) => {
+        await fs.writeFile(`./src/storage/items/${category}/${name}.js`, fileData, (err) => {
             if (err) {
                 throw err;
             }
