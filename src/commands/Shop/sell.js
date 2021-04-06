@@ -12,7 +12,7 @@ module.exports = class {
     async run(client, msg, args, options) {
         var itemChosen = args[0];
         var item = client.items.get(itemChosen);
-        if (!item) {
+        if (!item || !item.sellable) {
             msg.channel.send({ embed: {
                 title: `Whoops 🔥`,
                 description: `Please supply a valid item ID to sell.`,
